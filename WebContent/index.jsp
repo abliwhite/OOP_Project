@@ -7,21 +7,26 @@
 	</head>
 	
 	<body>
+		<h1>Welcome</h1>
 		<form action="LoginServlet" method="post">
 		  <br>Please log in.<br>
-		  <br>User Name:<br>
+		  <br>Username:<br>
 		  <input type="text" name="name">
 		  <br>Password:<br>
 		  <input type="password" name="password">
 		  <input type="submit" value="Login">
 		</form>
 		
+		<br>
+		
 		<form action="LoginServlet" method="post">
 		  <input type="submit" value="Login with facebook">
 		</form>
 		
+		<br>
+		
 		<form action="RegistrationServlet" method="post">
-		  <input type="submit" value="Registration">
+		  <input type="submit" value="Register">
 		</form>
 	</body>
 </html>
