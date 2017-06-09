@@ -2,23 +2,25 @@ package Authentication.Models;
 
 import java.util.Objects;
 
-public class UserModel {
-
+public class User {
+	//Only have get method id can't be changed
 	private int id;
+	
 	private String username;
 	private String password;
 	private String email;
+	
+	//Only have get method role can't be changed
 	private String role;
+	
 	private String gmailID;
 	private String facebookID;
+	
+	//Only have get methods relation id can't be changed
 	private int profileID;
 
-	public Integer getProfileID() {
+	public int getProfileID() {
 		return profileID;
-	}
-
-	public void setProfileID(Integer profileID) {
-		this.profileID = profileID;
 	}
 
 	public String getFacebookID() {
@@ -29,16 +31,16 @@ public class UserModel {
 		this.facebookID = facebookID;
 	}
 
-	public UserModel(int id, String username, String password, String email, String role, String gmailID,
+	public User(int id, String username, String password, String email, String role, String gmailID,
 			String facebookID, int profileID) {
-		this.setId(id);
-		this.setUsername(username);
-		this.setPassword(password);
-		this.setEmail(email);
-		this.setRole(role);
-		this.setEmail(email);
-		this.setGmailID(gmailID);
-		this.setFacebookID(facebookID);
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.role = role;
+		this.gmailID = gmailID;
+		this.facebookID = facebookID;
+		this.profileID = profileID;
 	}
 
 	public String getGmailID() {
@@ -48,13 +50,9 @@ public class UserModel {
 	public void setGmailID(String gmailID) {
 		this.gmailID = gmailID;
 	}
-
+	
 	public String getRole() {
 		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
 	}
 
 	public String getEmail() {
@@ -85,19 +83,15 @@ public class UserModel {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
 
-		if (!(obj instanceof UserModel))
+		if (!(obj instanceof User))
 			return false;
 
-		UserModel passed = (UserModel) obj;
+		User passed = (User) obj;
 
 		return id == passed.getId() && username.equals(passed.getUsername()) && gmailID.equals(passed.getGmailID())
 				&& facebookID == passed.getFacebookID() && role.equals(passed.getRole())
