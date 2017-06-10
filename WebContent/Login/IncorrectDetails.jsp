@@ -4,8 +4,6 @@
 
 
 <html>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
 	<head>
 		<title>Home Page</title>
 	</head>
@@ -21,14 +19,10 @@
 		  <input type="submit" value="Login">
 		</form>
 		
-		<br>
-		
 		<form action="LoginServlet" method="post">
 		  <input type="submit" value="Login with facebook">
 		</form>
-		
-		<br>
-		
+
 		<form action="RegistrationServlet" method="post">
 		  <input type="submit" value="Register">
 		</form>

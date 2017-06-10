@@ -13,14 +13,14 @@ public class AccountManager extends DaoController {
 		super();
 	}
 	
-	public boolean checkLoginValidation(String name, String password) {
+	public User checkLoginValidation(String name, String password) {
 		for (DbAbstractModel db : dbFake) {
-			User a = (User)db;
-			if (a.getUsername().equals(name) && a.getPassword().equals(password)) {
-				return true;
+			User user = (User)db;
+			if (user.getUsername().equals(name) && user.getPassword().equals(password)) {
+				return user;
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	public ResponseMessage updateUser(User user){
