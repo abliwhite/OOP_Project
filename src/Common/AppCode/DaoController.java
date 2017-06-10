@@ -8,30 +8,25 @@ import Common.Models.ResponseMessage;
 
 public abstract class DaoController implements DaoInterface {
 
-	private List<DbAbstractModel> dbFake;
+	public List<DbAbstractModel> dbFake;
 
-	@Override
 	public ResponseMessage addProperty(DbAbstractModel object) {
-		try {
-			dbFake.add(object);
-		} catch (Exception e) {
-
-		}
+		dbFake.add(object);
+		return null;
+	}
+	
+	public ResponseMessage updateProperty(DbAbstractModel object) {
 		return null;
 	}
 
-	@Override
 	public ResponseMessage deleteProperty(DbAbstractModel object) {
-		try {
-			dbFake.remove(object);
-		} catch (Exception e) {
-
-		}
+		dbFake.remove(object);
 		return null;
 	}
 
 	public DaoController() {
 		dbFake = new ArrayList<DbAbstractModel>();
+	
 	}
 
 }

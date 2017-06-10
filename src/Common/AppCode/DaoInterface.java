@@ -9,5 +9,8 @@ public interface DaoInterface {
 	//sheileba int id argumentad
 	ResponseMessage deleteProperty(DbAbstractModel object);
 	
+	ResponseMessage updateProperty(DbAbstractModel object);
+	
+	
 	
 }

@@ -2,6 +2,7 @@ package Account.AppCode;
 
 import Account.Models.User;
 import Common.AppCode.DaoController;
+import Common.Models.DbAbstractModel;
 import Common.Models.ResponseMessage;
 
 public class AccountManager extends DaoController {
@@ -12,8 +13,14 @@ public class AccountManager extends DaoController {
 		super();
 	}
 	
-	public ResponseMessage checkLoginValidation(User user){
-		return null;
+	public boolean checkLoginValidation(String name, String password) {
+		for (DbAbstractModel db : dbFake) {
+			User a = (User)db;
+			if (a.getUsername().equals(name) && a.getPassword().equals(password)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public ResponseMessage updateUser(User user){
