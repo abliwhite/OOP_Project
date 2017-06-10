@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import Account.Models.User;
 import Common.AppCode.DaoController;
 import Common.AppCode.DaoInterface;
+import Common.AppCode.ViewTextContainer;
 
 /**
  * Servlet implementation class LoginServlet
@@ -54,7 +55,10 @@ public class LoginServlet extends HttpServlet {
 		am.addProperty(new User(1, "admin", "admin", null, null, null, null, 0, null, null));
 
 		if (am.checkLoginValidation(name, password)) {
-			request.setAttribute("result", "Gilocav");
+			request.setAttribute(ViewTextContainer.RESULT, "Gilocav");
+		} else {
+			request.setAttribute(ViewTextContainer.RESULT, new ViewTextContainer());
+			request.getRequestDispatcher("/Login/IncorrectDetails.jsp").forward(request, response);
 		}
 	}
 }
