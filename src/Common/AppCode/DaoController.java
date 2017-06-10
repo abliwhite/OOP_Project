@@ -26,7 +26,6 @@ public abstract class DaoController implements DaoInterface {
 
 	public DaoController() {
 		dbFake = new ArrayList<DbAbstractModel>();
-	
 	}
 
 }
