@@ -1,21 +1,26 @@
-package Authentication.Models;
+package Account.Models;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class UserProfile {
+import Common.Models.DbAbstractModel;
 
-	//Only have get method id can't be changed
+public class UserProfile extends DbAbstractModel {
+
+	// Only have get method id can't be changed
 	private int id;
-	
+
 	private String name;
 	private String surname;
-	
+
 	private String gender;
-	//Only have get method create date can't be changed
+	// Only have get method create date can't be changed
 	private Date createDate;
 
-	public UserProfile(int id, String name, String gender, Date createDate) {
+	public UserProfile(int id, String name, String gender, Date createDate, String tableName) {
+		super(tableName);
 		this.id = id;
 		this.name = name;
 		this.gender = gender;
@@ -54,6 +59,14 @@ public class UserProfile {
 		return id;
 	}
 
+	//Todo dasafixia
+	@Override
+	public String getInsertValuesString() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		return "(" + name + "," + surname + "," + gender + "," + now + ");";
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this)
@@ -61,7 +74,6 @@ public class UserProfile {
 
 		if (!(obj instanceof UserProfile))
 			return false;
-		
 
 		UserProfile passed = (UserProfile) obj;
 

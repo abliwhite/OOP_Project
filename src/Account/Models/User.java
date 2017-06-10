@@ -1,23 +1,35 @@
-package Authentication.Models;
+package Account.Models;
 
 import java.util.Objects;
 
-public class User {
-	//Only have get method id can't be changed
+import Common.Models.DbAbstractModel;
+
+public class User extends DbAbstractModel {
+	// Only have get method id can't be changed
 	private int id;
-	
+
 	private String username;
 	private String password;
 	private String email;
-	
-	//Only have get method role can't be changed
+
+	// Only have get method role can't be changed
 	private String role;
-	
+
 	private String gmailID;
 	private String facebookID;
-	
-	//Only have get methods relation id can't be changed
+
+	// Only have get methods relation id can't be changed
 	private int profileID;
+
+	private UserProfile profile;
+
+	public UserProfile getUserProfile() {
+		return profile;
+	}
+
+	public void setUserProfile(UserProfile profile) {
+		this.profile = profile;
+	}
 
 	public int getProfileID() {
 		return profileID;
@@ -31,8 +43,9 @@ public class User {
 		this.facebookID = facebookID;
 	}
 
-	public User(int id, String username, String password, String email, String role, String gmailID,
-			String facebookID, int profileID) {
+	public User(int id, String username, String password, String email, String role, String gmailID, String facebookID,
+			int profileID, UserProfile profile, String tableName) {
+		super(tableName);
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -41,6 +54,7 @@ public class User {
 		this.gmailID = gmailID;
 		this.facebookID = facebookID;
 		this.profileID = profileID;
+		this.profile = profile;
 	}
 
 	public String getGmailID() {
@@ -50,7 +64,7 @@ public class User {
 	public void setGmailID(String gmailID) {
 		this.gmailID = gmailID;
 	}
-	
+
 	public String getRole() {
 		return role;
 	}
@@ -81,6 +95,12 @@ public class User {
 
 	public int getId() {
 		return id;
+	}
+
+	@Override
+	public String getInsertValuesString() {
+		return "(" + username + "," + password + "," + email + "," + role + "," + gmailID + "," + facebookID + ","
+				+ profileID + ");";
 	}
 
 	@Override

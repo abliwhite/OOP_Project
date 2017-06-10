@@ -1,4 +1,4 @@
-package Common;
+package Common.AppCode;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
