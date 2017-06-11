@@ -43,7 +43,7 @@ public class User extends DbAbstractModel {
 		this.facebookID = facebookID;
 	}
 
-	public User(int id, String username, String password, String email, String role, String gmailID, String facebookID,
+	public User(Integer id, String username, String password, String email, String role, String gmailID, String facebookID,
 			int profileID, UserProfile profile, String tableName) {
 		super(tableName);
 		this.id = id;

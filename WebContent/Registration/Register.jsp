@@ -78,7 +78,7 @@
 		
 		var data = {
 			"username": username,
-			"password": password,
+			"password": pass,
 			"email": email,
 			"name": name,
 			"surname": surname,
@@ -92,7 +92,8 @@
 		    contentType: "application/json",
 		    data: JSON.stringify(data),
 		    success: function(response) {
-		    	document.getElementById("alert").innerHTML = response;    
+		    	document.getElementById("alert").innerHTML = response;  
+		    	window.location.href = "/index.jsp";
 		    }
 		});
 			

@@ -86,16 +86,13 @@ public class RegisterServlet extends HttpServlet {
 			ResponseMessage resp = manager.checkRegistrationValidation(new RegisterModel(username, email));
 			if (resp.isSuccess()) {
 				response.getWriter().println(resp.getResultMessage());
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+				//datetimead gadasasketebeli
 				LocalDateTime now = LocalDateTime.now();
 				
-				@SuppressWarnings("null")
 				UserProfile profile = new UserProfile((Integer) null,name,gender,now,DbCertificate.PROFILE_TABLE_NAME,surname);
 				
 				manager.addProperty(profile);
 				
-				RequestDispatcher forwarder = request.getRequestDispatcher("index.jsp");
-				forwarder.forward(request, response);
 			} else {
 				
 				response.getWriter().println(resp.getResultMessage());

@@ -19,7 +19,7 @@ public class UserProfile extends DbAbstractModel {
 	// Only have get method create date can't be changed
 	private LocalDateTime createDate;
 
-	public UserProfile(int id, String name, String gender, LocalDateTime createDate, String tableName,String surname) {
+	public UserProfile(Integer id, String name, String gender, LocalDateTime createDate, String tableName,String surname) {
 		super(tableName);
 		this.id = id;
 		this.name = name;
