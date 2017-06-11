@@ -9,10 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mysql.jdbc.Constants;
+
+import Account.Models.AuthModel;
 import Account.Models.User;
 import Common.AppCode.DaoController;
 import Common.AppCode.DaoInterface;
 import Common.AppCode.ViewTextContainer;
+import Common.AppCode.*;
 
 /**
  * Servlet implementation class LoginServlet
@@ -54,10 +58,11 @@ public class LoginServlet extends HttpServlet {
 
 		am.addProperty(new User(1, "admin", "admin", null, null, null, null, 0, null, null));
 
-		User user = am.checkLoginValidation(name, password);
+		User user = am.checkLoginValidation(new AuthModel(name, password));
 		if (user != null) {
 			request.setAttribute(ViewTextContainer.RESULT, "Gilocav");
-			if (user.getUsername().equals("admin")) {
+			
+			if (user.getRole().equals(CommonConstants.ADMIN_ROLE)) {
 				request.getRequestDispatcher("/Profiles/AdminProfile.jsp").forward(request, response);
 			} else {
 				request.getRequestDispatcher("/Profiles/UserProfile.jsp").forward(request, response);
