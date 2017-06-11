@@ -13,11 +13,14 @@ public class AuthModel {
 	public AuthModel(String username, String password) {
 		
 		this.username = username;
+		/*
 		try {
 			this.password = PasswordEncryptor.getEncryptedPassword(password);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
+		*/
+		this.password = password;
 	}
 	
 	public String getUsername(){

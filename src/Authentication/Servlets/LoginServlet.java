@@ -56,7 +56,7 @@ public class LoginServlet extends HttpServlet {
 		Account.AppCode.AccountManager am = (Account.AppCode.AccountManager) context
 				.getAttribute(Account.AppCode.AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
 
-		am.addProperty(new User(1, "admin", "admin", null, null, null, null, 0, null, null));
+		am.addProperty(new User(1, "admin", "admin", null, CommonConstants.ADMIN_ROLE, null, null, 0, null, null));
 
 		User user = am.checkLoginValidation(new AuthModel(name, password));
 		if (user != null) {
