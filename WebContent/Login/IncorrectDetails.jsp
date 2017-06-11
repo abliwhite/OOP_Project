@@ -23,7 +23,7 @@
 		  <input type="submit" value="Login with facebook">
 		</form>
 
-		<form action="RegistrationServlet" method="post">
+		<form action="Registration/Register.jsp" method="post">
 		  <input type="submit" value="Register">
 		</form>
 	</body>

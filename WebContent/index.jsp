@@ -25,7 +25,7 @@
 		
 		<br>
 		
-		<form action="RegistrationServlet" method="post">
+		<form action="Registration/Register.jsp" method="get">
 		  <input type="submit" value="Register">
 		</form>
 	</body>
