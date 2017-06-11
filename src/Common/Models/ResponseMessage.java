@@ -2,16 +2,16 @@ package Common.Models;
 
 public class ResponseMessage {
 	
-	private String errorMessage;
+	private String resultMessage;
 	private boolean isSuccess;
 	
-	public ResponseMessage(String errorMessage,boolean isSuccess){
-		this.errorMessage= errorMessage;
+	public ResponseMessage(String resultMessage,boolean isSuccess){
+		this.resultMessage= resultMessage;
 		this.isSuccess = isSuccess;
 	}
 
-	public String getErrorMessage() {
-		return errorMessage;
+	public String getResultMessage() {
+		return resultMessage;
 	}
 
 	public boolean isSuccess() {

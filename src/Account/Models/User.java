@@ -6,7 +6,7 @@ import Common.Models.DbAbstractModel;
 
 public class User extends DbAbstractModel {
 	// Only have get method id can't be changed
-	private int id;
+	private Integer id;
 
 	private String username;
 	private String password;

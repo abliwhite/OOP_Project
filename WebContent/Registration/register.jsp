@@ -20,6 +20,7 @@
 
 	<h1><%=ViewTextContainer.REGISTER_PAGE_WELCOME_WARNING_MESSAGE %></h1>
 
+	<div id="alert"></div>
 	<br id="registerResult_id"><br>
 
 	<form action="RegisterServlet" method="post">
@@ -27,7 +28,7 @@
 		<br />
 		Password: <input type="password" name="password" id="password_id" >
 		<br />
-		RepeatPassword: <input type="password" name="repeatPassword" id="repeatPassword_id">
+		Repeat Password: <input type="password" name="repeatPassword" id="repeatPassword_id">
 		<br />
 		Email: <input type="text" name="email" id="email_id" > 
 		<br />
@@ -46,8 +47,8 @@
 		%>
 		</select>
 		<br />
-		<input onclick="register()" type='button' value='Login'>
-		<div id="alert">   </div>
+		<input onclick="register()" type='button' value='Register'>
+		
 	</form>
 	
 	
@@ -76,21 +77,22 @@
 		}
 		
 		var data = {
-			username: username,
-			password: pass,
-			email: email,
-			name: name,
-			surname: surname,
-			gender: gender
+			"username": username,
+			"password": password,
+			"email": email,
+			"name": name,
+			"surname": surname,
+			"gender": gender
 		};
+		
 		
 		$.ajax({
 		    type: "POST",
-		    url: "RegisterServlet",
+		    url: "/RegisterServlet",
 		    contentType: "application/json",
 		    data: JSON.stringify(data),
 		    success: function(response) {
-		    	document.getElementById("registerResult_id").value = respnse;    
+		    	document.getElementById("alert").innerHTML = response;    
 		    }
 		});
 			

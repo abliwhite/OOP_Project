@@ -10,24 +10,25 @@ import Common.Models.DbAbstractModel;
 public class UserProfile extends DbAbstractModel {
 
 	// Only have get method id can't be changed
-	private int id;
+	private Integer id;
 
 	private String name;
 	private String surname;
 
 	private String gender;
 	// Only have get method create date can't be changed
-	private Date createDate;
+	private LocalDateTime createDate;
 
-	public UserProfile(int id, String name, String gender, Date createDate, String tableName) {
+	public UserProfile(int id, String name, String gender, LocalDateTime createDate, String tableName,String surname) {
 		super(tableName);
 		this.id = id;
 		this.name = name;
 		this.gender = gender;
 		this.createDate = createDate;
+		this.surname = surname;
 	}
 
-	public Date getCreateDate() {
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
 
@@ -62,9 +63,8 @@ public class UserProfile extends DbAbstractModel {
 	//Todo dasafixia
 	@Override
 	public String getInsertValuesString() {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-		LocalDateTime now = LocalDateTime.now();
-		return "(" + name + "," + surname + "," + gender + "," + now + ");";
+		
+		return "(" + name + "," + surname + "," + gender + "," + createDate + ");";
 	}
 
 	@Override
