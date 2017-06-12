@@ -1,25 +1,21 @@
 package Subject.Models;
 
-public class SubjectComponentTemplates {
-	
-	private int id;
+import java.util.Objects;
+
+import Common.Models.DbAbstractModel;
+
+public class SubjectComponentTemplates extends DbAbstractModel {
+
 	private String name;
 	private double markPercentage;
 	private int number;
 
-	public SubjectComponentTemplates(int id, String name, double markPercentage, int number) {
-		this.id = id;
+	public SubjectComponentTemplates(int id, String name, double markPercentage, int number, String tableName) {
+		super(tableName,id);
+		
 		this.name = name;
-		this.markPercentage =  markPercentage;
+		this.markPercentage = markPercentage;
 		this.number = number;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -47,27 +43,27 @@ public class SubjectComponentTemplates {
 	}
 
 	@Override
+	public String getInsertValuesString() {
+		return "(" + name + "," + markPercentage + "," + number + ");";
+	}
+
+	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		long temp;
-		temp = Double.doubleToLongBits(markPercentage);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + number;
-		return result;
+		return Objects.hash(getId(), name, markPercentage, number);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
-		
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
 		SubjectComponentTemplates other = (SubjectComponentTemplates) obj;
-		
-		return other.id == id && other.markPercentage == markPercentage &&
-				other.name.equals(name) && other.number == number;
+
+		return other.getId().equals(getId()) && other.markPercentage == markPercentage && other.name.equals(name)
+				&& other.number == number;
 	}
 }

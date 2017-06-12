@@ -1,5 +1,7 @@
 package Account.AppCode;
 
+import org.apache.tomcat.jdbc.pool.DataSource;
+
 import Account.Models.AuthModel;
 import Account.Models.RegisterModel;
 import Account.Models.User;
@@ -12,9 +14,10 @@ public class AccountManager extends DaoController {
 
 	public static final String ACCOUNT_MANAGER_ATTRIBUTE = "Account Manager Attribure";
 
-	public AccountManager() {
-		super();
+	public AccountManager(DataSource pool) {
+		super(pool);
 	}
+
 
 	public User checkLoginValidation(AuthModel auth) {
 		for (DbAbstractModel db : dbFake) {

@@ -5,8 +5,6 @@ import java.util.Objects;
 import Common.Models.DbAbstractModel;
 
 public class User extends DbAbstractModel {
-	// Only have get method id can't be changed
-	private Integer id;
 
 	private String username;
 	private String password;
@@ -45,8 +43,8 @@ public class User extends DbAbstractModel {
 
 	public User(Integer id, String username, String password, String email, String role, String gmailID, String facebookID,
 			int profileID, UserProfile profile, String tableName) {
-		super(tableName);
-		this.id = id;
+		super(tableName,id);
+		
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -93,10 +91,6 @@ public class User extends DbAbstractModel {
 		this.username = username;
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	@Override
 	public String getInsertValuesString() {
 		return "(" + username + "," + password + "," + email + "," + role + "," + gmailID + "," + facebookID + ","
@@ -113,7 +107,7 @@ public class User extends DbAbstractModel {
 
 		User passed = (User) obj;
 
-		return id == passed.getId() && username.equals(passed.getUsername()) && gmailID.equals(passed.getGmailID())
+		return getId().equals(passed.getId()) && username.equals(passed.getUsername()) && gmailID.equals(passed.getGmailID())
 				&& facebookID == passed.getFacebookID() && role.equals(passed.getRole())
 				&& password.equals(passed.getPassword()) && email.equals(passed.getEmail())
 				&& profileID == passed.getProfileID();
@@ -121,7 +115,7 @@ public class User extends DbAbstractModel {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, username, gmailID, facebookID, role, password, email, profileID);
+		return Objects.hash(getId(), username, gmailID, facebookID, role, password, email, profileID);
 	}
 
 }

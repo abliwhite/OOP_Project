@@ -1,4 +1,4 @@
-package Database.Info;
+package Database;
 
 /*
  * CS108 Student: This file will be replaced when we test your code. So, do not add any of your
@@ -9,7 +9,7 @@ package Database.Info;
 public class MyDBInfo {
 	
 	public static final String MYSQL_USERNAME = "root";
-	public static final String MYSQL_PASSWORD = "12345678";
-	public static final String MYSQL_DATABASE_SERVER = "localhost:3306/productsdatabase";
-	public static final String MYSQL_DATABASE_NAME = "productsdatabase";
+	public static final String MYSQL_PASSWORD = "root";
+	public static final String MYSQL_DATABASE_SERVER = "localhost";
+	public static final String MYSQL_DATABASE_NAME = "db";
 }

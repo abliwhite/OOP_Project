@@ -9,9 +9,6 @@ import Common.Models.DbAbstractModel;
 
 public class UserProfile extends DbAbstractModel {
 
-	// Only have get method id can't be changed
-	private Integer id;
-
 	private String name;
 	private String surname;
 
@@ -20,8 +17,8 @@ public class UserProfile extends DbAbstractModel {
 	private LocalDateTime createDate;
 
 	public UserProfile(Integer id, String name, String gender, LocalDateTime createDate, String tableName,String surname) {
-		super(tableName);
-		this.id = id;
+		super(tableName,id);
+		
 		this.name = name;
 		this.gender = gender;
 		this.createDate = createDate;
@@ -56,10 +53,6 @@ public class UserProfile extends DbAbstractModel {
 		this.name = name;
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	//Todo dasafixia
 	@Override
 	public String getInsertValuesString() {
@@ -77,13 +70,13 @@ public class UserProfile extends DbAbstractModel {
 
 		UserProfile passed = (UserProfile) obj;
 
-		return id == passed.getId() && name.equals(passed.getName()) && surname.equals(passed.getSurname())
+		return getId().equals(passed.getId()) && name.equals(passed.getName()) && surname.equals(passed.getSurname())
 				&& gender.equals(passed.getGender()) && createDate.equals(passed.getCreateDate());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, surname, gender, createDate);
+		return Objects.hash(getId(), name, surname, gender, createDate);
 	}
 
 }

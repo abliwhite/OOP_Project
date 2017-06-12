@@ -93,7 +93,9 @@
 		    data: JSON.stringify(data),
 		    success: function(response) {
 		    	document.getElementById("alert").innerHTML = response;  
-		    	window.location.href = "/index.jsp";
+		    	if(response == CommonConstants.SUCCESSFULL_MESSAGE){
+		    		window.location.href = "/index.jsp";	
+		    	}
 		    }
 		});
 			

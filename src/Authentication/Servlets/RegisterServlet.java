@@ -26,8 +26,8 @@ import Account.Models.RegisterModel;
 import Account.Models.User;
 import Account.Models.UserProfile;
 import Common.AppCode.CommonConstants;
-import Common.AppCode.DbCertificate;
 import Common.Models.ResponseMessage;
+import Database.DbCertificate;
 
 /**
  * Servlet implementation class RegisterServlet
