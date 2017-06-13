@@ -17,7 +17,7 @@ public class User {
 	private String facebookID;
 
 	// Only have get methods relation id can't be changed
-	private int profileID;
+	private Integer profileID;
 
 	private UserProfile profile;
 
@@ -29,7 +29,7 @@ public class User {
 		this.profile = profile;
 	}
 
-	public int getProfileID() {
+	public Integer getProfileID() {
 		return profileID;
 	}
 
@@ -42,7 +42,7 @@ public class User {
 	}
 
 	public User(Integer id, String username, String password, String email, String role, String gmailID, String facebookID,
-			int profileID, UserProfile profile) {
+			Integer profileID, UserProfile profile) {
 		
 		this.username = username;
 		this.password = password;

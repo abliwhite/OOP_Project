@@ -1,5 +1,7 @@
 package Common.AppCode;
 
+import java.util.Properties;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -46,14 +48,14 @@ public class ContextListener implements ServletContextListener {
 	private DataSource getDataSource() {
 		DataSource pool = new DataSource();
 		PoolProperties properties = new PoolProperties();
-
+		
+		
 		properties.setUrl("jdbc:mysql://" + MyDBInfo.MYSQL_DATABASE_SERVER + "/mysql");
 		properties.setDriverClassName("com.mysql.jdbc.Driver");
 		properties.setUsername(MyDBInfo.MYSQL_USERNAME);
 		properties.setPassword(MyDBInfo.MYSQL_PASSWORD);
-		
-		properties.setDataSource(pool);
 
+		pool.setPoolProperties(properties);
 		return pool;
 	}
 	

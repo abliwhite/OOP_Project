@@ -26,8 +26,8 @@ public abstract class DaoController  {
 		generator = new QueryGenerator();
 	}
 
-	public Connection getConnection() throws SQLException {
-		return (Connection) pool.getConnection();
+	public java.sql.Connection getConnection() throws SQLException {
+		return pool.getConnection();
 	}
 
 	

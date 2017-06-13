@@ -13,9 +13,9 @@ public class UserProfile {
 
 	private String gender;
 	// Only have get method create date can't be changed
-	private LocalDateTime createDate;
+	private String createDate;
 
-	public UserProfile(Integer id, String name, String gender, LocalDateTime createDate, String surname) {
+	public UserProfile(Integer id, String name, String gender, String createDate, String surname) {
 		this.id = id;
 		this.name = name;
 		this.gender = gender;
@@ -23,7 +23,7 @@ public class UserProfile {
 		this.surname = surname;
 	}
 
-	public LocalDateTime getCreateDate() {
+	public String getCreateDate() {
 		return createDate;
 	}
 

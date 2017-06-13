@@ -85,10 +85,9 @@ public class RegisterServlet extends HttpServlet {
 			ResponseMessage resp = manager.checkRegistrationValidation(new RegisterModel(username, email));
 			if (resp.isSuccess()) {
 				response.getWriter().println(resp.getResultMessage());
-				// datetimead gadasasketebeli
-				LocalDateTime now = LocalDateTime.now();
 
-				UserProfile profile = new UserProfile((Integer) null, name, gender, now, surname);
+				UserProfile profile = new UserProfile((Integer) null, name, gender, CommonConstants.getDatetime(),
+						surname);
 
 				manager.addProfile(profile);
 

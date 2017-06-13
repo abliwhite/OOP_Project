@@ -22,17 +22,7 @@ CREATE TABLE `subject_templates` (
    UNIQUE KEY `ID_UNIQUE` (`ID`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
- CREATE TABLE `subject_component_materials` (
-   `ID` int(11) NOT NULL AUTO_INCREMENT,
-   `MaterialPath` varchar(45) NOT NULL,
-   `UploadDate` datetime NOT NULL,
-   `SubjectComponentID` int(11) NOT NULL,
-   PRIMARY KEY (`ID`),
-   UNIQUE KEY `ID_UNIQUE` (`ID`),
-   KEY `FK_Material_to_Component_idx` (`SubjectComponentID`),
-   CONSTRAINT `FK_Material_to_Component` FOREIGN KEY (`SubjectComponentID`) REFERENCES `common_subject_components` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
- 
+  
  CREATE TABLE `common_subject_components` (
    `ID` int(11) NOT NULL AUTO_INCREMENT,
    `SubjectComponentTemplateID` int(11) NOT NULL,
@@ -44,6 +34,18 @@ CREATE TABLE `subject_templates` (
    CONSTRAINT `FK_Component_To_SubjectTemplate` FOREIGN KEY (`SubjectTemplateID`) REFERENCES `subject_templates` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
    CONSTRAINT `FK_Component_To_Template` FOREIGN KEY (`SubjectComponentTemplateID`) REFERENCES `subject_component_templates` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ 
+ CREATE TABLE `subject_component_materials` (
+   `ID` int(11) NOT NULL AUTO_INCREMENT,
+   `MaterialPath` varchar(45) NOT NULL,
+   `UploadDate` datetime NOT NULL,
+   `SubjectComponentID` int(11) NOT NULL,
+   PRIMARY KEY (`ID`),
+   UNIQUE KEY `ID_UNIQUE` (`ID`),
+   KEY `FK_Material_to_Component_idx` (`SubjectComponentID`),
+   CONSTRAINT `FK_Material_to_Component` FOREIGN KEY (`SubjectComponentID`) REFERENCES `common_subject_components` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
  
  CREATE TABLE `user_profiles` (
    `ID` int(11) NOT NULL AUTO_INCREMENT,
