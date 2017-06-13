@@ -62,14 +62,13 @@ public class RegisterServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		JSONObject data;
-		
-		
+
 		try {
 			data = new JSONObject(getJsonString(request).toString());
 		} catch (Exception e) {
 			throw new IOException("Error parsing JSON request string");
 		}
-		
+
 		ServletContext context = getServletContext();
 		AccountManager manager = (AccountManager) context.getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
 		User user = null;
@@ -82,21 +81,21 @@ public class RegisterServlet extends HttpServlet {
 			String name = data.getString("name");
 			String surname = data.getString("surname");
 			String gender = data.getString("gender");
-			
+
 			ResponseMessage resp = manager.checkRegistrationValidation(new RegisterModel(username, email));
 			if (resp.isSuccess()) {
 				response.getWriter().println(resp.getResultMessage());
-				//datetimead gadasasketebeli
+				// datetimead gadasasketebeli
 				LocalDateTime now = LocalDateTime.now();
-				
-				UserProfile profile = new UserProfile((Integer) null,name,gender,now,DbCertificate.PROFILE_TABLE_NAME,surname);
-				
-				manager.addProperty(profile);
-				
+
+				UserProfile profile = new UserProfile((Integer) null, name, gender, now, surname);
+
+				manager.addProfile(profile);
+
 			} else {
-				
+
 				response.getWriter().println(resp.getResultMessage());
-				
+
 			}
 
 		} catch (Exception e) {

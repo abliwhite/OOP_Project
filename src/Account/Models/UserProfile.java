@@ -5,10 +5,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-import Common.Models.DbAbstractModel;
+public class UserProfile {
 
-public class UserProfile extends DbAbstractModel {
-
+	private Integer id;
 	private String name;
 	private String surname;
 
@@ -16,9 +15,8 @@ public class UserProfile extends DbAbstractModel {
 	// Only have get method create date can't be changed
 	private LocalDateTime createDate;
 
-	public UserProfile(Integer id, String name, String gender, LocalDateTime createDate, String tableName,String surname) {
-		super(tableName,id);
-		
+	public UserProfile(Integer id, String name, String gender, LocalDateTime createDate, String surname) {
+		this.id = id;
 		this.name = name;
 		this.gender = gender;
 		this.createDate = createDate;
@@ -49,18 +47,15 @@ public class UserProfile extends DbAbstractModel {
 		return name;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	//Todo dasafixia
-	@Override
-	public String getInsertValuesString() {
-		
-		return "(" + name + "," + surname + "," + gender + "," + createDate + ");";
-	}
-
-	@Override
+	// Todo dasafixia
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
@@ -70,11 +65,10 @@ public class UserProfile extends DbAbstractModel {
 
 		UserProfile passed = (UserProfile) obj;
 
-		return getId().equals(passed.getId()) && name.equals(passed.getName()) && surname.equals(passed.getSurname())
+		return id.equals(passed.getId()) && name.equals(passed.getName()) && surname.equals(passed.getSurname())
 				&& gender.equals(passed.getGender()) && createDate.equals(passed.getCreateDate());
 	}
 
-	@Override
 	public int hashCode() {
 		return Objects.hash(getId(), name, surname, gender, createDate);
 	}

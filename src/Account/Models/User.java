@@ -2,10 +2,10 @@ package Account.Models;
 
 import java.util.Objects;
 
-import Common.Models.DbAbstractModel;
 
-public class User extends DbAbstractModel {
+public class User {
 
+	private Integer id;
 	private String username;
 	private String password;
 	private String email;
@@ -42,8 +42,7 @@ public class User extends DbAbstractModel {
 	}
 
 	public User(Integer id, String username, String password, String email, String role, String gmailID, String facebookID,
-			int profileID, UserProfile profile, String tableName) {
-		super(tableName,id);
+			int profileID, UserProfile profile) {
 		
 		this.username = username;
 		this.password = password;
@@ -65,6 +64,10 @@ public class User extends DbAbstractModel {
 
 	public String getRole() {
 		return role;
+	}
+	
+	public Integer getId(){
+		return id;
 	}
 
 	public String getEmail() {
@@ -91,13 +94,11 @@ public class User extends DbAbstractModel {
 		this.username = username;
 	}
 
-	@Override
 	public String getInsertValuesString() {
 		return "(" + username + "," + password + "," + email + "," + role + "," + gmailID + "," + facebookID + ","
 				+ profileID + ");";
 	}
 
-	@Override
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
@@ -107,7 +108,7 @@ public class User extends DbAbstractModel {
 
 		User passed = (User) obj;
 
-		return getId().equals(passed.getId()) && username.equals(passed.getUsername()) && gmailID.equals(passed.getGmailID())
+		return id.equals(passed.getId()) && username.equals(passed.getUsername()) && gmailID.equals(passed.getGmailID())
 				&& facebookID == passed.getFacebookID() && role.equals(passed.getRole())
 				&& password.equals(passed.getPassword()) && email.equals(passed.getEmail())
 				&& profileID == passed.getProfileID();
@@ -115,7 +116,7 @@ public class User extends DbAbstractModel {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), username, gmailID, facebookID, role, password, email, profileID);
+		return Objects.hash(id, username, gmailID, facebookID, role, password, email, profileID);
 	}
 
 }

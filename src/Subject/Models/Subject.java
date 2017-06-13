@@ -2,19 +2,16 @@ package Subject.Models;
 
 import java.util.Objects;
 
-import Common.Models.DbAbstractModel;
+public class Subject {
 
-public class Subject extends DbAbstractModel {
-
+	private Integer id;
 	private String name;
 	private String language;
 	private int ects;
 	private String lecturerName;
 	private String syllabusPath;
 
-	public Subject(int id, String name, String language, int ects, String lecturerName, String syllabusPath,
-			String tableName) {
-		super(tableName, id);
+	public Subject(int id, String name, String language, int ects, String lecturerName, String syllabusPath) {
 		
 		this.name = name;
 		this.language = language;
@@ -43,6 +40,10 @@ public class Subject extends DbAbstractModel {
 		return syllabusPath;
 	}
 
+	public Integer getId(){
+		return id;
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -64,13 +65,8 @@ public class Subject extends DbAbstractModel {
 	}
 
 	@Override
-	public String getInsertValuesString() {
-		return "(" + name + "," + language + "," + ects + "," + lecturerName + "," + syllabusPath + ");";
-	}
-
-	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), name, language, ects, lecturerName, syllabusPath);
+		return Objects.hash(id, name, language, ects, lecturerName, syllabusPath);
 	}
 
 	@Override
@@ -84,7 +80,7 @@ public class Subject extends DbAbstractModel {
 
 		Subject other = (Subject) obj;
 
-		return other.name.equals(name) && other.ects == ects && other.getId().equals(getId()) && other.language.equals(language)
+		return other.name.equals(name) && other.ects == ects && other.getId().equals(id) && other.language.equals(language)
 				&& other.lecturerName.equals(lecturerName) && other.syllabusPath.equals(syllabusPath);
 	}
 }

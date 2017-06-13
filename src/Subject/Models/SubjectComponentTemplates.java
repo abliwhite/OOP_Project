@@ -2,17 +2,15 @@ package Subject.Models;
 
 import java.util.Objects;
 
-import Common.Models.DbAbstractModel;
+public class SubjectComponentTemplates  {
 
-public class SubjectComponentTemplates extends DbAbstractModel {
-
+	private Integer id;
 	private String name;
 	private double markPercentage;
 	private int number;
 
-	public SubjectComponentTemplates(int id, String name, double markPercentage, int number, String tableName) {
-		super(tableName,id);
-		
+	public SubjectComponentTemplates(Integer id, String name, double markPercentage, int number) {
+		this.id = id;
 		this.name = name;
 		this.markPercentage = markPercentage;
 		this.number = number;
@@ -37,22 +35,20 @@ public class SubjectComponentTemplates extends DbAbstractModel {
 	public int getNumber() {
 		return number;
 	}
+	
+	public Integer getId(){
+		return id;
+	}
 
 	public void setNumber(int number) {
 		this.number = number;
 	}
 
-	@Override
-	public String getInsertValuesString() {
-		return "(" + name + "," + markPercentage + "," + number + ");";
-	}
 
-	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), name, markPercentage, number);
+		return Objects.hash(id, name, markPercentage, number);
 	}
 
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -63,7 +59,7 @@ public class SubjectComponentTemplates extends DbAbstractModel {
 
 		SubjectComponentTemplates other = (SubjectComponentTemplates) obj;
 
-		return other.getId().equals(getId()) && other.markPercentage == markPercentage && other.name.equals(name)
+		return other.getId().equals(id) && other.markPercentage == markPercentage && other.name.equals(name)
 				&& other.number == number;
 	}
 }
