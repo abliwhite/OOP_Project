@@ -37,23 +37,8 @@ public abstract class DaoController {
 
 		st.executeQuery("USE " + MyDBInfo.MYSQL_DATABASE_NAME);
 		ResultSet rs = st.executeQuery(hackQuery);
-
+		
 		return (ResultSetMetaData) rs.getMetaData();
-	}
-
-	public void setInsertValues(List<String> values, java.sql.PreparedStatement st) throws SQLException {
-		for (int i = 0; i < values.size(); i++) {
-			st.setString(i + 1, values.get(i));
-		}
-	}
-	
-	public List<String> getColumnNames(ResultSetMetaData meta) throws SQLException {
-		List<String> columnNames = new ArrayList<String>();
-
-		for (int i = 1; i <= meta.getColumnCount(); i++) {
-			columnNames.add(meta.getColumnName(i));
-		}
-		return columnNames;
 	}
 
 }
