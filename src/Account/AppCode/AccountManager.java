@@ -53,12 +53,6 @@ public class AccountManager extends DaoController {
 		con.close();
 	}
 
-	private void setInsertValues(List<String> values, java.sql.PreparedStatement st) throws SQLException {
-		for (int i = 0; i < values.size(); i++) {
-			st.setString(i + 1, values.get(i));
-		}
-	}
-
 	public void addUser(User user) throws SQLException {
 		java.sql.Connection con = getConnection();
 		ResultSetMetaData meta = getTableMetaData(DbCertificate.USER_TABLE_NAME, con);
