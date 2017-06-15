@@ -46,5 +46,14 @@ public abstract class DaoController {
 			st.setString(i + 1, values.get(i));
 		}
 	}
+	
+	public List<String> getColumnNames(ResultSetMetaData meta) throws SQLException {
+		List<String> columnNames = new ArrayList<String>();
+
+		for (int i = 1; i <= meta.getColumnCount(); i++) {
+			columnNames.add(meta.getColumnName(i));
+		}
+		return columnNames;
+	}
 
 }

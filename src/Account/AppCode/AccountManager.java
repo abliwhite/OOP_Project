@@ -102,13 +102,4 @@ public class AccountManager extends DaoController {
 		return Arrays.asList(profile.getName(), profile.getSurname(), profile.getGender(), profile.getCreateDate());
 	}
 
-	private List<String> getColumnNames(ResultSetMetaData meta) throws SQLException {
-		List<String> columnNames = new ArrayList<String>();
-
-		for (int i = 1; i <= meta.getColumnCount(); i++) {
-			columnNames.add(meta.getColumnName(i));
-		}
-		return columnNames;
-	}
-
 }
