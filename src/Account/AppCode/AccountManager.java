@@ -11,6 +11,7 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.ResultSetMetaData;
+import com.mysql.jdbc.Statement;
 
 import Account.Models.AuthModel;
 import Account.Models.RegisterModel;
@@ -31,72 +32,64 @@ public class AccountManager extends DaoController {
 		super(pool);
 	}
 
-	public ResponseMessage addProfile(UserProfile profile) {
-		ResponseMessage response = null;
+	public void addProfile(UserProfile profile) throws SQLException {
+		java.sql.Connection con = getConnection();
+		ResultSetMetaData meta = getTableMetaData(DbCertificate.PROFILE_TABLE_NAME, con);
 
-		try {
-			java.sql.Connection con = getConnection();
-			String hackQuery = generator.columnNameHackQuery(DbCertificate.PROFILE_TABLE_NAME);
-			java.sql.PreparedStatement st = con.prepareStatement(hackQuery);
+		String insertQuery = generator.getInsertQuery(getColumnNames(meta), DbCertificate.PROFILE_TABLE_NAME);
+		java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
-			st.executeQuery("USE " + MyDBInfo.MYSQL_DATABASE_NAME);
+		setInsertValues(getProfileValues(profile), st);
+		st.executeUpdate();
 
-			ResultSet rs = st.executeQuery(hackQuery);
-
-			ResultSetMetaData meta = (ResultSetMetaData) rs.getMetaData();
-
-			String insertQuery = generator.getInsertQuery(getColumnNames(meta), getProfileValues(profile),
-					DbCertificate.PROFILE_TABLE_NAME);
-
-			st.executeUpdate(insertQuery);
-
-			response = new ResponseMessage(CommonConstants.SUCCESSFULL_MESSAGE, true);
-
-			con.close();
-		} catch (SQLException e) {
-			response = new ResponseMessage(e.getMessage(), false);
-			e.printStackTrace();
-		}
-		return response;
-	}
-
-	public ResponseMessage addUser(User user) {
-		ResponseMessage response = null;
-
-		try {
-			java.sql.Connection con = getConnection();
-			PreparedStatement st = (PreparedStatement) con.createStatement();
-			String hackQuery = generator.columnNameHackQuery(DbCertificate.USER_TABLE_NAME);
-			ResultSet rs = st.executeQuery(hackQuery);
-
-			ResultSetMetaData meta = (ResultSetMetaData) rs.getMetaData();
-
-			String insertQuery = generator.getInsertQuery(getColumnNames(meta), getUserModelValues(user),
-					DbCertificate.USER_TABLE_NAME);
-
-			st.executeQuery(insertQuery);
-
-			response = new ResponseMessage(CommonConstants.SUCCESSFULL_MESSAGE, true);
-
-			con.close();
-		} catch (SQLException e) {
-			response = new ResponseMessage(e.getMessage(), false);
-			e.printStackTrace();
+		try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+			if (generatedKeys.next()) {
+				profile.setId(generatedKeys.getInt(1));
+			} else {
+				throw new SQLException();
+			}
 		}
 
-		return response;
-
+		con.close();
 	}
 
-	public UserProfile getProfileByUsernameAndPassword() {
-		return null;
+	private void setInsertValues(List<String> values, java.sql.PreparedStatement st) throws SQLException {
+		for (int i = 0; i < values.size(); i++) {
+			st.setString(i + 1, values.get(i));
+		}
+	}
+
+	public void addUser(User user) throws SQLException {
+		java.sql.Connection con = getConnection();
+		ResultSetMetaData meta = getTableMetaData(DbCertificate.USER_TABLE_NAME, con);
+
+		String insertQuery = generator.getInsertQuery(getColumnNames(meta), DbCertificate.USER_TABLE_NAME);
+		java.sql.PreparedStatement st = con.prepareStatement(insertQuery);
+
+		setInsertValues(getUserModelValues(user), st);
+		st.executeUpdate();
+
+		con.close();
 	}
 
 	public User checkLoginValidation(AuthModel auth) {
+
 		return null;
 	}
 
-	public ResponseMessage checkRegistrationValidation(RegisterModel register) {
+	public ResponseMessage checkRegistrationValidity(RegisterModel register) {
+		try {
+			java.sql.Connection con = getConnection();
+
+			String selectStatement = "SELECT * FROM " + DbCertificate.USER_TABLE_NAME + " " + "WHERE Username = "
+					+ register.getUsername();
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectStatement);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return new ResponseMessage(CommonConstants.SUCCESSFULL_MESSAGE, true);
 	}
 
@@ -110,18 +103,12 @@ public class AccountManager extends DaoController {
 	}
 
 	private List<String> getUserModelValues(User user) {
-		List<String> result = Arrays.asList(user.getUsername(), user.getPassword(),
-				user.getEmail(), user.getRole(), user.getGmailID(), user.getFacebookID(),
-				user.getProfileID().toString());
-
-		return result;
+		return Arrays.asList(user.getUsername(), user.getPassword(), user.getEmail(), user.getRole(), user.getGmailID(),
+				user.getFacebookID(), user.getProfileID().toString());
 	}
 
 	private List<String> getProfileValues(UserProfile profile) {
-		List<String> result = Arrays.asList(profile.getName(), profile.getSurname(),
-				profile.getGender(), profile.getCreateDate());
-		
-		return result;
+		return Arrays.asList(profile.getName(), profile.getSurname(), profile.getGender(), profile.getCreateDate());
 	}
 
 	private List<String> getColumnNames(ResultSetMetaData meta) throws SQLException {

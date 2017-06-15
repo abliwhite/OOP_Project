@@ -71,7 +71,6 @@ public class RegisterServlet extends HttpServlet {
 
 		ServletContext context = getServletContext();
 		AccountManager manager = (AccountManager) context.getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
-		User user = null;
 
 		try {
 			String username = data.getString("username");
@@ -82,15 +81,19 @@ public class RegisterServlet extends HttpServlet {
 			String surname = data.getString("surname");
 			String gender = data.getString("gender");
 
-			ResponseMessage resp = manager.checkRegistrationValidation(new RegisterModel(username, email));
+			ResponseMessage resp = manager.checkRegistrationValidity(new RegisterModel(username, email));
 			if (resp.isSuccess()) {
 				response.getWriter().println(resp.getResultMessage());
 
 				UserProfile profile = new UserProfile((Integer) null, name, gender, CommonConstants.getDatetime(),
 						surname);
-
 				manager.addProfile(profile);
 
+				User user = new User((Integer) null, username, password, email, DbCertificate.STUDENT_ROLE, null,
+						null, profile.getId(), profile);
+				manager.addUser(user);
+
+				request.getSession().setAttribute(CommonConstants.ONLINE_USER_ATTRIBUTE_NAME, user);
 			} else {
 
 				response.getWriter().println(resp.getResultMessage());

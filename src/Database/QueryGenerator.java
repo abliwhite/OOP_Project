@@ -26,50 +26,34 @@ public class QueryGenerator {
 
 	// (column1, column2, column3, ...)
 	private String getQueryInsertColumns(List<String> columnNames) {
-		String result = "";
-
-		for (int i = CommonConstants.DB_ID_COLUMN_INDEX; i < columnNames.size(); i++) {
-			result = result + columnNames.get(i) + ",";
+		StringBuilder str = new StringBuilder("(");
+		for (int i = DbCertificate.DB_ID_COLUMN_INDEX; i < columnNames.size(); i++) {
+			str.append(columnNames.get(i) + ",");
 		}
+		str.replace(str.length()-1, str.length(), ")");
 
-		result = "(" + result.substring(0, result.length() - 1) + ')';
-
-		return result;
+		return str.toString();
 	}
 
-	// Todo gadasasworebeli uketesadaaa dasaweri sashinlad weria chemi(ako)
-	// dawerilia
-	private String getQueryInsertValues(List<String> values) {
-		String result = "";
-		String separator = "','";
-
-		for (int i = 0; i < values.size(); i++) {
-			String value = values.get(i);
-
-			if (value.equals(null)) {
-				result = i == 0 ? "null" + "," : result.substring(0, result.length() - 1) + "null" + ",";
-			} else {
-				result = result + values.get(i) + separator;
-			}
-
+	private String getInsertNonInjectiveQuery(int numValues) {
+		StringBuilder str = new StringBuilder("(");
+		for (int i = 0; i < numValues; i++) {
+			str.append("?,");
 		}
-
-		boolean edgeCaseOne = values.get(values.size() - 1).equals(null);
-		boolean edgeCaseTwo = values.get(0).equals(null);
-
-		if (edgeCaseOne || edgeCaseTwo) {
-			result = edgeCaseOne ? "(" + result.substring(0, result.length() - separator.length()) + "')"
-					: "('" + result.substring(0, result.length() - 1) + ")";
-		} else {
-			result = "('" + result.substring(0, result.length() - separator.length()) + "')";
-		}
-
-		return result;
+		str.replace(str.length() - 1, str.length(), ");");
+		
+		return str.toString();
 	}
 
-	public String getInsertQuery(List<String> columnNames, List<String> insertValues, String tableName) {
+	// miigebs columnebis saxelebs chasainsertebel valuebs da tablis saxels da
+	// abrunebs insert query-is
+	public String getInsertQuery(List<String> columnNames, String tableName) {
 		return DB_INSERT_INTO + " " + tableName + " " + getQueryInsertColumns(columnNames) + " " + DB_VALUES_STRING
-				+ " " + getQueryInsertValues(insertValues);
+				+ " " + getInsertNonInjectiveQuery(columnNames.size() - 1);
+	}
+
+	public String getSelectQuery(List<String> columnNames, List<String> selectValues, String tableName) {
+		return null;
 	}
 
 }

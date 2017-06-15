@@ -13,10 +13,11 @@ import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.ResultSetMetaData;
 
 import Common.Models.ResponseMessage;
+import Database.DbCertificate;
 import Database.MyDBInfo;
 import Database.QueryGenerator;
 
-public abstract class DaoController  {
+public abstract class DaoController {
 
 	public QueryGenerator generator;
 	private DataSource pool;
@@ -30,6 +31,14 @@ public abstract class DaoController  {
 		return pool.getConnection();
 	}
 
-	
+	public ResultSetMetaData getTableMetaData(String tableName, java.sql.Connection con) throws SQLException {
+		String hackQuery = generator.columnNameHackQuery(tableName);
+		java.sql.Statement st = con.createStatement();
+
+		st.executeQuery("USE " + MyDBInfo.MYSQL_DATABASE_NAME);
+		ResultSet rs = st.executeQuery(hackQuery);
+		
+		return (ResultSetMetaData) rs.getMetaData();
+	}
 
 }

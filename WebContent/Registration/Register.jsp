@@ -1,3 +1,4 @@
+<%@page import="Database.DbCertificate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="Common.AppCode.ViewTextContainer"%>
@@ -40,9 +41,9 @@
 		<select name="Gender" id="gender_id">
 		
 		<%
-			for(int i=0; i < CommonConstants.GENDER.size(); i++)
+			for(int i=0; i < DbCertificate.GENDER.size(); i++)
 			{
-				out.print("<option>"+CommonConstants.GENDER.get(i)+"</option>");
+				out.print("<option>"+DbCertificate.GENDER.get(i)+"</option>");
 			}
 		%>
 		</select>
