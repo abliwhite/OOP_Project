@@ -31,14 +31,14 @@ public abstract class DaoController {
 		return pool.getConnection();
 	}
 
-	private ResultSetMetaData getTableMetaData(String tableName, java.sql.Connection con) throws SQLException {
+	private java.sql.ResultSetMetaData getTableMetaData(String tableName, java.sql.Connection con) throws SQLException {
 		String hackQuery = generator.columnNameHackQuery(tableName);
 		java.sql.Statement st = con.createStatement();
 
 		st.executeQuery("USE " + MyDBInfo.MYSQL_DATABASE_NAME);
 		ResultSet rs = st.executeQuery(hackQuery);
 		
-		return (ResultSetMetaData) rs.getMetaData();
+		return rs.getMetaData();
 	}
 
 	public void setInsertValues(List<String> values, java.sql.PreparedStatement st) throws SQLException {
@@ -47,7 +47,7 @@ public abstract class DaoController {
 		}
 	}
 
-	private List<String> getTableColumnNames(ResultSetMetaData meta) throws SQLException {
+	private List<String> getTableColumnNames(java.sql.ResultSetMetaData meta) throws SQLException {
 		List<String> columnNames = new ArrayList<String>();
 
 		for (int i = 1; i <= meta.getColumnCount(); i++) {
@@ -61,7 +61,7 @@ public abstract class DaoController {
 
 		try {
 			java.sql.Connection con = getConnection();
-			ResultSetMetaData meta;
+			java.sql.ResultSetMetaData meta;
 			meta = getTableMetaData(DbCertificate.PROFILE_TABLE_NAME, con);
 
 			result = getTableColumnNames(meta);
