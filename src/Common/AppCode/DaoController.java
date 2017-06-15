@@ -31,7 +31,7 @@ public abstract class DaoController {
 		return pool.getConnection();
 	}
 
-	public ResultSetMetaData getTableMetaData(String tableName, java.sql.Connection con) throws SQLException {
+	private ResultSetMetaData getTableMetaData(String tableName, java.sql.Connection con) throws SQLException {
 		String hackQuery = generator.columnNameHackQuery(tableName);
 		java.sql.Statement st = con.createStatement();
 
@@ -39,6 +39,37 @@ public abstract class DaoController {
 		ResultSet rs = st.executeQuery(hackQuery);
 		
 		return (ResultSetMetaData) rs.getMetaData();
+	}
+
+	public void setInsertValues(List<String> values, java.sql.PreparedStatement st) throws SQLException {
+		for (int i = 0; i < values.size(); i++) {
+			st.setString(i + 1, values.get(i));
+		}
+	}
+
+	private List<String> getTableColumnNames(ResultSetMetaData meta) throws SQLException {
+		List<String> columnNames = new ArrayList<String>();
+
+		for (int i = 1; i <= meta.getColumnCount(); i++) {
+			columnNames.add(meta.getColumnName(i));
+		}
+		return columnNames;
+	}
+
+	public List<String> getColumnsNames(String tableName) {
+		List<String> result=new ArrayList<String>();
+
+		try {
+			java.sql.Connection con = getConnection();
+			ResultSetMetaData meta;
+			meta = getTableMetaData(DbCertificate.PROFILE_TABLE_NAME, con);
+
+			result = getTableColumnNames(meta);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }

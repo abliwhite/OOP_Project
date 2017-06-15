@@ -28,15 +28,19 @@ public class AccountManager extends DaoController {
 
 	public static final String ACCOUNT_MANAGER_ATTRIBUTE = "Account Manager Attribure";
 
+	private List<String> userColumnNames;
+	private List<String> profileColumnNames;
+	
 	public AccountManager(DataSource pool) {
 		super(pool);
+		userColumnNames = getColumnsNames(DbCertificate.USER_TABLE_NAME);
+		profileColumnNames = getColumnsNames(DbCertificate.PROFILE_TABLE_NAME);
 	}
 
 	public void addProfile(UserProfile profile) throws SQLException {
 		java.sql.Connection con = getConnection();
-		ResultSetMetaData meta = getTableMetaData(DbCertificate.PROFILE_TABLE_NAME, con);
 
-		String insertQuery = generator.getInsertQuery(getColumnNames(meta), DbCertificate.PROFILE_TABLE_NAME);
+		String insertQuery = generator.getInsertQuery(profileColumnNames, DbCertificate.PROFILE_TABLE_NAME);
 		java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
 		setInsertValues(getProfileValues(profile), st);
@@ -55,9 +59,8 @@ public class AccountManager extends DaoController {
 
 	public void addUser(User user) throws SQLException {
 		java.sql.Connection con = getConnection();
-		ResultSetMetaData meta = getTableMetaData(DbCertificate.USER_TABLE_NAME, con);
 
-		String insertQuery = generator.getInsertQuery(getColumnNames(meta), DbCertificate.USER_TABLE_NAME);
+		String insertQuery = generator.getInsertQuery(userColumnNames, DbCertificate.USER_TABLE_NAME);
 		java.sql.PreparedStatement st = con.prepareStatement(insertQuery);
 
 		setInsertValues(getUserModelValues(user), st);
