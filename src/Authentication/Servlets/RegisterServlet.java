@@ -83,21 +83,19 @@ public class RegisterServlet extends HttpServlet {
 
 			ResponseMessage resp = manager.checkRegistrationValidity(new RegisterModel(username, email));
 			if (resp.isSuccess()) {
-				response.getWriter().println(resp.getResultMessage());
 
 				UserProfile profile = new UserProfile((Integer) null, name, gender, CommonConstants.getDatetime(),
 						surname);
 				manager.addProfile(profile);
 
-				User user = new User((Integer) null, username, password, email, DbCertificate.STUDENT_ROLE, null,
-						null, profile.getId(), profile);
+				User user = new User((Integer) null, username, password, email, DbCertificate.STUDENT_ROLE, null, null,
+						profile.getId(), profile);
 				manager.addUser(user);
 
 				request.getSession().setAttribute(CommonConstants.ONLINE_USER_ATTRIBUTE_NAME, user);
-			} else {
-
 				response.getWriter().println(resp.getResultMessage());
-
+			} else {
+				response.getWriter().println(resp.getResultMessage());
 			}
 
 		} catch (Exception e) {
@@ -106,15 +104,12 @@ public class RegisterServlet extends HttpServlet {
 
 	}
 
-	private StringBuffer getJsonString(HttpServletRequest request) {
+	private StringBuffer getJsonString(HttpServletRequest request) throws IOException {
 		StringBuffer jb = new StringBuffer();
 		String line = null;
-		try {
-			BufferedReader reader = request.getReader();
-			while ((line = reader.readLine()) != null)
-				jb.append(line);
-		} catch (Exception e) {
-			/* report an error */ }
+		BufferedReader reader = request.getReader();
+		while ((line = reader.readLine()) != null)
+			jb.append(line);
 		return jb;
 	}
 
