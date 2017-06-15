@@ -77,19 +77,16 @@ public class AccountManager extends DaoController {
 		return null;
 	}
 
-	public ResponseMessage checkRegistrationValidity(RegisterModel register) {
-		try {
-			java.sql.Connection con = getConnection();
+	public ResponseMessage checkRegistrationValidity(RegisterModel register) throws SQLException {
+		java.sql.Connection con = getConnection();
 
-			String selectStatement = "SELECT * FROM " + DbCertificate.USER_TABLE_NAME + " " + "WHERE Username = "
-					+ register.getUsername();
+		String selectStatement = "SELECT * FROM " + DbCertificate.USER_TABLE_NAME + " " + "WHERE Username = "
+				+ register.getUsername();
 
-			java.sql.PreparedStatement st = con.prepareStatement(selectStatement);
+		java.sql.Statement st = con.createStatement();
+		st.executeQuery(selectStatement);
 
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		con.close();
 		return new ResponseMessage(CommonConstants.SUCCESSFULL_MESSAGE, true);
 	}
 
