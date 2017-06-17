@@ -37,7 +37,7 @@ public abstract class DaoController {
 
 		st.executeQuery("USE " + MyDBInfo.MYSQL_DATABASE_NAME);
 		ResultSet rs = st.executeQuery(hackQuery);
-		
+
 		return rs.getMetaData();
 	}
 
@@ -57,7 +57,7 @@ public abstract class DaoController {
 	}
 
 	public List<String> getColumnsNames(String tableName) {
-		List<String> result=new ArrayList<String>();
+		List<String> result = new ArrayList<String>();
 
 		try {
 			java.sql.Connection con = getConnection();
