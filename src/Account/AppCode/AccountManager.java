@@ -104,5 +104,4 @@ public class AccountManager extends DaoController {
 	private List<String> getProfileValues(UserProfile profile) {
 		return Arrays.asList(profile.getName(), profile.getSurname(), profile.getGender(), profile.getCreateDate());
 	}
-
 }
