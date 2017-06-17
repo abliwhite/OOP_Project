@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 
 import Account.AppCode.AccountManager;
+import Account.AppCode.AccountManagerInterface;
 import Account.Models.RegisterModel;
 import Account.Models.User;
 import Account.Models.UserProfile;
@@ -64,15 +65,17 @@ public class RegisterServlet extends HttpServlet {
 		JSONObject data;
 
 		try {
-			data = new JSONObject(getJsonString(request).toString());
+			data = new JSONObject(CommonConstants.getJsonString(request).toString());
 		} catch (Exception e) {
 			throw new IOException("Error parsing JSON request string");
 		}
 
 		ServletContext context = getServletContext();
-		AccountManager manager = (AccountManager) context.getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
+		AccountManagerInterface manager = (AccountManagerInterface) context
+				.getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
 
 		try {
+			// todo gadasaketebelia constatntebit
 			String username = data.getString("username");
 			String password = data.getString("password");
 
@@ -88,8 +91,8 @@ public class RegisterServlet extends HttpServlet {
 						surname);
 				manager.addProfile(profile);
 
-				User user = new User((Integer) null, username, password, email, DbCertificate.STUDENT_ROLE, null, null,
-						profile.getId(), profile);
+				User user = new User((Integer) null, username, password, email, DbCertificate.UserTable.STUDENT_ROLE,
+						null, null, profile.getId(), profile);
 				manager.addUser(user);
 
 				request.getSession().setAttribute(CommonConstants.ONLINE_USER_ATTRIBUTE_NAME, user);
@@ -102,15 +105,6 @@ public class RegisterServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-	}
-
-	private StringBuffer getJsonString(HttpServletRequest request) throws IOException {
-		StringBuffer jb = new StringBuffer();
-		String line = null;
-		BufferedReader reader = request.getReader();
-		while ((line = reader.readLine()) != null)
-			jb.append(line);
-		return jb;
 	}
 
 }
