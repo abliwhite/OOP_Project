@@ -38,4 +38,24 @@ public final class DbCertificate {
 		public final static String COLUMN_NAME_CREATE_DATE ="CreateDate";
 		public static final List<String> GENDER = Arrays.asList("Male", "Female");
 	}
+	public static class SubjectTable{
+		public final static String TABLE_NAME="subject_templates";
+		
+		public final static String COLUMN_NAME_ID="ID";
+		public final static String COLUMN_NAME_NAME="Name";
+		public final static String COLUMN_NAME_LANGUAGE="Language";
+		public final static String COLUMN_NAME_ECTS="Ects";
+		public final static String COLUMN_NAME_LECTURERNAME="LecturerName";
+		public final static String COLUMN_NAME_SYLLABUSPATH="SyllabusPath";
+	}
+	
+	public static class SubjectComponentTamplateTable{
+		public final static String TABLE_NAME="subject_component_templates";
+		
+		public final static String COLUMN_NAME_ID="ID";
+		public final static String COLUMN_NAME_NAME="Name";
+		public final static String COLUMN_NAME_MARKPERCENTAGE="MarkPercentage";
+		public final static String COLUMN_NAME_NUMBER="Number";
+	}
+
 }
