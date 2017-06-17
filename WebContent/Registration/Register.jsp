@@ -41,14 +41,14 @@
 		<select name="Gender" id="gender_id">
 		
 		<%
-			for(int i=0; i < DbCertificate.GENDER.size(); i++)
+			for(int i=0; i < DbCertificate.ProfileTable.GENDER.size(); i++)
 			{
-				out.print("<option>"+DbCertificate.GENDER.get(i)+"</option>");
+				out.print("<option>"+DbCertificate.ProfileTable.GENDER.get(i)+"</option>");
 			}
 		%>
 		</select>
 		<br />
-		<input onclick="register()" type='button' value='Register'>
+		<input onclick="register(); return false;" type='button' value='Register'>
 		
 	</form>
 	
@@ -94,7 +94,7 @@
 		    data: JSON.stringify(data),
 		    success: function(response) {
 		    	document.getElementById("alert").innerHTML = response;  
-		    	if(response == CommonConstants.SUCCESSFULL_MESSAGE){
+		    	if(response === CommonConstants.SUCCESSFULL_MESSAGE){
 		    		window.location.href = "/index.jsp";	
 		    	}
 		    }

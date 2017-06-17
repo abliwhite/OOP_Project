@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.mysql.jdbc.Constants;
 
+import Account.AppCode.AccountManagerInterface;
 import Account.Models.AuthModel;
 import Account.Models.User;
 import Common.AppCode.DaoController;
@@ -53,7 +54,7 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 
 		ServletContext context = getServletContext();
-		Account.AppCode.AccountManager am = (Account.AppCode.AccountManager) context
+		AccountManagerInterface am = (AccountManagerInterface) context
 				.getAttribute(Account.AppCode.AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
 
 
@@ -61,7 +62,7 @@ public class LoginServlet extends HttpServlet {
 		if (user != null) {
 			request.setAttribute(ViewTextContainer.RESULT, "Gilocav");
 			
-			if (user.getRole().equals(DbCertificate.ADMIN_ROLE)) {
+			if (user.getRole().equals(DbCertificate.UserTable.ADMIN_ROLE)) {
 				request.getRequestDispatcher("/Profiles/AdminProfile.jsp").forward(request, response);
 			} else {
 				request.getRequestDispatcher("/Profiles/UserProfile.jsp").forward(request, response);

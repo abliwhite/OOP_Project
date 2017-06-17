@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 
 import Account.AppCode.AccountManager;
+import Account.AppCode.AccountManagerInterface;
 import Account.Models.RegisterModel;
 import Account.Models.User;
 import Account.Models.UserProfile;
@@ -64,15 +65,17 @@ public class RegisterServlet extends HttpServlet {
 		JSONObject data;
 
 		try {
-			data = new JSONObject(getJsonString(request).toString());
+			data = new JSONObject(CommonConstants.getJsonString(request).toString());
 		} catch (Exception e) {
 			throw new IOException("Error parsing JSON request string");
 		}
 
 		ServletContext context = getServletContext();
-		AccountManager manager = (AccountManager) context.getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
+		AccountManagerInterface manager = (AccountManagerInterface) context
+				.getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
 
 		try {
+			// todo gadasaketebelia constatntebit
 			String username = data.getString("username");
 			String password = data.getString("password");
 
@@ -83,39 +86,25 @@ public class RegisterServlet extends HttpServlet {
 
 			ResponseMessage resp = manager.checkRegistrationValidity(new RegisterModel(username, email));
 			if (resp.isSuccess()) {
-				response.getWriter().println(resp.getResultMessage());
 
 				UserProfile profile = new UserProfile((Integer) null, name, gender, CommonConstants.getDatetime(),
 						surname);
 				manager.addProfile(profile);
 
-				User user = new User((Integer) null, username, password, email, DbCertificate.STUDENT_ROLE, null,
-						null, profile.getId(), profile);
+				User user = new User((Integer) null, username, password, email, DbCertificate.UserTable.STUDENT_ROLE,
+						null, null, profile.getId(), profile);
 				manager.addUser(user);
 
 				request.getSession().setAttribute(CommonConstants.ONLINE_USER_ATTRIBUTE_NAME, user);
-			} else {
-
 				response.getWriter().println(resp.getResultMessage());
-
+			} else {
+				response.getWriter().println(resp.getResultMessage());
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-	}
-
-	private StringBuffer getJsonString(HttpServletRequest request) {
-		StringBuffer jb = new StringBuffer();
-		String line = null;
-		try {
-			BufferedReader reader = request.getReader();
-			while ((line = reader.readLine()) != null)
-				jb.append(line);
-		} catch (Exception e) {
-			/* report an error */ }
-		return jb;
 	}
 
 }

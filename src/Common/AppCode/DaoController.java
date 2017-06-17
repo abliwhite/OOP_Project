@@ -41,7 +41,7 @@ public abstract class DaoController {
 		return rs.getMetaData();
 	}
 
-	public void setInsertValues(List<String> values, java.sql.PreparedStatement st) throws SQLException {
+	public void setValues(List<String> values, java.sql.PreparedStatement st) throws SQLException {
 		for (int i = 0; i < values.size(); i++) {
 			st.setString(i + 1, values.get(i));
 		}
@@ -62,7 +62,7 @@ public abstract class DaoController {
 		try {
 			java.sql.Connection con = getConnection();
 			java.sql.ResultSetMetaData meta;
-			meta = getTableMetaData(DbCertificate.PROFILE_TABLE_NAME, con);
+			meta = getTableMetaData(tableName, con);
 
 			result = getTableColumnNames(meta);
 		} catch (SQLException e) {

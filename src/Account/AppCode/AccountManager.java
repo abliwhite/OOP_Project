@@ -24,49 +24,58 @@ import Database.DbCertificate;
 import Database.MyDBInfo;
 import Database.QueryGenerator;
 
-public class AccountManager extends DaoController {
+public class AccountManager extends DaoController implements AccountManagerInterface {
 
-	public static final String ACCOUNT_MANAGER_ATTRIBUTE = "Account Manager Attribure";
+	public static final String ACCOUNT_MANAGER_ATTRIBUTE = "Account Manager Attribute";
 
 	private List<String> userColumnNames;
 	private List<String> profileColumnNames;
-	
+
 	public AccountManager(DataSource pool) {
 		super(pool);
-		userColumnNames = getColumnsNames(DbCertificate.USER_TABLE_NAME);
-		profileColumnNames = getColumnsNames(DbCertificate.PROFILE_TABLE_NAME);
+		userColumnNames = getColumnsNames(DbCertificate.UserTable.TABLE_NAME);
+		profileColumnNames = getColumnsNames(DbCertificate.ProfileTable.TABLE_NAME);
 	}
 
-	public void addProfile(UserProfile profile) throws SQLException {
-		java.sql.Connection con = getConnection();
+	public void addProfile(UserProfile profile) {
+		try {
+			java.sql.Connection con = getConnection();
 
-		String insertQuery = generator.getInsertQuery(profileColumnNames, DbCertificate.PROFILE_TABLE_NAME);
-		java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+			String insertQuery = generator.getInsertQuery(profileColumnNames, DbCertificate.ProfileTable.TABLE_NAME);
+			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
-		setInsertValues(getProfileValues(profile), st);
-		st.executeUpdate();
+			setValues(getProfileValues(profile), st);
+			st.executeUpdate();
 
-		try (ResultSet generatedKeys = st.getGeneratedKeys()) {
-			if (generatedKeys.next()) {
-				profile.setId(generatedKeys.getInt(1));
-			} else {
-				throw new SQLException();
+			try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					profile.setId(generatedKeys.getInt(1));
+				} else {
+					throw new SQLException();
+				}
 			}
-		}
 
-		con.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public void addUser(User user) throws SQLException {
-		java.sql.Connection con = getConnection();
+	public void addUser(User user) {
+		try {
+			java.sql.Connection con = getConnection();
 
-		String insertQuery = generator.getInsertQuery(userColumnNames, DbCertificate.USER_TABLE_NAME);
-		java.sql.PreparedStatement st = con.prepareStatement(insertQuery);
+			String insertQuery = generator.getInsertQuery(userColumnNames, DbCertificate.UserTable.TABLE_NAME);
+			java.sql.PreparedStatement st = con.prepareStatement(insertQuery);
 
-		setInsertValues(getUserModelValues(user), st);
-		st.executeUpdate();
+			setValues(getUserModelValues(user), st);
+			st.executeUpdate();
 
-		con.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public User checkLoginValidation(AuthModel auth) {
@@ -74,26 +83,69 @@ public class AccountManager extends DaoController {
 		return null;
 	}
 
-	public ResponseMessage checkRegistrationValidity(RegisterModel register) throws SQLException {
-		java.sql.Connection con = getConnection();
+	public ResponseMessage checkRegistrationValidity(RegisterModel register) {
+		ResponseMessage queryResult = null;
+		try {
+			java.sql.Connection con = getConnection();
 
-		String selectStatement = "SELECT * FROM " + DbCertificate.USER_TABLE_NAME + " " + "WHERE Username = "
-				+ register.getUsername();
+			String selectQuery = "SELECT * FROM " + DbCertificate.UserTable.TABLE_NAME 
+					+ " WHERE "
+					+ DbCertificate.UserTable.COLUMN_NAME_USERNAME + " = ?"+
+					" or "
+					+ DbCertificate.UserTable.COLUMN_NAME_EMAIL + " = ?";
 
-		java.sql.Statement st = con.createStatement();
-		st.executeQuery(selectStatement);
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery("USE " + MyDBInfo.MYSQL_DATABASE_NAME);
 
-		con.close();
-		return new ResponseMessage(CommonConstants.SUCCESSFULL_MESSAGE, true);
+			setValues(Arrays.asList(register.getUsername(), register.getEmail()), st);
+
+			ResultSet rs = st.executeQuery();
+
+			con.close();
+
+			if (rs.next()) {
+				queryResult = new ResponseMessage(CommonConstants.UNSUCCESSFUL_REGISTRATION, false);
+			} else {
+				queryResult = new ResponseMessage(CommonConstants.SUCCESSFUL_MESSAGE, true);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return queryResult;
 	}
 
-	public ResponseMessage updateUser(User user) {
-		return null;
+	public void updateUser(User user) {
+		try {
+			java.sql.Connection con = getConnection();
+			String updateStatement = generator.getUpdateByIdQuery(userColumnNames, DbCertificate.UserTable.TABLE_NAME,
+					user.getId());
+
+			java.sql.PreparedStatement st = con.prepareStatement(updateStatement);
+
+			setValues(getUserModelValues(user), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public ResponseMessage updateProfile(UserProfile profile) {
+	public void updateProfile(UserProfile profile) {
+		try {
+			java.sql.Connection con = getConnection();
+			String updateStatement = generator.getUpdateByIdQuery(userColumnNames,
+					DbCertificate.ProfileTable.TABLE_NAME, profile.getId());
 
-		return null;
+			java.sql.PreparedStatement st = con.prepareStatement(updateStatement);
+
+			setValues(getProfileValues(profile), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private List<String> getUserModelValues(User user) {
