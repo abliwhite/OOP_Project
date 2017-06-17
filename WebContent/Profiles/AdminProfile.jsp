@@ -16,7 +16,7 @@
 		
 		<br>
 		
-		<form action="" method="post">
+		<form action="" method="get">
 		  <input type="submit" value="Add Subject">
 		</form>
 		

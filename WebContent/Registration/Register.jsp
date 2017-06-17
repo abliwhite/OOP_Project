@@ -22,7 +22,6 @@
 	<h1><%=ViewTextContainer.REGISTER_PAGE_WELCOME_WARNING_MESSAGE %></h1>
 
 	<div id="alert"></div>
-	<br id="registerResult_id"><br>
 
 	<form action="RegisterServlet" method="post">
 		Username: <input type="text" name="username" id="username_id" >

@@ -20,10 +20,18 @@ public class QueryGeneratorTest {
 	}
 
 	@Test
-	public void test1() {
+	public void testUpdate() {
 		List<String> columnNames = Arrays.asList("ID","username", "surname", "password");
 		assertEquals("UPDATE table SET username = ?,surname = ?,password = ? WHERE ID = 1",
 				generator.getUpdateByIdQuery(columnNames, "table", 1));
+
+	}
+	
+	@Test
+	public void testInsert() {
+		List<String> columnNames = Arrays.asList("ID","username", "surname", "password");
+		assertEquals("INSERT INTO table (username,surname,password) VALUES (?,?,?);",
+				generator.getInsertQuery(columnNames, "table"));
 
 	}
 }
