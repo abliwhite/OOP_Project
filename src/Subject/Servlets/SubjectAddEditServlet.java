@@ -48,7 +48,6 @@ public class SubjectAddEditServlet extends HttpServlet {
 			editCase(request);
 		}
 
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.getRequestDispatcher("SubjectAddEdit.jsp").forward(request, response);
 	}
 

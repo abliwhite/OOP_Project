@@ -70,6 +70,10 @@ public class QueryGenerator {
 				+ getUpdateNonInjectiveQuery(columnNames) + " "
 				+ DB_WHERE_ID_CONDITION + id;
 	}
+	
+	public String getUseDatabaseQuery(){
+		return "USE " + MyDBInfo.MYSQL_DATABASE_NAME;
+	}
 
 	public String getSelectQuery(List<String> columnNames, List<String> selectValues, String tableName) {
 		return null;

@@ -10,6 +10,8 @@ public interface SubjectManagerInterface {
 	public void AddSubject(Subject subject);
 	
 	public void AddSubjectComponentTemplate(SubjectComponentTemplates sct);
+	
+	public void UpdateSubjectComponentTemplate(SubjectComponentTemplates sct);
 
 	public List<SubjectComponentTemplates> getAllSubjectComponentTemplates();
 	

@@ -22,15 +22,15 @@ import Subject.Models.SubjectComponentTemplates;
  * Servlet implementation class ComponentTemplateAddServlet
  */
 @WebServlet("/ComponentTemplateAddServlet")
-public class ComponentTemplateAddServlet extends HttpServlet {
+public class ComponentTemplateAddEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	private SubjectManagerInterface manager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public ComponentTemplateAddServlet() {
+	public ComponentTemplateAddEditServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -45,8 +45,7 @@ public class ComponentTemplateAddServlet extends HttpServlet {
 		manager = manager == null
 				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
 				: manager;
-		
-		
+
 		List<SubjectComponentTemplates> templateList = manager.getAllSubjectComponentTemplates();
 
 		String json = new Gson().toJson(templateList);
@@ -70,14 +69,21 @@ public class ComponentTemplateAddServlet extends HttpServlet {
 
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
+		String id = data.get("id") == null ? null : data.get("id").getAsString();
 		String name = data.get("name").getAsString();
 		String percentage = data.get("percentage").getAsString();
 		String number = data.get("number").getAsString();
 
-		SubjectComponentTemplates sct = new SubjectComponentTemplates(null, name, Double.parseDouble(percentage),
-				Integer.parseInt(number));
+		SubjectComponentTemplates sct = null;
 
-		manager.AddSubjectComponentTemplate(sct);
+		if (id == null) {
+			sct = new SubjectComponentTemplates(null, name, Double.parseDouble(percentage), Integer.parseInt(number));
+			manager.AddSubjectComponentTemplate(sct);
+		} else {
+			sct = new SubjectComponentTemplates(Integer.parseInt(id), name, Double.parseDouble(percentage),
+					Integer.parseInt(number));
+			manager.UpdateSubjectComponentTemplate(sct);
+		}
 
 		doGet(request, response);
 	}

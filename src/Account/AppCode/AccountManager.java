@@ -43,7 +43,7 @@ public class AccountManager extends DaoController implements AccountManagerInter
 
 			String insertQuery = generator.getInsertQuery(profileColumnNames, DbCertificate.ProfileTable.TABLE_NAME);
 			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
-
+			
 			setValues(getProfileValues(profile), st);
 			st.executeUpdate();
 
@@ -95,7 +95,7 @@ public class AccountManager extends DaoController implements AccountManagerInter
 					+ DbCertificate.UserTable.COLUMN_NAME_EMAIL + " = ?";
 
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
-			st.executeQuery("USE " + MyDBInfo.MYSQL_DATABASE_NAME);
+			st.executeQuery(generator.getUseDatabaseQuery());
 
 			setValues(Arrays.asList(register.getUsername(), register.getEmail()), st);
 
@@ -121,7 +121,8 @@ public class AccountManager extends DaoController implements AccountManagerInter
 					user.getId());
 
 			java.sql.PreparedStatement st = con.prepareStatement(updateStatement);
-
+			st.executeQuery();
+			
 			setValues(getUserModelValues(user), st);
 			st.executeUpdate();
 

@@ -24,6 +24,7 @@
 		<br />
 		LecturerName: <input type="text" name="lecturerName" id="lecturerName_id" > 
 		<br />
+		<input onclick="addEditSubject(); return false;" type='button' value='Save'>
 	</div>
 	<div>
 		<div id = "subjectComponents_id">
@@ -32,7 +33,7 @@
 		<div id="subjectComponentTemplateRow_id">
 			Subject Component Template: <input type="text" name="subjectComponentTemplateName" id="subjectComponentNameInput_id">
 			<input type="number" name="subjectComponentTemplatePercentage"  id="subjectComponentTemplatePercentageInput_id">
-			<input type ="number" name ="subjectComponentTemplateNumber" id="subjectComponentTemplatePercentageInput_id">
+			<input type ="number" name ="subjectComponentTemplateNumber" id="subjectComponentTemplateNumberInput_id">
 			<input onclick="addEditTemplate(); return false;" type='button' value='Add Template'>
 		</div>
 	</div>	
@@ -42,15 +43,24 @@
 
 <script>
 	function addEditTemplate(id) {
-		
-		var componentName = $("#subjectComponentNameInput_id").val();
-		var componentPercentage = $("#subjectComponentTemplatePercentageInput_id").val();
-		var componentNumber = $("#subjectComponentTemplatePercentageInput_id").val();
-		
-		if(componentName == "" || componentPercentage == "" || componentNumber == ""){
-			$("#alert").innerHTML = "Fill All Fields";
-			return;
+		var componentName;
+		var componentPercentage;
+		var componentNumber;
+		if(id == null){
+			componentName = $("#subjectComponentNameInput_id").val();
+			componentPercentage = $("#subjectComponentTemplatePercentageInput_id").val();
+			componentNumber = $("#subjectComponentTemplateNumberInput_id").val();
+			
+			if(componentName == "" || componentPercentage == "" || componentNumber == ""){
+				$("#alert").innerHTML = "Fill All Fields";
+				return;
+			}
+		}else{
+			componentName = $("#subjectComponentNameInput_"+id).val();
+			componentPercentage = $("#subjectComponentTemplatePercentageInput_"+id).val();
+			componentNumber = $("#subjectComponentTemplateNumberInput_"+id).val();
 		}
+		
 			
 		
 		data = {
@@ -62,7 +72,7 @@
 	
 		$.ajax({
 		    type: "POST",
-		    url: "/ComponentTemplateAddServlet",
+		    url: "/ComponentTemplateAddEditServlet",
 		    contentType: "application/json",
 		    data: JSON.stringify(data),
 		    success: function(response) {
@@ -85,25 +95,29 @@
 		
 		arg.forEach(function createComponentTemplateTableRow(args){
 			console.log(args);
+			console.log(args.id)
 			var tr = document.createElement('tr');
 					
 			var name = document.createElement("INPUT");
 			name.setAttribute("type", "text");
 			name.setAttribute("value",args.name);
+			name.setAttribute("id","subjectComponentNameInput_"+args.id);
 					
 			var number = document.createElement("INPUT");
-			number.setAttribute("type", "markPercentage");
-			number.setAttribute("value",args.markPercentage);
+			number.setAttribute("type", "number");
+			number.setAttribute("value",args.number);
+			number.setAttribute("id","subjectComponentTemplateNumberInput_"+args.id);
 					
 			var percentage = document.createElement("INPUT");
 			percentage.setAttribute("type", "number");
- 			percentage.setAttribute("value",args.number);
+ 			percentage.setAttribute("value",args.markPercentage);
+ 			percentage.setAttribute("id","subjectComponentTemplatePercentageInput_"+args.id);
 					
 			var edit = document.createElement("INPUT");
 			edit.setAttribute("type", "button");
 			edit.setAttribute("value","Edit Template");
 		    edit.setAttribute("onclick","addEditTemplate("+args.id+"); return false;");
-
+			
 	        tr.append(name);
 	        tr.append(percentage);
 	        tr.append(number);

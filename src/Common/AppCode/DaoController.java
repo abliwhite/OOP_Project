@@ -35,7 +35,7 @@ public abstract class DaoController {
 		String hackQuery = generator.columnNameHackQuery(tableName);
 		java.sql.Statement st = con.createStatement();
 
-		st.executeQuery("USE " + MyDBInfo.MYSQL_DATABASE_NAME);
+		st.executeQuery(generator.getUseDatabaseQuery());
 		ResultSet rs = st.executeQuery(hackQuery);
 
 		return rs.getMetaData();
@@ -72,4 +72,8 @@ public abstract class DaoController {
 		return result;
 	}
 
+	//ar gamaiyenot ;dd
+	public void ExecuteUseDataBaseQuery(java.sql.Connection con) throws SQLException{
+		con.createStatement().executeQuery("USE " + MyDBInfo.MYSQL_DATABASE_NAME);
+	}
 }
