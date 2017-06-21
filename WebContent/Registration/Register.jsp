@@ -30,7 +30,7 @@
 		<br />
 		Repeat Password: <input type="password" name="repeatPassword" id="repeatPassword_id">
 		<br />
-		Email: <input type="text" name="email" id="email_id" > 
+		Email: <input type="email" name="email" id="email_id" > 
 		<br />
 		Name: <input type="text" name="name" id="name_id" > 
 		<br />

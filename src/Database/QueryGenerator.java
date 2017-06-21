@@ -75,4 +75,8 @@ public class QueryGenerator {
 		return null;
 	}
 
+	public String getSelectAllQuery(String tableName) {
+		return DB_SELECT_ALL+" "+tableName;
+	}
+
 }

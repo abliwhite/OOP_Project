@@ -12,6 +12,7 @@ import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 import Account.AppCode.AccountManager;
 import Database.MyDBInfo;
+import Subject.AppCode.SubjectManager;
 
 /**
  * Application Lifecycle Listener implementation class ContextListener
@@ -42,6 +43,7 @@ public class ContextListener implements ServletContextListener {
     	ServletContext context = e.getServletContext();
     	
     	context.setAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE, new AccountManager(pool));
+    	context.setAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE, new SubjectManager(pool));
     }
     
     //Todo gasatania sadme 
