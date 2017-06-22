@@ -148,4 +148,20 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		}
 	}
 
+	@Override
+	public void DeleteSubjectComponentTemplateByID(int id) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByIdQuery(id,
+					DbCertificate.SubjectComponentTamplateTable.TABLE_NAME);
+
+			java.sql.Statement st = con.createStatement();
+			st.execute(deleteStatement);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

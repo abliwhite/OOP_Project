@@ -9,15 +9,15 @@ import com.mysql.jdbc.ResultSetMetaData;
 import Common.AppCode.CommonConstants;
 
 public class QueryGenerator {
-	public static final String DB_INSERT_INTO = "INSERT INTO";
-	public static final String DB_UPDATE = "UPDATE";
-	public static final String DB_SET = "SET";
-	public static final String DB_VALUES = "VALUES";
-	public static final String DB_SELECT_ALL = "SELECT * FROM";
-	public static final String DB_DELETE = "DELETE FROM";
-	public static final String DB_ROW_FETCHING_PREVENTER = "where 1=0";
-	public static final String DB_WHERE_ID_CONDITION = "WHERE ID = ";
-
+	private static final String DB_INSERT_INTO = "INSERT INTO";
+	private static final String DB_UPDATE = "UPDATE";
+	private static final String DB_SET = "SET";
+	private static final String DB_VALUES = "VALUES";
+	private static final String DB_SELECT_ALL = "SELECT * FROM";
+	private static final String DB_DELETE = "DELETE FROM";
+	private static final String DB_ROW_FETCHING_PREVENTER = "where 1=0";
+	private static final String DB_WHERE_ID_CONDITION = "WHERE ID = ";
+	
 	public QueryGenerator() {
 
 	}
@@ -69,6 +69,10 @@ public class QueryGenerator {
 		return DB_UPDATE + " " + tableName + " " + DB_SET + " "
 				+ getUpdateNonInjectiveQuery(columnNames) + " "
 				+ DB_WHERE_ID_CONDITION + id;
+	}
+	
+	public String getDeleteByIdQuery(int id,String tableName){
+		return DB_DELETE + " " + tableName + DB_WHERE_ID_CONDITION + id;
 	}
 	
 	public String getUseDatabaseQuery(){

@@ -12,6 +12,8 @@ public interface SubjectManagerInterface {
 	public void AddSubjectComponentTemplate(SubjectComponentTemplates sct);
 	
 	public void UpdateSubjectComponentTemplate(SubjectComponentTemplates sct);
+	
+	public void DeleteSubjectComponentTemplateByID(int id);
 
 	public List<SubjectComponentTemplates> getAllSubjectComponentTemplates();
 	

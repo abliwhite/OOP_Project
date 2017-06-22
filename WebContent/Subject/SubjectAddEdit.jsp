@@ -82,6 +82,23 @@
 		
 	}
 	
+	function deleteTemplate(id){
+		
+		data = {
+				id: id,			
+			};
+		
+		$.ajax({
+		    type: "POST",
+		    url: "/ComponentTemplateDeleteServlet",
+		    contentType: "application/json",
+		    data: JSON.stringify(data),
+		    success: function(response) {
+		    	buildNewComponentTemplateTable(response);
+		    }
+		});
+	}
+	
 	function buildNewComponentTemplateTable(arg){
 		var templatesDiv = document.getElementById("subjectComponents_id");
 		//ar mushaobda jquerit todo 
@@ -115,8 +132,13 @@
 					
 			var edit = document.createElement("INPUT");
 			edit.setAttribute("type", "button");
-			edit.setAttribute("value","Edit Template");
+			edit.setAttribute("value","Edit");
 		    edit.setAttribute("onclick","addEditTemplate("+args.id+"); return false;");
+		    
+		    var remove = document.createElement("INPUT");
+			edit.setAttribute("type", "button");
+			edit.setAttribute("value","Delete");
+		    edit.setAttribute("onclick","deleteTemplate("+args.id+"); return false;");
 			
 	        tr.append(name);
 	        tr.append(percentage);
