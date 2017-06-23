@@ -54,8 +54,8 @@ Subject subject = isAdd?null:viewModel.getSubject();
 					out.print("<input type='number' id='subjectComponentTemplateNumberInput_"+componentId+"' value='"+componentNumber+"'>");
 					out.print("<input type='number' id='subjectComponentTemplatePercentageInput_"+componentId+"' value='"+componentPercentage+"'>");
 					
-					out.print("<input type='button' value='Edit' onclick='addEditTemplate("+componentId+"); >");
-					out.print("<input type='button' value='Delete' onclick='deleteComponentTemplate("+componentId+"); > </tr>");
+					out.print("<input type='button' value='Edit' onclick='addEditTemplate("+componentId+");' >");
+					out.print("<input type='button' value='Delete' onclick='deleteComponentTemplate("+componentId+");' > </tr>");
 				}
 			}
 			%>
