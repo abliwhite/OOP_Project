@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="Common.AppCode.CommonConstants"%>
+<%@ page import="Subject.Models.SubjectViewEntity"%>
+<%@ page import="Subject.Models.SubjectComponentTemplatesViewEntity"%>
+<%@ page import="Subject.Models.Subject"%>
+<%@ page import="java.util.List"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -13,22 +17,49 @@
 <title><%=(String) request.getAttribute(CommonConstants.ADD_EDIT_PAGE_TITLE_ATTRIBUTE)%></title>
 </head>
 
+
+<%
+boolean isAdd = ((String) request.getAttribute(CommonConstants.ADD_EDIT_PAGE_TITLE_ATTRIBUTE)).equals("Add");
+String valueDuringAdd = "";
+
+SubjectViewEntity viewModel = (SubjectViewEntity)request.getAttribute(SubjectViewEntity.SUBJECT_VIEW_ENTITY_ATTRIBUTE);
+Subject subject = isAdd?null:viewModel.getSubject();
+
+%>
+
 <body>
 	<h1 id="alert"></h1>
 	<div>
-		Name: <input type="text" name="name" id="name_id" >
-		<br />
-		language: <input type="text" name="language" id="language_id" >
-		<br />
-		Ects: <input type="text" name="ects" id="ects_id" > 
-		<br />
-		LecturerName: <input type="text" name="lecturerName" id="lecturerName_id" > 
-		<br />
+		<%
+		out.print("Name: <input type='text' name='name' id='name_id' value='"+(isAdd?valueDuringAdd:subject.getName())+"' ><br />");
+		out.print("language: <input type='text' name='language' id='language_id' value='"+(isAdd?valueDuringAdd:subject.getLanguage())+"' ><br />");
+		out.print("Ects: <input type='text' name='ects' id='ects_id' value='"+(isAdd?valueDuringAdd:subject.getEcts())+"' ><br />");
+		out.print("LecturerName: <input type='text' name='lecturerName' id='lecturerName_id' value='"+(isAdd?valueDuringAdd:subject.getLecturerName())+"' ><br />");
+		%>
 		<input onclick="addEditSubject(); return false;" type='button' value='Save'>
 	</div>
 	<div>
 		<div id = "subjectComponents_id">
-			
+			<table>
+			<%
+			if(!isAdd){
+				List<SubjectComponentTemplatesViewEntity> temp = viewModel.getSubjecComponentTemplatesViewEnties();
+				for(int i = 0;i < temp.size();i++){
+					int componentId = temp.get(i).getSubjectComponentTemplate().getId();
+					String componentName = temp.get(i).getSubjectComponentTemplate().getName();
+					int componentNumber = temp.get(i).getSubjectComponentTemplate().getNumber();
+					double componentPercentage = temp.get(i).getSubjectComponentTemplate().getMarkPercentage();
+					
+					out.print("<tr><input type='text' id='subjectComponentNameInput_"+componentId+"' value='"+componentName+"'>");
+					out.print("<input type='number' id='subjectComponentTemplateNumberInput_"+componentId+"' value='"+componentNumber+"'>");
+					out.print("<input type='number' id='subjectComponentTemplatePercentageInput_"+componentId+"' value='"+componentPercentage+"'>");
+					
+					out.print("<input type='button' value='Edit' onclick='addEditTemplate("+componentId+"); >");
+					out.print("<input type='button' value='Delete' onclick='deleteComponentTemplate("+componentId+"); > </tr>");
+				}
+			}
+			%>
+			</table>
 		</div>
 		<div id="subjectComponentTemplateRow_id">
 			Subject Component Template: <input type="text" name="subjectComponentTemplateName" id="subjectComponentNameInput_id">
@@ -82,7 +113,7 @@
 		
 	}
 	
-	function deleteTemplate(id){
+	function deleteComponentTemplate(id){
 		
 		data = {
 				id: id,			
@@ -136,14 +167,15 @@
 		    edit.setAttribute("onclick","addEditTemplate("+args.id+"); return false;");
 		    
 		    var remove = document.createElement("INPUT");
-			edit.setAttribute("type", "button");
-			edit.setAttribute("value","Delete");
-		    edit.setAttribute("onclick","deleteTemplate("+args.id+"); return false;");
+		    remove.setAttribute("type", "button");
+		    remove.setAttribute("value","Delete");
+		    remove.setAttribute("onclick","deleteComponentTemplate("+args.id+"); return false;");
 			
 	        tr.append(name);
 	        tr.append(percentage);
 	        tr.append(number);
 	        tr.append(edit);
+	        tr.append(remove);
 
 	        templates.append(tr);
 		});

@@ -14,8 +14,8 @@
 	</form>
 
 	<br>
-
-	<form action="/SubjectAddEditServlet?type=add" method="get">
+	
+	<form action="/SubjectAddEditServlet?id=1" method="get">
 		<input type="submit" value="Add Subject">
 	</form>
 

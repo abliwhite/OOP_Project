@@ -36,8 +36,7 @@ public class ComponentTemplateDeleteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		//request.getRequestDispatcher("/ComponentTemplateAddEditServlet").forward(request, response); 
 	}
 
 	/**
@@ -54,9 +53,8 @@ public class ComponentTemplateDeleteServlet extends HttpServlet {
 		
 		manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
 		
-		//doGet(request, response);
-		javax.servlet.RequestDispatcher rd = getServletContext().getRequestDispatcher("/ComponentTemplateAddEditServlet");
-		rd.forward(request, response);   
+		doGet(request, response);
+		
 	}
 
 }

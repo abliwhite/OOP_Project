@@ -21,7 +21,7 @@ import Subject.Models.SubjectComponentTemplates;
 /**
  * Servlet implementation class ComponentTemplateAddServlet
  */
-@WebServlet("/ComponentTemplateAddServlet")
+@WebServlet("/ComponentTemplateAddEditServlet")
 public class ComponentTemplateAddEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

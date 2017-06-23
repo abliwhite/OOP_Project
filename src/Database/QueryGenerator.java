@@ -17,7 +17,8 @@ public class QueryGenerator {
 	private static final String DB_DELETE = "DELETE FROM";
 	private static final String DB_ROW_FETCHING_PREVENTER = "where 1=0";
 	private static final String DB_WHERE_ID_CONDITION = "WHERE ID = ";
-	
+	private static final String DB_WHERE_ID_IN_CLAUSE = "WHERE ID IN ";
+
 	public QueryGenerator() {
 
 	}
@@ -60,31 +61,30 @@ public class QueryGenerator {
 	// miigebs columnebis saxelebs chasainsertebel valuebs da tablis saxels da
 	// abrunebs insert query-is
 	public String getInsertQuery(List<String> columnNames, String tableName) {
-		return DB_INSERT_INTO + " " + tableName + " " + 
-				getQueryInsertColumns(columnNames) + " " + 
-				DB_VALUES + " " + getInsertNonInjectiveQuery(columnNames.size() - 1);
+		return DB_INSERT_INTO + " " + tableName + " " + getQueryInsertColumns(columnNames) + " " + DB_VALUES + " "
+				+ getInsertNonInjectiveQuery(columnNames.size() - 1);
 	}
 
-	public String getUpdateByIdQuery(List<String> columnNames,String tableName, Integer id) {
-		return DB_UPDATE + " " + tableName + " " + DB_SET + " "
-				+ getUpdateNonInjectiveQuery(columnNames) + " "
+	public String getUpdateByIdQuery(List<String> columnNames, String tableName, Integer id) {
+		return DB_UPDATE + " " + tableName + " " + DB_SET + " " + getUpdateNonInjectiveQuery(columnNames) + " "
 				+ DB_WHERE_ID_CONDITION + id;
 	}
-	
-	public String getDeleteByIdQuery(int id,String tableName){
-		return DB_DELETE + " " + tableName + DB_WHERE_ID_CONDITION + id;
+
+	public String getDeleteByIdQuery(int id, String tableName) {
+		return DB_DELETE + " " + tableName + " " + DB_WHERE_ID_CONDITION + id;
 	}
-	
-	public String getUseDatabaseQuery(){
+
+	public String getUseDatabaseQuery() {
 		return "USE " + MyDBInfo.MYSQL_DATABASE_NAME;
 	}
 
-	public String getSelectQuery(List<String> columnNames, List<String> selectValues, String tableName) {
-		return null;
+	public String getSelectByIDQuery(String tableName, String idName, int numInClauseArguments) {
+		return DB_SELECT_ALL + " " + tableName + " WHERE " + idName + " IN "
+				+ getInsertNonInjectiveQuery(numInClauseArguments);
 	}
 
 	public String getSelectAllQuery(String tableName) {
-		return DB_SELECT_ALL+" "+tableName;
+		return DB_SELECT_ALL + " " + tableName;
 	}
 
 }

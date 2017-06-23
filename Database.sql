@@ -4,11 +4,11 @@ USE myDatabase;
 
 CREATE TABLE `subject_templates` (
    `ID` int(11) NOT NULL AUTO_INCREMENT,
-   `Name` varchar(100) NOT NULL,
-   `Language` varchar(100) NOT NULL,
+   `Name` nvarchar(100) NOT NULL,
+   `Language` nvarchar(100) NOT NULL,
    `Ects` int(11) NOT NULL,
-   `LecturerName` varchar(45) NOT NULL,
-   `SyllabusPath` varchar(500) DEFAULT NULL,
+   `LecturerName` nvarchar(45) NOT NULL,
+   `SyllabusPath` nvarchar(500) DEFAULT NULL,
    PRIMARY KEY (`ID`),
    UNIQUE KEY `ID_UNIQUE` (`ID`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
