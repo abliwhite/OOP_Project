@@ -130,18 +130,21 @@ function EditTemplate(id) {
 }
 
 function deleteComponentTemplate(id){
+	subjectId = $("#hidden_subject_id").val();
 	
 	data = {
-			id: id,			
+			id: id,	
+			subjectId: subjectId
 		};
 	
 	$.ajax({
 	    type: "POST",
-	    url: "/ComponentTemplateDeleteServlet",
+	    url: "/DeleteComponentTemplateServlet",
 	    contentType: "application/json",
 	    data: JSON.stringify(data),
 	    success: function(response) {
-	    	buildNewComponentTemplateTable(response);
+	    	//buildNewComponentTemplateTable(response);
+	    	$("#"+id).remove();
 	    }
 	});
 }
@@ -161,7 +164,8 @@ function buildNewComponentTemplateTable(arg){
 		console.log(args);
 		console.log(args.id)
 		var tr = document.createElement('tr');
-				
+		tr.setAttribute("id",args.id);
+		
 		var name = document.createElement("INPUT");
 		name.setAttribute("type", "text");
 		name.setAttribute("value",args.name);
