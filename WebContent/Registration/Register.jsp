@@ -91,8 +91,9 @@
 		    contentType: "application/json",
 		    data: JSON.stringify(data),
 		    success: function(response) {
+		    	console.log(response);
 		    	document.getElementById("alert").innerHTML = response;  
-		    	if(response == CommonConstants.SUCCESSFULL_MESSAGE){
+		    	if(response == "Success!"){
 		    		window.location.href = "index.jsp";	
 		    	}
 		    }
