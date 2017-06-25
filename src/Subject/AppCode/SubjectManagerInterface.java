@@ -9,6 +9,12 @@ import Subject.Models.SubjectComponentTemplates;
 public interface SubjectManagerInterface {
 
 	public void AddSubject(Subject subject);
+	
+	public void UpdateSubject(Subject subject);
+	
+	public void AddCommonSubjectTemplate(CommonSubjectTemplate cst);
+	
+	public void DeleteCommonSubjectTemplateByIDFields(int subjectId,int subjectComponentId);
 
 	public void AddSubjectComponentTemplate(SubjectComponentTemplates sct);
 

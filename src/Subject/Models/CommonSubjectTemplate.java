@@ -6,7 +6,7 @@ public class CommonSubjectTemplate {
 	private int subjectComponentTemplateID;
 	private int subjectTemplateID;
 
-	public CommonSubjectTemplate(int id, int subjectComponentTemplateID, int subjectTemplateID) {
+	public CommonSubjectTemplate(Integer id, int subjectComponentTemplateID, int subjectTemplateID) {
 		this.id = id;
 		this.subjectComponentTemplateID = subjectComponentTemplateID;
 		this.subjectTemplateID = subjectTemplateID;

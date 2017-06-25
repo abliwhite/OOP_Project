@@ -25,12 +25,13 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 
 	private List<String> subjectColumnNames;
 	private List<String> subjectComponentColumnNames;
+	private List<String> commonSubjectTemplateColumnNames;
 
 	public SubjectManager(DataSource pool) {
 		super(pool);
-		subjectColumnNames = getColumnsNames(DbCertificate.ProfileTable.TABLE_NAME);
+		subjectColumnNames = getColumnsNames(DbCertificate.SubjectTable.TABLE_NAME);
 		subjectComponentColumnNames = getColumnsNames(DbCertificate.SubjectComponentTemplateTable.TABLE_NAME);
-
+		commonSubjectTemplateColumnNames = getColumnsNames(DbCertificate.CommonSubjectComponentTable.TABLE_NAME);
 	}
 
 	@Override
@@ -38,6 +39,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		try {
 			java.sql.Connection con = getConnection();
 			String insertQuery = generator.getInsertQuery(subjectColumnNames, DbCertificate.SubjectTable.TABLE_NAME);
+			con.createStatement().executeQuery(generator.getUseDatabaseQuery());
 			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
 			setValues(getSubjectValues(subject), st);
@@ -92,8 +94,8 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	}
 
 	private List<String> getSubjectValues(Subject subject) {
-		return Arrays.asList(Integer.toString(subject.getEcts()), subject.getName(), subject.getLanguage(),
-				subject.getSyllabusPath(), subject.getLecturerName());
+		return Arrays.asList(subject.getName(), subject.getLanguage(), Integer.toString(subject.getEcts()),
+				subject.getLecturerName(), subject.getSyllabusPath());
 	}
 
 	@Override
@@ -291,5 +293,74 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		}
 
 		return result;
+	}
+
+	@Override
+	public void AddCommonSubjectTemplate(CommonSubjectTemplate cst) {
+		try {
+			java.sql.Connection con = getConnection();
+			String insertQuery = generator.getInsertQuery(commonSubjectTemplateColumnNames,
+					DbCertificate.CommonSubjectComponentTable.TABLE_NAME);
+			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+			setValues(getCommonSubjectTemplateValues(cst), st);
+
+			st.executeUpdate();
+			try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					cst.setId(generatedKeys.getInt(1));
+				} else {
+					throw new SQLException();
+				}
+			}
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private List<String> getCommonSubjectTemplateValues(CommonSubjectTemplate cst) {
+		return Arrays.asList(String.valueOf(cst.getSubjectComponentTemplateID()),
+				String.valueOf(cst.getSubjectTemplateID()));
+	}
+
+	@Override
+	public void UpdateSubject(Subject subject) {
+		try {
+			java.sql.Connection con = getConnection();
+			String updateStatement = generator.getUpdateByIdQuery(subjectColumnNames,
+					DbCertificate.SubjectTable.TABLE_NAME, subject.getId());
+
+			java.sql.PreparedStatement st = con.prepareStatement(updateStatement);
+
+			setValues(getSubjectValues(subject), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void DeleteCommonSubjectTemplateByIDFields(int subjectId, int subjectComponentId) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = "DELETE FROM " + DbCertificate.CommonSubjectComponentTable.TABLE_NAME + " WHERE "
+					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_COMPONENT_TEMPLATE_ID + " = "
+					+ subjectComponentId + " and "
+					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_TEMPLATE_ID + " = " + subjectId;
+
+			java.sql.Statement st = con.createStatement();
+			st.execute(generator.getUseDatabaseQuery());
+
+			st.execute(deleteStatement);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -18,43 +18,50 @@ import Subject.AppCode.SubjectManagerInterface;
 /**
  * Servlet implementation class ComponentTemplateDeleteServlet
  */
-@WebServlet("/ComponentTemplateDeleteServlet")
-public class ComponentTemplateDeleteServlet extends HttpServlet {
+@WebServlet("/DeleteComponentTemplateServlet")
+public class DeleteComponentTemplateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+
 	private SubjectManagerInterface manager;
-	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ComponentTemplateDeleteServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//request.getRequestDispatcher("/ComponentTemplateAddEditServlet").forward(request, response); 
+	public DeleteComponentTemplateServlet() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// request.getRequestDispatcher("/ComponentTemplateAddEditServlet").forward(request,
+		// response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		manager = manager == null
 				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
 				: manager;
 
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
-		
+
 		String id = data.get("id").getAsString();
-		
+		String subjectId = data.get("subjectId").getAsString();
+
+		manager.DeleteCommonSubjectTemplateByIDFields(Integer.parseInt(subjectId), Integer.parseInt(id));
 		manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
-		
+
 		doGet(request, response);
-		
+
 	}
 
 }

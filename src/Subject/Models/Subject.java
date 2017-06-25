@@ -11,8 +11,8 @@ public class Subject {
 	private String lecturerName;
 	private String syllabusPath;
 
-	public Subject(int id, String name, String language, int ects, String lecturerName, String syllabusPath) {
-		
+	public Subject(Integer id, String name, String language, int ects, String lecturerName, String syllabusPath) {
+		this.id = id;
 		this.name = name;
 		this.language = language;
 		this.ects = ects;

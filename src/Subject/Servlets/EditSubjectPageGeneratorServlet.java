@@ -4,17 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mysql.jdbc.StringUtils;
-
-import Account.AppCode.AccountManager;
-import Account.AppCode.AccountManagerInterface;
 import Common.AppCode.CommonConstants;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
@@ -25,17 +20,17 @@ import Subject.Models.SubjectComponentTemplatesViewEntity;
 import Subject.Models.SubjectViewEntity;
 
 /**
- * Servlet implementation class SubjectAddEditServlet
+ * Servlet implementation class EditSubjectServlet
  */
-@WebServlet("/SubjectAddEditServlet")
-public class SubjectAddEditServlet extends HttpServlet {
+@WebServlet("/EditSubjectPageGeneratorServlet")
+public class EditSubjectPageGeneratorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private SubjectManagerInterface manager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public SubjectAddEditServlet() {
+	public EditSubjectPageGeneratorServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -50,44 +45,29 @@ public class SubjectAddEditServlet extends HttpServlet {
 		manager = manager == null
 				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
 				: manager;
-
-		if (!isEdit(subjectId)) {
-			addCase(request);
-		} else {
+		if (isValidRequest(subjectId)) {
 			int id = Integer.parseInt(subjectId);
-			editCase(request, id);
+
+			List<CommonSubjectTemplate> cst = manager.getAllCommonSubjectTemplatesBySubjectID(id);
+			List<SubjectComponentTemplates> sc = manager.getAllSubjectComponentTemplatesByIDList(cst);
+
+			Subject subject = manager.getSubjectById(id);
+
+			// check subject nullable
+			if (subject == null) {
+				// addCase(request);
+				return;
+			}
+
+			SubjectViewEntity subjectViewEntity = new SubjectViewEntity(subject,
+					getSubjectComponentTemplatesViewEntities(sc));
+
+			request.setAttribute(SubjectViewEntity.SUBJECT_VIEW_ENTITY_ATTRIBUTE, subjectViewEntity);
+
+			request.getRequestDispatcher("Subject/Edit.jsp").forward(request, response);
+		} else {
+			// page not found
 		}
-
-		request.getRequestDispatcher("Subject/SubjectAddEdit.jsp").forward(request, response);
-	}
-
-	private Boolean isEdit(String subjectId) {
-		if (subjectId == null)
-			return false;
-		boolean result = true;
-		for (int i = 0; i < subjectId.length(); i++) {
-			result = result && Character.isDigit(subjectId.charAt(i));
-		}
-		return result;
-	}
-
-	private void editCase(HttpServletRequest request, int subjectId) {
-		List<CommonSubjectTemplate> cst = manager.getAllCommonSubjectTemplatesBySubjectID(subjectId);
-		List<SubjectComponentTemplates> sc = manager.getAllSubjectComponentTemplatesByIDList(cst);
-
-		Subject subject = manager.getSubjectById(subjectId);
-
-		// check subject nullable
-		if (subject == null){
-			addCase(request);
-			return;
-		}
-		
-		SubjectViewEntity subjectViewEntity = new SubjectViewEntity(subject,
-				getSubjectComponentTemplatesViewEntities(sc));
-
-		request.setAttribute(SubjectViewEntity.SUBJECT_VIEW_ENTITY_ATTRIBUTE, subjectViewEntity);
-		request.setAttribute(CommonConstants.ADD_EDIT_PAGE_TITLE_ATTRIBUTE, "Edit");
 	}
 
 	private List<SubjectComponentTemplatesViewEntity> getSubjectComponentTemplatesViewEntities(
@@ -100,9 +80,14 @@ public class SubjectAddEditServlet extends HttpServlet {
 		return result;
 	}
 
-	private void addCase(HttpServletRequest request) {
-		request.setAttribute(CommonConstants.ADD_EDIT_PAGE_TITLE_ATTRIBUTE, "Add");
-
+	private Boolean isValidRequest(String subjectId) {
+		if (subjectId == null)
+			return false;
+		boolean result = true;
+		for (int i = 0; i < subjectId.length(); i++) {
+			result = result && Character.isDigit(subjectId.charAt(i));
+		}
+		return result;
 	}
 
 	/**
