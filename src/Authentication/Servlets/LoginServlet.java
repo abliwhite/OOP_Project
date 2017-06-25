@@ -61,7 +61,6 @@ public class LoginServlet extends HttpServlet {
 		User user = am.checkLoginValidation(new AuthModel(name, password));
 		if (user != null) {
 			request.setAttribute(ViewTextContainer.RESULT, "Gilocav");
-			
 			if (user.getRole().equals(DbCertificate.UserTable.ADMIN_ROLE)) {
 				request.getRequestDispatcher("/Profiles/AdminProfile.jsp").forward(request, response);
 			} else {

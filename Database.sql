@@ -1,5 +1,3 @@
-CREATE SCHEMA myDatabase;
-
 USE myDatabase;
 
 CREATE TABLE `subject_templates` (

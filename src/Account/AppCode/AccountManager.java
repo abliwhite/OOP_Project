@@ -79,7 +79,49 @@ public class AccountManager extends DaoController implements AccountManagerInter
 	}
 
 	public User checkLoginValidation(AuthModel auth) {
+		User user = null;
+		try {
+			java.sql.Connection con = getConnection();
 
+			String selectQuery = "SELECT * FROM " + DbCertificate.UserTable.TABLE_NAME 
+					+ " WHERE "
+					+ DbCertificate.UserTable.COLUMN_NAME_USERNAME + " = ?"+
+					" AND "
+					+ DbCertificate.UserTable.COLUMN_NAME_PASSWORD + " = ?";
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(auth.getUsername(), auth.getPassword()), st);
+
+			ResultSet rs = st.executeQuery();
+
+			user = getUser(rs);
+			
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	private User getUser(ResultSet rs) {
+		try {
+			while (rs.next()) {
+				int id = rs.getInt(DbCertificate.UserTable.COLUMN_NAME_ID);
+				String username = rs.getString(DbCertificate.UserTable.COLUMN_NAME_USERNAME);
+				String password = rs.getString(DbCertificate.UserTable.COLUMN_NAME_PASSWORD);
+				String email = rs.getString(DbCertificate.UserTable.COLUMN_NAME_EMAIL);
+				String role = rs.getString(DbCertificate.UserTable.COLUMN_NAME_ROLE);
+				String gmailID = rs.getString(DbCertificate.UserTable.COLUMN_NAME_GMAIL_ID);
+				String facebookID = rs.getString(DbCertificate.UserTable.COLUMN_NAME_FACEBOOK_ID);
+				int profileID = rs.getInt(DbCertificate.UserTable.COLUMN_NAME_PROFILE_ID);
+				return new User(id, username, password, email, role, gmailID, facebookID, profileID, null);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

@@ -44,6 +44,7 @@ public class User {
 	public User(Integer id, String username, String password, String email, String role, String gmailID, String facebookID,
 			Integer profileID, UserProfile profile) {
 		
+		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.email = email;
