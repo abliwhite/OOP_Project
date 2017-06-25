@@ -7,9 +7,8 @@
 <html>
 <head>
 
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="http://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
-<script src="js/app-ajax.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-3.2.1.js" type="text/javascript"></script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%
@@ -94,7 +93,7 @@
 		    success: function(response) {
 		    	document.getElementById("alert").innerHTML = response;  
 		    	if(response == CommonConstants.SUCCESSFULL_MESSAGE){
-		    		window.location.href = "/index.jsp";	
+		    		window.location.href = "index.jsp";	
 		    	}
 		    }
 		});
