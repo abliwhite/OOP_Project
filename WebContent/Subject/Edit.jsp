@@ -43,7 +43,7 @@ Subject subject = viewModel.getSubject();
 					String componentName = temp.get(i).getSubjectComponentTemplate().getName();
 					int componentNumber = temp.get(i).getSubjectComponentTemplate().getNumber();
 					double componentPercentage = temp.get(i).getSubjectComponentTemplate().getMarkPercentage();
-					out.println("<tr>");
+					out.println("<tr id = '"+componentId+"' >");
 					out.println("<input type='text' id='subjectComponentNameInput_"+componentId+"' value='"+componentName+"'>");
 					out.println("<input type='number' id='subjectComponentTemplateNumberInput_"+componentId+"' value='"+componentNumber+"'>");
 					out.println("<input type='number' id='subjectComponentTemplatePercentageInput_"+componentId+"' value='"+componentPercentage+"'>");
@@ -168,7 +168,7 @@ Subject subject = viewModel.getSubject();
 		    data: JSON.stringify(data),
 		    success: function(response) {
 		    	//buildNewComponentTemplateTable(response);
-		    	
+		    	$("#"+id).remove();
 		    }
 		});
 	}
@@ -188,6 +188,7 @@ Subject subject = viewModel.getSubject();
 			console.log(args);
 			console.log(args.id)
 			var tr = document.createElement('tr');
+			tr.setAttribute("id",args.id);
 					
 			var name = document.createElement("INPUT");
 			name.setAttribute("type", "text");

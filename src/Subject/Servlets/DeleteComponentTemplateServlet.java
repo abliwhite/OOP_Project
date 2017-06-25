@@ -12,6 +12,7 @@ import org.apache.catalina.servlet4preview.RequestDispatcher;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import Common.AppCode.CommonConstants;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
 
@@ -38,8 +39,14 @@ public class DeleteComponentTemplateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// request.getRequestDispatcher("/ComponentTemplateAddEditServlet").forward(request,
-		// response);
+		/*
+		String json = new Gson().toJson(CommonConstants.SUCCESSFUL_MESSAGE);
+
+		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
+		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
+
+		response.getWriter().write(json);
+		*/
 	}
 
 	/**

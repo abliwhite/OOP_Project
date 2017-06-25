@@ -15,7 +15,7 @@
 
 	<br>
 	
-	<form action="/SubjectAddEditServlet?id=1" method="get">
+	<form action="/Subject/Add.jsp" method="get">
 		<input type="submit" value="Add Subject">
 	</form>
 
