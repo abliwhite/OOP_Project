@@ -29,8 +29,7 @@
 	</div>
 	<div>
 		<div id="subjectComponents_id">
-			<table>
-			</table>
+			
 		</div>
 		<div id="subjectComponentTemplateRow_id" style="display: none;">
 			Subject Component Template: <input type="text" name="subjectComponentTemplateName" id="subjectComponentNameInput_id">

@@ -51,7 +51,7 @@ public class ContextListener implements ServletContextListener {
 		DataSource pool = new DataSource();
 		PoolProperties properties = new PoolProperties();
 		
-		
+		//unicodi
 		properties.setUrl("jdbc:mysql://" + MyDBInfo.MYSQL_DATABASE_SERVER + "/mysql");
 		properties.setDriverClassName("com.mysql.jdbc.Driver");
 		properties.setUsername(MyDBInfo.MYSQL_USERNAME);

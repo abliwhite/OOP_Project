@@ -76,7 +76,7 @@ public class EditComponentTemplateServlet extends HttpServlet {
 		String name = data.get("name").getAsString();
 		String percentage = data.get("percentage").getAsString();
 		String number = data.get("number").getAsString();
-		String subjectId = data.get("subjectId").getAsString();
+		//String subjectId = data.get("subjectId").getAsString();
 
 		SubjectComponentTemplates sct = new SubjectComponentTemplates(Integer.parseInt(id), name,
 				Double.parseDouble(percentage), Integer.parseInt(number));
