@@ -91,6 +91,26 @@ public class User {
 		return username;
 	}
 
+	public UserProfile getProfile() {
+		if (profile == null) {
+			
+		} 
+		
+		return profile;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public void setProfileID(Integer profileID) {
+		this.profileID = profileID;
+	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}

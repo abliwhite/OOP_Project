@@ -64,6 +64,7 @@ public class LoginServlet extends HttpServlet {
 			if (user.getRole().equals(DbCertificate.UserTable.ADMIN_ROLE)) {
 				request.getRequestDispatcher("/Profiles/AdminProfile.jsp").forward(request, response);
 			} else {
+				request.setAttribute("user", user); //TODO containershi gasatani
 				request.getRequestDispatcher("/Profiles/UserProfile.jsp").forward(request, response);
 			}
 		} else {
