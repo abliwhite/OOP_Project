@@ -44,12 +44,14 @@ Subject subject = viewModel.getSubject();
 					int componentNumber = temp.get(i).getSubjectComponentTemplate().getNumber();
 					double componentPercentage = temp.get(i).getSubjectComponentTemplate().getMarkPercentage();
 					out.println("<tr id = '"+componentId+"' >");
+					out.println("<td>");
 					out.println("<input type='text' id='subjectComponentNameInput_"+componentId+"' value='"+componentName+"'>");
 					out.println("<input type='number' id='subjectComponentTemplateNumberInput_"+componentId+"' value='"+componentNumber+"'>");
 					out.println("<input type='number' id='subjectComponentTemplatePercentageInput_"+componentId+"' value='"+componentPercentage+"'>");
 					
 					out.println("<input type='button' value='Edit' onclick='EditTemplate("+componentId+");' >");
 					out.println("<input type='button' value='Delete' onclick='deleteComponentTemplate("+componentId+");' >");
+					out.println("</td>");
 					out.println("</tr>");
 				}
 			%>
