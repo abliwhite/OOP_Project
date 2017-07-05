@@ -36,6 +36,46 @@ public class AccountManager extends DaoController implements AccountManagerInter
 		userColumnNames = getColumnsNames(DbCertificate.UserTable.TABLE_NAME);
 		profileColumnNames = getColumnsNames(DbCertificate.ProfileTable.TABLE_NAME);
 	}
+	
+	public UserProfile getProfile(User user) {
+		UserProfile profile = null;
+		try {
+			java.sql.Connection con = getConnection();
+
+			String selectQuery = "SELECT * FROM " + DbCertificate.ProfileTable.TABLE_NAME 
+					+ " WHERE "
+					+ DbCertificate.ProfileTable.COLUMN_NAME_ID + " = " + user.getProfileID();
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			ResultSet rs = st.executeQuery();
+
+			profile = getProfileFromResultSet(rs);
+			
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return profile;
+	}
+
+	private UserProfile getProfileFromResultSet(ResultSet rs) {
+		try {
+			while (rs.next()) {
+				int id = rs.getInt(DbCertificate.ProfileTable.COLUMN_NAME_ID);
+				String name = rs.getString(DbCertificate.ProfileTable.COLUMN_NAME_NAME);
+				String gender = rs.getString(DbCertificate.ProfileTable.COLUMN_NAME_GENDER);
+				String date = rs.getString(DbCertificate.ProfileTable.COLUMN_NAME_CREATE_DATE);
+				String surname = rs.getString(DbCertificate.ProfileTable.COLUMN_NAME_SURNAME);
+				return new UserProfile(id, name, gender, date, surname);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public void addProfile(UserProfile profile) {
 		try {

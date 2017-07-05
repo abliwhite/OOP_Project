@@ -25,6 +25,9 @@ public final class DbCertificate {
 
 		public static final String ADMIN_ROLE = "Admin";
 		public static final String STUDENT_ROLE = "Student";
+		
+		public static final String ADMIN_USERNAME = "admin";
+		public static final String ADMIN_PASSWORD = "admin";
 	}
 
 	public static class ProfileTable {

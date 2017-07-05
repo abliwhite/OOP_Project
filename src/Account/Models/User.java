@@ -92,10 +92,6 @@ public class User {
 	}
 
 	public UserProfile getProfile() {
-		if (profile == null) {
-			
-		} 
-		
 		return profile;
 	}
 

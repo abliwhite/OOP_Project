@@ -9,14 +9,14 @@
 			User user = (User)request.getAttribute("user");
 			UserProfile profile = user.getProfile();
 		%>
-		<title>Welcome <%=profile.getName()%></title>
+		<title>Welcome</title>
 	</head>
 	
 	<body>
-		<h4>Logged in as <%= user.getUsername() %></h4>
-		
+		<h1>Hello, <%=profile.getName()%>!</h1>
+			
 		<br>
 		
-		<h2>Hello, <%=profile.getName()%>!</h2>
+		<h2>Search:</h2>
 	</body>
 </html>
