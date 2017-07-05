@@ -34,4 +34,5 @@ public class QueryGeneratorTest {
 				generator.getInsertQuery(columnNames, "table"));
 
 	}
+	
 }

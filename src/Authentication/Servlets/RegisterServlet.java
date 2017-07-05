@@ -76,7 +76,6 @@ public class RegisterServlet extends HttpServlet {
 				.getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
 
 		try {
-			// todo gadasaketebelia constatntebit
 			String username = data.getString("username");
 			String password = data.getString("password");
 
