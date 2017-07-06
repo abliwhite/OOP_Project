@@ -166,7 +166,6 @@ public class AccountManager extends DaoController implements AccountManagerInter
 	}
 	
 
-
 	public ResponseMessage checkRegistrationValidity(RegisterModel register) {
 		ResponseMessage queryResult = null;
 		try {
