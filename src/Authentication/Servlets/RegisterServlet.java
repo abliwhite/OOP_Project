@@ -34,7 +34,7 @@ import Database.DbCertificate;
  * Servlet implementation class RegisterServlet
  */
 @WebServlet("/RegisterServlet")
-public class RegisterServlet extends HttpServlet {
+public class RegisterServlet extends AuthenticationServletParent {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -62,7 +62,7 @@ public class RegisterServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		initialManager();
 		JSONObject data;
 
 		try {
@@ -70,10 +70,6 @@ public class RegisterServlet extends HttpServlet {
 		} catch (Exception e) {
 			throw new IOException("Error parsing JSON request string");
 		}
-
-		ServletContext context = getServletContext();
-		AccountManagerInterface manager = (AccountManagerInterface) context
-				.getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
 
 		try {
 			String username = data.getString("username");
@@ -87,11 +83,11 @@ public class RegisterServlet extends HttpServlet {
 			ResponseMessage resp = manager.checkRegistrationValidity(new RegisterModel(username, email));
 			if (resp.isSuccess()) {
 
-				UserProfile profile = new UserProfile((Integer) null, name, gender, CommonConstants.getDatetime(),
+				UserProfile profile = new UserProfile(name, gender, CommonConstants.getDatetime(),
 						surname);
 				manager.addProfile(profile);
 
-				User user = new User((Integer) null, username, password, email, DbCertificate.UserTable.STUDENT_ROLE,
+				User user = new User(username, password, email, DbCertificate.UserTable.STUDENT_ROLE,
 						null, null, profile.getId(), profile);
 				manager.addUser(user);
 

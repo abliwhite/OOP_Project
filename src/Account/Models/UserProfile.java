@@ -23,6 +23,10 @@ public class UserProfile {
 		this.surname = surname;
 	}
 
+	public UserProfile(String name, String gender, String createDate, String surname) {
+		this((Integer) null, name, gender, createDate, surname);
+	}
+
 	public String getCreateDate() {
 		return createDate;
 	}
@@ -54,9 +58,9 @@ public class UserProfile {
 	public Integer getId() {
 		return id;
 	}
-	
-	public void setId(Integer id){
-		this.id =  id;
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	// Todo dasafixia

@@ -26,7 +26,7 @@ import Common.AppCode.*;
  * Servlet implementation class LoginServlet
  */
 @WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+public class LoginServlet extends AuthenticationServletParent {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -53,23 +53,23 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		initialManager();
+		
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
 
-		ServletContext context = getServletContext();
-		AccountManagerInterface am = (AccountManagerInterface) context
-				.getAttribute(Account.AppCode.AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
-
-
-		User user = am.checkLoginValidation(new AuthModel(name, password));
+		User user = manager.checkLoginValidation(new AuthModel(name, password));
 		if (user != null) {
 			request.setAttribute(ViewTextContainer.RESULT, "Gilocav");
+			
+			
+			
 			if (user.getUsername().equals(DbCertificate.UserTable.ADMIN_USERNAME)
 					&& user.getPassword().equals(DbCertificate.UserTable.ADMIN_PASSWORD)) {
 				request.getRequestDispatcher("/Profiles/AdminProfile.jsp").forward(request, response);
 			} else {
 				if (user.getProfile() == null) {
-					UserProfile profile = ((AccountManager) am).getProfile(user);
+					UserProfile profile = manager.getProfile(user);
 					user.setUserProfile(profile);
 				}
 				request.setAttribute("user", user);

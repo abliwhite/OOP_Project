@@ -54,6 +54,11 @@ public class User {
 		this.profileID = profileID;
 		this.profile = profile;
 	}
+	
+	public User(String username, String password, String email, String role, String gmailID, String facebookID,
+			Integer profileID, UserProfile profile) {
+		this((Integer)null,username,password,email,role,gmailID,facebookID,profileID,profile);
+	}
 
 	public String getGmailID() {
 		return gmailID;
