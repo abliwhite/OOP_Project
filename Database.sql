@@ -26,14 +26,14 @@ CREATE TABLE `subject` (
    CONSTRAINT `FK_Subject_To_Term` FOREIGN KEY (`TermID`) REFERENCES `subject_terms` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
- CREATE TABLE `subject_component_templates` (
+CREATE TABLE `subject_component_templates` (
    `ID` int(11) NOT NULL AUTO_INCREMENT,
    `Name` varchar(45) NOT NULL,
    `MarkPercentage` decimal(11,1) NOT NULL,
    `Number` int(11) NOT NULL,
    PRIMARY KEY (`ID`),
    UNIQUE KEY `ID_UNIQUE` (`ID`)
- ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
 CREATE TABLE `common_subject_components` (
    `ID` int(11) NOT NULL AUTO_INCREMENT,

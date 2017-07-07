@@ -33,26 +33,13 @@
 <body>
 	<form id="display_subject_required_info" style="display: none;">
 		<div class="form-group row">
-		    <label class="col-sm-2 col-form-label">Name</label>
-		    <div class="col-sm-10">
-		      <p class="form-control-static"><script>$('#name_id').val()</script></p>
-		    </div>
-		</div>
-		<div class="form-group row">
-		    <label class="col-sm-2 col-form-label">Year</label>
-		    <div class="col-sm-10">
-		      <p class="form-control-static"><script>$('#year_id').val()</script></p>
-		    </div>
-		</div>
-		<div class="form-group row">
-		    <label class="col-sm-2 col-form-label">Term</label>
-		    <div class="col-sm-10">
-		      <p class="form-control-static"><script>$('#aioConceptName').find(":selected").text()</script></p>
-		    </div>
+		    <label id="name_label_id" class="col-sm-2 col-form-label"></label>
+		    <label id="year_label_id" class="col-sm-2 col-form-label"></label>
+		    <label id="term_label_id" class="col-sm-2 col-form-label"></label>
 		</div>
 	</form>
 	<div class="container">
-		<div name = "subject_required_info">
+		<div id = "subject_required_info">
 			Name: <input type='text' name='name' class="form-control" placeholder="Name" id='name_id'>
 			Year: <input type='number' name='language' class="form-control" placeholder="Year" id='year_id'>
 			<select class="form-control" name="SubjectTerm" id="term_id">
@@ -99,6 +86,7 @@ function AddSubject(){
 	name = $('#name_id').val();
 	year = $('#year_id').val();
 	termId = $('#term_id').val();
+	term = $('#term_id').find(":selected").text();
 	language = $('#language_id').val();
 	ects = $('#ects_id').val();
 	lecturerName = $('#lecturerName_id').val();
@@ -130,12 +118,22 @@ function AddSubject(){
 	    	$("#hidden_subject_id").val(response);
 	    	$("#subject_add_Button_id").hide();
 	    	$("#subject_optional_info").hide();
+	    	$("#subject_required_info").hide();
+	    	
+	    	$("#name_label_id").text(name);
+	    	$("#year_label_id").text(year);
+	    	$("#term_label_id").text(term);
 	    	$("#display_subject_required_info").show();
 	    	$("#subjectComponentTemplateRow_id").show();
+	    	
 	    	$("#alert_div_id").removeClass("alert alert-danger");
 	    	$("#alert_div_id").addClass("alert alert-success");
 	    	$("#alert_div_id").html("Success!");
 	    	$("#alert_div_id").show();
+	    	
+	    	$("#alert_div_id").fadeTo(1800, 600).slideUp(600, function(){
+	    	    $("#alert_div_id").slideUp(600);
+	    	});
 	    }
 	});
 	

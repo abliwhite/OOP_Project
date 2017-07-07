@@ -4,13 +4,21 @@ import java.util.Arrays;
 
 import javax.servlet.http.HttpServlet;
 
+import Common.AppCode.CommonServlet;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
 
-public abstract class SubjectServletParent extends HttpServlet {
+public abstract class SubjectServletParent extends CommonServlet {
 
 	public SubjectManagerInterface manager;
 
+	@Override
+	public void initialManager() {
+		manager = manager == null
+				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
+				: manager;
+	}
+	
 	private boolean numericStringValidation(String input) {
 		char[] chars = input.toCharArray();
 
@@ -30,14 +38,5 @@ public abstract class SubjectServletParent extends HttpServlet {
 		return false;
 	}
 
-	public void initialManager() {
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
-	}
-
-	public SubjectServletParent() {
-		super();
-	}
 
 }

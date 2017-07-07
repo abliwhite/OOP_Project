@@ -24,7 +24,6 @@ import Subject.Models.SubjectComponentTemplates;
 @WebServlet("/AddComponentTemplateServlet")
 public class AddComponentTemplateServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
-	private SubjectManagerInterface manager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
