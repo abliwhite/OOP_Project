@@ -10,7 +10,7 @@
 <head>
 	<script src="http://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
 	<script src="http://code.jquery.com/jquery-3.2.1.js" type="text/javascript"></script>
-	<script type="text/javascript" src="../Subject/SubjectJS.js" ></script>
+	<script type="text/javascript" src="../Subject/SubjectShareJS.js" ></script>
 	
 	<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 	
@@ -31,8 +31,28 @@
 %>
 </head>
 <body>
+	<form id="display_subject_required_info" style="display: none;">
+		<div class="form-group row">
+		    <label class="col-sm-2 col-form-label">Name</label>
+		    <div class="col-sm-10">
+		      <p class="form-control-static"><script>$('#name_id').val()</script></p>
+		    </div>
+		</div>
+		<div class="form-group row">
+		    <label class="col-sm-2 col-form-label">Year</label>
+		    <div class="col-sm-10">
+		      <p class="form-control-static"><script>$('#year_id').val()</script></p>
+		    </div>
+		</div>
+		<div class="form-group row">
+		    <label class="col-sm-2 col-form-label">Term</label>
+		    <div class="col-sm-10">
+		      <p class="form-control-static"><script>$('#aioConceptName').find(":selected").text()</script></p>
+		    </div>
+		</div>
+	</form>
 	<div class="container">
-		<div name = "required">
+		<div name = "subject_required_info">
 			Name: <input type='text' name='name' class="form-control" placeholder="Name" id='name_id'>
 			Year: <input type='number' name='language' class="form-control" placeholder="Year" id='year_id'>
 			<select class="form-control" name="SubjectTerm" id="term_id">
@@ -45,7 +65,7 @@
 			%>
 			</select>
 		</div>
-		<div name = "optional">
+		<div id = "subject_optional_info">
 			Ects: <input type='number' name='ects' class="form-control" placeholder="Ects" id='ects_id'>
 			Language: <input type='text' name='language' class="form-control" placeholder="Language" id='language_id'>
 			Lecturer Name: <input type='text' name='lecturerName' class="form-control" placeholder="Lecturer Name" id='lecturerName_id'>
@@ -109,6 +129,8 @@ function AddSubject(){
 	    	console.log(response);
 	    	$("#hidden_subject_id").val(response);
 	    	$("#subject_add_Button_id").hide();
+	    	$("#subject_optional_info").hide();
+	    	$("#display_subject_required_info").show();
 	    	$("#subjectComponentTemplateRow_id").show();
 	    	$("#alert_div_id").removeClass("alert alert-danger");
 	    	$("#alert_div_id").addClass("alert alert-success");

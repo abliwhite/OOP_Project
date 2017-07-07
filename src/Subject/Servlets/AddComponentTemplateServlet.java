@@ -72,20 +72,18 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 
 		if (fullNumericStringValidation(percentage) && fullNumericStringValidation(number)
 				&& fullNumericStringValidation(subjectId)) {
-			
-			SubjectComponentTemplates sct = new SubjectComponentTemplates(null, name, Double.parseDouble(percentage),
+
+			SubjectComponentTemplates sct = new SubjectComponentTemplates(name, Double.parseDouble(percentage),
 					Integer.parseInt(number));
 
 			manager.AddSubjectComponentTemplate(sct);
-			manager.AddCommonSubjectTemplate(
-					new CommonSubjectTemplate((Integer) null, sct.getId(), Integer.parseInt(subjectId)));
+			manager.AddCommonSubjectTemplate(new CommonSubjectTemplate(sct.getId(), Integer.parseInt(subjectId)));
 
 			request.setAttribute("SubjectId", subjectId);
-		}else{
-			//incorrect paramaters
+		} else {
+			// incorrect paramaters
 		}
 
-		
 		doGet(request, response);
 	}
 
