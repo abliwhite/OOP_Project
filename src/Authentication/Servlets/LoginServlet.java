@@ -12,6 +12,7 @@ import javax.xml.bind.DataBindingException;
 
 import com.mysql.jdbc.Constants;
 
+import Account.AppCode.AccountManager;
 import Account.AppCode.AccountManagerInterface;
 import Account.Models.AuthModel;
 import Account.Models.User;
@@ -68,7 +69,7 @@ public class LoginServlet extends HttpServlet {
 				request.getRequestDispatcher("/Profiles/AdminProfile.jsp").forward(request, response);
 			} else {
 				if (user.getProfile() == null) {
-					UserProfile profile = am.getProfile(user);
+					UserProfile profile = ((AccountManager) am).getProfile(user);
 					user.setUserProfile(profile);
 				}
 				request.setAttribute("user", user);
