@@ -19,4 +19,6 @@ public interface AccountManagerInterface {
 	public void updateProfile(UserProfile profile);
 	
 	public User checkLoginValidation(AuthModel auth);
+	
+	public UserProfile getProfile(User user);
 }

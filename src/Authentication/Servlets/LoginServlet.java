@@ -8,12 +8,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.DataBindingException;
 
 import com.mysql.jdbc.Constants;
 
 import Account.AppCode.AccountManagerInterface;
 import Account.Models.AuthModel;
 import Account.Models.User;
+import Account.Models.UserProfile;
 import Common.AppCode.DaoController;
 import Common.AppCode.ViewTextContainer;
 import Database.DbCertificate;
@@ -61,10 +63,15 @@ public class LoginServlet extends HttpServlet {
 		User user = am.checkLoginValidation(new AuthModel(name, password));
 		if (user != null) {
 			request.setAttribute(ViewTextContainer.RESULT, "Gilocav");
-			if (user.getRole().equals(DbCertificate.UserTable.ADMIN_ROLE)) {
+			if (user.getUsername().equals(DbCertificate.UserTable.ADMIN_USERNAME)
+					&& user.getPassword().equals(DbCertificate.UserTable.ADMIN_PASSWORD)) {
 				request.getRequestDispatcher("/Profiles/AdminProfile.jsp").forward(request, response);
 			} else {
-				request.setAttribute("user", user); //TODO containershi gasatani
+				if (user.getProfile() == null) {
+					UserProfile profile = am.getProfile(user);
+					user.setUserProfile(profile);
+				}
+				request.setAttribute("user", user);
 				request.getRequestDispatcher("/Profiles/UserProfile.jsp").forward(request, response);
 			}
 		} else {
