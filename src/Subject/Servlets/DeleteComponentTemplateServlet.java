@@ -38,13 +38,13 @@ public class DeleteComponentTemplateServlet extends SubjectServletParent {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		/*
-		String json = new Gson().toJson(CommonConstants.SUCCESSFUL_MESSAGE);
-
-		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
-		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
-
-		response.getWriter().write(json);
-		*/
+		 * String json = new Gson().toJson(CommonConstants.SUCCESSFUL_MESSAGE);
+		 * 
+		 * response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
+		 * response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
+		 * 
+		 * response.getWriter().write(json);
+		 */
 	}
 
 	/**
@@ -59,8 +59,10 @@ public class DeleteComponentTemplateServlet extends SubjectServletParent {
 		String id = data.get("id").getAsString();
 		String subjectId = data.get("subjectId").getAsString();
 
-		manager.DeleteCommonSubjectTemplateByIDFields(Integer.parseInt(subjectId), Integer.parseInt(id));
-		manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
+		if (fullNumericStringValidation(subjectId)) {
+			manager.DeleteCommonSubjectTemplateByIDFields(Integer.parseInt(subjectId), Integer.parseInt(id));
+			manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
+		}
 
 		doGet(request, response);
 

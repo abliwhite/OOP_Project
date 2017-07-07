@@ -42,7 +42,7 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 			throws ServletException, IOException {
 		initialManager();
 		String subjectId = (String) request.getAttribute("SubjectId");
-		
+
 		List<CommonSubjectTemplate> cst = manager.getAllCommonSubjectTemplatesBySubjectID(Integer.parseInt(subjectId));
 		List<SubjectComponentTemplates> templateList = manager.getAllSubjectComponentTemplatesByIDList(cst);
 
@@ -63,19 +63,29 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 		initialManager();
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
-		//String id = data.get("id") == null ? null : data.get("id").getAsString();
+		// String id = data.get("id") == null ? null :
+		// data.get("id").getAsString();
 		String name = data.get("name").getAsString();
 		String percentage = data.get("percentage").getAsString();
 		String number = data.get("number").getAsString();
 		String subjectId = data.get("subjectId").getAsString();
 
-		SubjectComponentTemplates sct = new SubjectComponentTemplates(null, name, Double.parseDouble(percentage),
-				Integer.parseInt(number));
+		if (fullNumericStringValidation(percentage) && fullNumericStringValidation(number)
+				&& fullNumericStringValidation(subjectId)) {
+			
+			SubjectComponentTemplates sct = new SubjectComponentTemplates(null, name, Double.parseDouble(percentage),
+					Integer.parseInt(number));
+
+			manager.AddSubjectComponentTemplate(sct);
+			manager.AddCommonSubjectTemplate(
+					new CommonSubjectTemplate((Integer) null, sct.getId(), Integer.parseInt(subjectId)));
+
+			request.setAttribute("SubjectId", subjectId);
+		}else{
+			//incorrect paramaters
+		}
+
 		
-		manager.AddSubjectComponentTemplate(sct);
-		manager.AddCommonSubjectTemplate(new CommonSubjectTemplate((Integer) null, sct.getId(), Integer.parseInt(subjectId)));
-		
-		request.setAttribute("SubjectId", subjectId);
 		doGet(request, response);
 	}
 

@@ -67,16 +67,17 @@ public class AddSubjectServlet extends SubjectServletParent {
 		String ects = data.get("ects").getAsString();
 		String lecturerName = data.get("lecturerName").getAsString();
 
-		if (fullNumericStringValidation(year) && fullNumericStringValidation(ects)) {
+		if (fullNumericStringValidation(year) && fullNumericStringValidation(ects)
+				&& fullNumericStringValidation(termId)) {
 
 			SubjectInfo subjectInfo = new SubjectInfo(lecturerName, null, Integer.parseInt(ects), language);
 			manager.AddSubjectInfo(subjectInfo);
 			int subjectInfoId = subjectInfo.getId();
-			
+
 			Subject subject = new Subject(name, Integer.parseInt(termId), Integer.parseInt(year), subjectInfoId);
 			manager.AddSubject(subject);
 			int subjectId = subjectInfo.getId();
-			
+
 			request.setAttribute("SubjectId", subjectId);
 		} else {
 			// validation error

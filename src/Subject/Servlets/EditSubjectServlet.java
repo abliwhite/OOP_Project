@@ -54,6 +54,7 @@ public class EditSubjectServlet extends SubjectServletParent {
 		String lecturerName = data.get("lecturerName").getAsString();
 		String subjectId = data.get("subjectId").getAsString();
 
+		
 		/*
 		Subject subject = new Subject(Integer.parseInt(subjectId), name, language, Integer.parseInt(ects), lecturerName,
 				null);

@@ -40,23 +40,25 @@ public class EditComponentTemplateServlet extends SubjectServletParent {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		/*
-		String subjectId = (String) request.getAttribute("SubjectId");
-		int id = Integer.parseInt(subjectId);
-		
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
-				
-		List<CommonSubjectTemplate> cst = manager.getAllCommonSubjectTemplatesBySubjectID(id);
-		List<SubjectComponentTemplates> templateList = manager.getAllSubjectComponentTemplatesByIDList(cst);
-
-		String json = new Gson().toJson(templateList);
-
-		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
-		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
-
-		response.getWriter().write(json);
-		*/
+		 * String subjectId = (String) request.getAttribute("SubjectId"); int id
+		 * = Integer.parseInt(subjectId);
+		 * 
+		 * manager = manager == null ? (SubjectManagerInterface)
+		 * getServletContext().getAttribute(SubjectManager.
+		 * SUBJECT_MANAGER_ATTRIBUTE) : manager;
+		 * 
+		 * List<CommonSubjectTemplate> cst =
+		 * manager.getAllCommonSubjectTemplatesBySubjectID(id);
+		 * List<SubjectComponentTemplates> templateList =
+		 * manager.getAllSubjectComponentTemplatesByIDList(cst);
+		 * 
+		 * String json = new Gson().toJson(templateList);
+		 * 
+		 * response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
+		 * response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
+		 * 
+		 * response.getWriter().write(json);
+		 */
 	}
 
 	/**
@@ -68,18 +70,24 @@ public class EditComponentTemplateServlet extends SubjectServletParent {
 		initialManager();
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
-		String id = data.get("id") == null ? null : data.get("id").getAsString();
+		String id = data.get("id").getAsString();
 		String name = data.get("name").getAsString();
 		String percentage = data.get("percentage").getAsString();
 		String number = data.get("number").getAsString();
-		//String subjectId = data.get("subjectId").getAsString();
+		// String subjectId = data.get("subjectId").getAsString();
 
-		SubjectComponentTemplates sct = new SubjectComponentTemplates(Integer.parseInt(id), name,
-				Double.parseDouble(percentage), Integer.parseInt(number));
-		manager.UpdateSubjectComponentTemplate(sct);
+		if (fullNumericStringValidation(id) && fullNumericStringValidation(percentage)
+				&& fullNumericStringValidation(number)) {
+			
+			SubjectComponentTemplates sct = new SubjectComponentTemplates(Integer.parseInt(id), name,
+					Double.parseDouble(percentage), Integer.parseInt(number));
+			manager.UpdateSubjectComponentTemplate(sct);
+		}
+
+		
 		/*
-		request.setAttribute("SubjectId", subjectId);
-		doGet(request, response);
-		*/
+		 * request.setAttribute("SubjectId", subjectId); doGet(request,
+		 * response);
+		 */
 	}
 }

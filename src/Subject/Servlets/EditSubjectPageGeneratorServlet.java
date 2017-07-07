@@ -43,7 +43,7 @@ public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 		initialManager();
 		String subjectId = request.getParameter("id");
 		
-		if (isValidRequest(subjectId)) {
+		if (fullNumericStringValidation(subjectId)) {
 			int id = Integer.parseInt(subjectId);
 
 			List<CommonSubjectTemplate> cst = manager.getAllCommonSubjectTemplatesBySubjectID(id);
@@ -61,7 +61,6 @@ public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 					getSubjectComponentTemplatesViewEntities(sc));
 
 			request.setAttribute(SubjectViewEntity.SUBJECT_VIEW_ENTITY_ATTRIBUTE, subjectViewEntity);
-
 			request.getRequestDispatcher("Subject/Edit.jsp").forward(request, response);
 		} else {
 			// page not found
@@ -74,16 +73,6 @@ public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 
 		for (int i = 0; i < sc.size(); i++) {
 			result.add(new SubjectComponentTemplatesViewEntity(sc.get(i)));
-		}
-		return result;
-	}
-
-	private Boolean isValidRequest(String subjectId) {
-		if (subjectId == null)
-			return false;
-		boolean result = true;
-		for (int i = 0; i < subjectId.length(); i++) {
-			result = result && Character.isDigit(subjectId.charAt(i));
 		}
 		return result;
 	}
