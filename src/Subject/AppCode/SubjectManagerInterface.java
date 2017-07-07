@@ -7,6 +7,7 @@ import Subject.Models.Subject;
 import Subject.Models.SubjectComponentTemplates;
 import Subject.Models.SubjectInfo;
 import Subject.Models.SubjectTerm;
+import Subject.Models.UserSubject;
 
 public interface SubjectManagerInterface {
 
@@ -36,4 +37,9 @@ public interface SubjectManagerInterface {
 	public List<CommonSubjectTemplate> getAllCommonSubjectTemplatesBySubjectID(int subjectId);
 
 	public Subject getSubjectById(int subjectId);
+	
+	public Subject getSubjectByFilter(String subjectName, int year, int termId);
+	
+	public void addUserSubject(UserSubject us);
+	
 }

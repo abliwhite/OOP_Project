@@ -73,7 +73,7 @@ public class LoginServlet extends HttpServlet {
 					user.setUserProfile(profile);
 				}
 				request.setAttribute("user", user);
-				request.getRequestDispatcher("/Profiles/UserProfile.jsp").forward(request, response);
+				request.getRequestDispatcher("/ProfilePageGeneratorServlet").forward(request, response);
 			}
 		} else {
 			request.setAttribute(ViewTextContainer.RESULT, new ViewTextContainer());

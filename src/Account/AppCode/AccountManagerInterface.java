@@ -21,4 +21,5 @@ public interface AccountManagerInterface {
 	public User checkLoginValidation(AuthModel auth);
 	
 	public UserProfile getProfile(User user);
+	
 }

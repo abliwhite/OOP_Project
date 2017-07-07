@@ -23,6 +23,7 @@ import Common.Models.ResponseMessage;
 import Database.DbCertificate;
 import Database.MyDBInfo;
 import Database.QueryGenerator;
+import Subject.Models.Subject;
 
 public class AccountManager extends DaoController implements AccountManagerInterface {
 

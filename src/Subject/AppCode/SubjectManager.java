@@ -20,6 +20,7 @@ import Subject.Models.Subject;
 import Subject.Models.SubjectComponentTemplates;
 import Subject.Models.SubjectInfo;
 import Subject.Models.SubjectTerm;
+import Subject.Models.UserSubject;
 
 public class SubjectManager extends DaoController implements SubjectManagerInterface {
 
@@ -446,6 +447,17 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		}
 
 		return result;
+	}
+
+	@Override
+	public Subject getSubjectByFilter(String subjectName, int year, int termId) {
+		
+		return null;
+	}
+
+	@Override
+	public void addUserSubject(UserSubject us) {
+		
 	}
 
 }
