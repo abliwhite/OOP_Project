@@ -23,9 +23,8 @@ import Subject.Models.SubjectViewEntity;
  * Servlet implementation class EditSubjectServlet
  */
 @WebServlet("/EditSubjectPageGeneratorServlet")
-public class EditSubjectPageGeneratorServlet extends HttpServlet {
+public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
-	private SubjectManagerInterface manager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -41,10 +40,9 @@ public class EditSubjectPageGeneratorServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		initialManager();
 		String subjectId = request.getParameter("id");
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
+		
 		if (isValidRequest(subjectId)) {
 			int id = Integer.parseInt(subjectId);
 

@@ -22,9 +22,8 @@ import Subject.Models.SubjectComponentTemplates;
  * Servlet implementation class EditComponentTemplateServlet
  */
 @WebServlet("/EditComponentTemplateServlet")
-public class EditComponentTemplateServlet extends HttpServlet {
+public class EditComponentTemplateServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
-	private SubjectManagerInterface manager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -66,10 +65,7 @@ public class EditComponentTemplateServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
-
+		initialManager();
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
 		String id = data.get("id") == null ? null : data.get("id").getAsString();

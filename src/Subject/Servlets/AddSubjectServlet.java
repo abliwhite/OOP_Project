@@ -18,15 +18,14 @@ import Subject.AppCode.SubjectManagerInterface;
 import Subject.Models.CommonSubjectTemplate;
 import Subject.Models.Subject;
 import Subject.Models.SubjectComponentTemplates;
+import Subject.Models.SubjectInfo;
 
 /**
  * Servlet implementation class AddSubjectServlet
  */
 @WebServlet("/AddSubjectServlet")
-public class AddSubjectServlet extends HttpServlet {
+public class AddSubjectServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
-
-	private SubjectManagerInterface manager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -43,7 +42,7 @@ public class AddSubjectServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int subjectId = (int) request.getAttribute("SubjectId");
-		
+
 		String json = new Gson().toJson(subjectId);
 
 		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
@@ -58,20 +57,31 @@ public class AddSubjectServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
+		initialManager();
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
 		String name = data.get("name").getAsString();
+		String year = data.get("year").getAsString();
+		String termId = data.get("termId").getAsString();
 		String language = data.get("language").getAsString();
 		String ects = data.get("ects").getAsString();
 		String lecturerName = data.get("lecturerName").getAsString();
-		
-		Subject subject = new Subject((Integer) null,name,language,Integer.parseInt(ects),lecturerName,null);
-		manager.AddSubject(subject);
-		
-		request.setAttribute("SubjectId", subject.getId());
+
+		if (fullNumericStringValidation(year) && fullNumericStringValidation(ects)) {
+
+			SubjectInfo subjectInfo = new SubjectInfo(lecturerName, null, Integer.parseInt(ects), language);
+			manager.AddSubjectInfo(subjectInfo);
+			int subjectInfoId = subjectInfo.getId();
+			
+			Subject subject = new Subject(name, Integer.parseInt(termId), Integer.parseInt(year), subjectInfoId);
+			manager.AddSubject(subject);
+			int subjectId = subjectInfo.getId();
+			
+			request.setAttribute("SubjectId", subjectId);
+		} else {
+			// validation error
+		}
+
 		doGet(request, response);
 	}
 

@@ -5,9 +5,15 @@ import java.util.List;
 import Subject.Models.CommonSubjectTemplate;
 import Subject.Models.Subject;
 import Subject.Models.SubjectComponentTemplates;
+import Subject.Models.SubjectInfo;
+import Subject.Models.SubjectTerm;
 
 public interface SubjectManagerInterface {
 
+	public void AddSubjectInfo(SubjectInfo subjectInfo);
+	
+	public List<SubjectTerm> GetAllSubjectTerms();
+	
 	public void AddSubject(Subject subject);
 	
 	public void UpdateSubject(Subject subject);

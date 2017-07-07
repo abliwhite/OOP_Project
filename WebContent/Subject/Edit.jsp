@@ -41,9 +41,9 @@
 		</div>
 		<%
 		out.print("Name: <input type='text' name='name' class='form-control' placeholder='Name' id='name_id' value='"+subject.getName()+"' >");
-		out.print("language: <input type='text' name='language' class='form-control' placeholder='language' id='language_id' value='"+subject.getLanguage()+"' >");
-		out.print("Ects: <input type='text' name='ects' class='form-control' placeholder='ects' id='ects_id' value='"+subject.getEcts()+"' >");
-		out.print("LecturerName: <input type='text' name='lecturerName' class='form-control' placeholder='lecturerName' id='lecturerName_id' value='"+subject.getLecturerName()+"' >");
+		//out.print("language: <input type='text' name='language' class='form-control' placeholder='language' id='language_id' value='"+subject.getLanguage()+"' >");
+		//out.print("Ects: <input type='text' name='ects' class='form-control' placeholder='ects' id='ects_id' value='"+subject.getEcts()+"' >");
+		//out.print("LecturerName: <input type='text' name='lecturerName' class='form-control' placeholder='lecturerName' id='lecturerName_id' value='"+subject.getLecturerName()+"' >");
 		%>
 		<input onclick="EditSubject('<%=subject.getId()%>'); return false;" class='btn btn-warning' type='button' value='Edit'>
 	</div>

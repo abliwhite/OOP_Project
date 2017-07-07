@@ -22,7 +22,7 @@ import Subject.Models.SubjectComponentTemplates;
  * Servlet implementation class AddComponentTemplateServlet
  */
 @WebServlet("/AddComponentTemplateServlet")
-public class AddComponentTemplateServlet extends HttpServlet {
+public class AddComponentTemplateServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 	private SubjectManagerInterface manager;
 
@@ -40,12 +40,9 @@ public class AddComponentTemplateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		initialManager();
 		String subjectId = (String) request.getAttribute("SubjectId");
 		
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
-				
 		List<CommonSubjectTemplate> cst = manager.getAllCommonSubjectTemplatesBySubjectID(Integer.parseInt(subjectId));
 		List<SubjectComponentTemplates> templateList = manager.getAllSubjectComponentTemplatesByIDList(cst);
 
@@ -63,10 +60,7 @@ public class AddComponentTemplateServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
-
+		initialManager();
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
 		//String id = data.get("id") == null ? null : data.get("id").getAsString();

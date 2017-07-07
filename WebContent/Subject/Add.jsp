@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-
+<%@page import="Database.DbCertificate"%>
+<%@ page import="Subject.Models.SubjectTerm"%>
+<%@ page import="java.util.List"%>  
+<%@ page import="java.util.ArrayList"%> 
 	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -23,13 +26,31 @@
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <title>Add Subject</title>
+<%
+	List<SubjectTerm> subjectTermsList = (ArrayList<SubjectTerm>) request.getAttribute("SubjectTerms");
+%>
 </head>
 <body>
 	<div class="container">
-		Name: <input type='text' name='name' class="form-control" placeholder="Name" id='name_id'>
-		language: <input type='text' name='language' class="form-control" placeholder="language" id='language_id'>
-		Ects: <input type='number' name='ects' class="form-control" placeholder="Ects" id='ects_id'>
-		LecturerName: <input type='text'  name='lecturerName' class="form-control" placeholder="LecturerName" id='lecturerName_id'>
+		<div name = "required">
+			Name: <input type='text' name='name' class="form-control" placeholder="Name" id='name_id'>
+			Year: <input type='number' name='language' class="form-control" placeholder="Year" id='year_id'>
+			<select class="form-control" name="SubjectTerm" id="term_id">
+			<%
+				for(int i=0; i < subjectTermsList.size(); i++)
+				{
+					SubjectTerm term = subjectTermsList.get(i);
+					out.print("<option value = '" + term.getId() + "'>" + term.getName() + "</option>");
+				}
+			%>
+			</select>
+		</div>
+		<div name = "optional">
+			Ects: <input type='number' name='ects' class="form-control" placeholder="Ects" id='ects_id'>
+			Language: <input type='text' name='language' class="form-control" placeholder="Language" id='language_id'>
+			Lecturer Name: <input type='text' name='lecturerName' class="form-control" placeholder="Lecturer Name" id='lecturerName_id'>
+		</div>
+		
 		<input onclick="AddSubject(); return false;" id="subject_add_Button_id" type='button' class='btn btn-primary' value='Add'>
 	</div>
 	<div style="display:none" class="alert alert-success" id="alert_div_id" role="alert">
@@ -56,11 +77,13 @@
 
 function AddSubject(){
 	name = $('#name_id').val();
+	year = $('#year_id').val();
+	termId = $('#term_id').val();
 	language = $('#language_id').val();
 	ects = $('#ects_id').val();
 	lecturerName = $('#lecturerName_id').val();
 	
-	if(name == "" || language == "" || ects == "" || lecturerName == ""){
+	if(name == "" || language == "" || ects == "" || lecturerName == "" || year==""){
 		$("#alert_div_id").removeClass("alert alert-success");
 		$("#alert_div_id").addClass("alert alert-danger");
 		$("#alert_div_id").html("Fill All Fields!");
@@ -69,7 +92,9 @@ function AddSubject(){
 	}
 	
 	data = {
-			name: name,			
+			name: name,
+			year: year,
+			termId: termId,
 			language: language,
 			ects: ects,
 			lecturerName: lecturerName	

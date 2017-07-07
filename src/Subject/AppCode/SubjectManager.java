@@ -18,20 +18,56 @@ import Database.MyDBInfo;
 import Subject.Models.CommonSubjectTemplate;
 import Subject.Models.Subject;
 import Subject.Models.SubjectComponentTemplates;
+import Subject.Models.SubjectInfo;
+import Subject.Models.SubjectTerm;
 
 public class SubjectManager extends DaoController implements SubjectManagerInterface {
 
 	public static final String SUBJECT_MANAGER_ATTRIBUTE = "Subject Manager Attribute";
 
+	private List<String> subjectInfoColumnNames;
 	private List<String> subjectColumnNames;
 	private List<String> subjectComponentColumnNames;
 	private List<String> commonSubjectTemplateColumnNames;
 
 	public SubjectManager(DataSource pool) {
 		super(pool);
+		subjectInfoColumnNames = getColumnsNames(DbCertificate.SubjectInfoTable.TABLE_NAME);
 		subjectColumnNames = getColumnsNames(DbCertificate.SubjectTable.TABLE_NAME);
 		subjectComponentColumnNames = getColumnsNames(DbCertificate.SubjectComponentTemplateTable.TABLE_NAME);
 		commonSubjectTemplateColumnNames = getColumnsNames(DbCertificate.CommonSubjectComponentTable.TABLE_NAME);
+	}
+
+	@Override
+	public void AddSubjectInfo(SubjectInfo subjectInfo) {
+		try {
+			java.sql.Connection con = getConnection();
+			String insertQuery = generator.getInsertQuery(subjectInfoColumnNames,
+					DbCertificate.SubjectInfoTable.TABLE_NAME);
+			con.createStatement().executeQuery(generator.getUseDatabaseQuery());
+			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+			setValues(getSubjectInfoValues(subjectInfo), st);
+
+			st.executeUpdate();
+			try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					subjectInfo.setId(generatedKeys.getInt(1));
+				} else {
+					throw new SQLException();
+				}
+			}
+
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private List<String> getSubjectInfoValues(SubjectInfo subjectInfo) {
+		return Arrays.asList(subjectInfo.getLecturerName(), subjectInfo.getSyllabusPath(),
+				Integer.toString(subjectInfo.getEcts()), subjectInfo.getLanguage());
 	}
 
 	@Override
@@ -94,8 +130,8 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	}
 
 	private List<String> getSubjectValues(Subject subject) {
-		return Arrays.asList(subject.getName(), subject.getLanguage(), Integer.toString(subject.getEcts()),
-				subject.getLecturerName(), subject.getSyllabusPath());
+		return Arrays.asList(subject.getName(), Integer.toString(subject.getTermId()),
+				Integer.toString(subject.getYear()),Integer.toString(subject.getSubjectInfoID()));
 	}
 
 	@Override
@@ -282,13 +318,24 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 
 		while (rs.next()) {
 			int id = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_ID);
-			int ects = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_ECTS);
-			String language = rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_LANGUAGE);
 			String name = rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_NAME);
-			String syllabusPath = rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_SYLLABUSPATH);
-			String lecturerName = rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_LECTURERNAME);
-
-			Subject temp = new Subject(id, name, language, ects, lecturerName, syllabusPath);
+			int termId = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID);
+			int year = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_YEAR);
+			int subjectInfoID = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_SUBJECT_INFO_ID);
+			/*
+			 * int ects =
+			 * rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_ECTS); String
+			 * language =
+			 * rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_LANGUAGE);
+			 * String name =
+			 * rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_NAME); String
+			 * syllabusPath =
+			 * rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_SYLLABUSPATH)
+			 * ; String lecturerName =
+			 * rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_LECTURERNAME)
+			 * ;
+			 */
+			Subject temp = new Subject(id, name, termId, year, subjectInfoID);
 			result.add(temp);
 		}
 
@@ -363,4 +410,42 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public List<SubjectTerm> GetAllSubjectTerms() {
+		List<SubjectTerm> result = null;
+		try {
+			java.sql.Connection con = getConnection();
+			String selectAllQuery = generator.getSelectAllQuery(DbCertificate.SubjectTermTable.TABLE_NAME);
+
+			java.sql.Statement st = con.createStatement();
+			st.execute(generator.getUseDatabaseQuery());
+
+			ResultSet rs = st.executeQuery(selectAllQuery);
+
+			result = getSubjectTermsList(rs);
+
+			
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	private List<SubjectTerm> getSubjectTermsList(ResultSet rs) throws SQLException {
+		List<SubjectTerm> result = new ArrayList<SubjectTerm>();
+		
+		while (rs.next()) {
+			int id = rs.getInt(DbCertificate.SubjectTermTable.COLUMN_NAME_ID);
+			String name = rs.getString(DbCertificate.SubjectTermTable.COLUMN_NAME_NAME);
+			
+			SubjectTerm temp = new SubjectTerm(name, id);
+			result.add(temp);
+		}
+
+		return result;
+	}
+
 }
