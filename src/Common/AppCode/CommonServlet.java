@@ -12,17 +12,25 @@ public abstract class CommonServlet extends HttpServlet {
 		return request.getHeader("X-Forwarded-For");
 	}
 
-	public void AddUserInSession(HttpServletRequest request, User user) {
+	public void addUserInSession(HttpServletRequest request, User user) {
 		String userIpAddress = getRequestIp(request);
 
 		HttpSession session = request.getSession(true);
 		session.setAttribute(userIpAddress, user);
 	}
 
-	public void RemoveUserFromSession(HttpServletRequest request) {
+	public void removeUserFromSession(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if (session != null)
 			session.invalidate();
+	}
+	
+	public User getUserFromSession(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		if (session != null)
+			return (User) session.getAttribute(getRequestIp(request));
+		
+		return null;
 	}
 
 	public boolean checkRequestPermission(HttpServletRequest request) {
