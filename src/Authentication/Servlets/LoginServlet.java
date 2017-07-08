@@ -63,9 +63,9 @@ public class LoginServlet extends AuthenticationServletParent {
 
 		User user = manager.checkLoginValidation(new AuthModel(name, password));
 		if (user != null) {
-			request.setAttribute(ViewTextContainer.RESULT, "Gilocav");
+			request.setAttribute(ViewTextContainer.RESULT, "Success");
 			
-			addUserInSession(request, user);
+			//addUserInSession(request, user);
 			
 			if (user.getUsername().equals(DbCertificate.UserTable.ADMIN_USERNAME)
 					&& user.getPassword().equals(DbCertificate.UserTable.ADMIN_PASSWORD)) {
