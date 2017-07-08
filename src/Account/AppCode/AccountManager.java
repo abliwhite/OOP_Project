@@ -23,6 +23,7 @@ import Common.Models.ResponseMessage;
 import Database.DbCertificate;
 import Database.MyDBInfo;
 import Database.QueryGenerator;
+import Subject.AppCode.SubjectManager;
 import Subject.Models.Subject;
 
 public class AccountManager extends DaoController implements AccountManagerInterface {
@@ -240,5 +241,87 @@ public class AccountManager extends DaoController implements AccountManagerInter
 
 	private List<String> getProfileValues(UserProfile profile) {
 		return Arrays.asList(profile.getName(), profile.getSurname(), profile.getGender(), profile.getCreateDate());
+	}
+
+	@Override
+	public List<Subject> getUserSubjects(User user) {
+		List<Subject> subjects = null;
+		
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = "SELECT * FROM " + DbCertificate.UserSubjectTable.TABLE_NAME 
+					+ " WHERE "
+					+ DbCertificate.UserSubjectTable.COLUMN_NAME_USER_ID + " = " + user.getId();
+					
+			
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+			
+			ResultSet rs = st.executeQuery();
+			subjects = getSubjects(rs);
+			
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return subjects;
+	}
+
+	private List<Subject> getSubjects(ResultSet rs) {
+		List<Subject> result = new ArrayList<>();
+		
+		try {
+			while (rs.next()) {
+				int subjectId = rs.getInt(DbCertificate.UserSubjectTable.COLUMN_NAME_SUBJECT_ID);
+				result.add(getSubjectById(subjectId));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	public Subject getSubjectById(int subjectId) {
+		Subject result = null;
+		try {
+			java.sql.Connection con = getConnection();
+
+			String selectQuery = generator.getSelectByIDQuery(DbCertificate.SubjectTable.TABLE_NAME,
+					DbCertificate.SubjectTable.COLUMN_NAME_ID, 1);
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(subjectId)), st);
+			ResultSet rs = st.executeQuery();
+			List<Subject> temp = getSubjectsList(rs);
+
+			result = temp.size() == 0 ? result : temp.get(0);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	private List<Subject> getSubjectsList(ResultSet rs) throws SQLException {
+		List<Subject> result = new ArrayList<Subject>();
+
+		while (rs.next()) {
+			int id = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_ID);
+			String name = rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_NAME);
+			int termId = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID);
+			int year = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_YEAR);
+			int subjectInfoID = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_SUBJECT_INFO_ID);
+			
+			Subject temp = new Subject(id, name, termId, year, subjectInfoID);
+			result.add(temp);
+		}
+
+		return result;
 	}
 }

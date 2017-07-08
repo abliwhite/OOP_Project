@@ -1,10 +1,13 @@
 package Account.AppCode;
 
+import java.util.List;
+
 import Account.Models.AuthModel;
 import Account.Models.RegisterModel;
 import Account.Models.User;
 import Account.Models.UserProfile;
 import Common.Models.ResponseMessage;
+import Subject.Models.Subject;
 
 public interface AccountManagerInterface {
 
@@ -21,5 +24,7 @@ public interface AccountManagerInterface {
 	public User checkLoginValidation(AuthModel auth);
 	
 	public UserProfile getProfile(User user);
+
+	public List<Subject> getUserSubjects(User user);
 	
 }

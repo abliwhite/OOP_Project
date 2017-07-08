@@ -31,7 +31,7 @@ public class ProfilePageGeneratorServlet extends SubjectServletParent {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		initialManager();
 		List<SubjectTerm> SubjectTerms = manager.GetAllSubjectTerms();
-
+		
 		request.setAttribute("SubjectTerms", SubjectTerms);
 		
 		request.getRequestDispatcher("Profiles/UserProfile.jsp").forward(request, response);

@@ -30,6 +30,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	private List<String> subjectColumnNames;
 	private List<String> subjectComponentColumnNames;
 	private List<String> commonSubjectTemplateColumnNames;
+	private List<String> userSubjectColumnNames;
 
 	public SubjectManager(DataSource pool) {
 		super(pool);
@@ -37,6 +38,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		subjectColumnNames = getColumnsNames(DbCertificate.SubjectTable.TABLE_NAME);
 		subjectComponentColumnNames = getColumnsNames(DbCertificate.SubjectComponentTemplateTable.TABLE_NAME);
 		commonSubjectTemplateColumnNames = getColumnsNames(DbCertificate.CommonSubjectComponentTable.TABLE_NAME);
+		userSubjectColumnNames = getColumnsNames(DbCertificate.UserSubjectTable.TABLE_NAME);
 	}
 
 	@Override
@@ -451,13 +453,59 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 
 	@Override
 	public Subject getSubjectByFilter(String subjectName, int year, int termId) {
-		
-		return null;
+		Subject subject = null;
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = "SELECT * FROM " + DbCertificate.SubjectTable.TABLE_NAME + " WHERE "
+					+ DbCertificate.SubjectTable.COLUMN_NAME_NAME + " = \"" + subjectName + "\""
+					+ " AND " + DbCertificate.SubjectTable.COLUMN_NAME_YEAR + " = " + year
+					+ " AND " + DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID + " = " + termId;
+
+			
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			ResultSet rs = st.executeQuery();
+
+			List<Subject> result = getSubjectsList(rs);
+			
+			if (!result.isEmpty()) {
+				subject = result.get(0);
+			}
+			
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return subject;
 	}
 
 	@Override
 	public void addUserSubject(UserSubject us) {
-		
+		try {
+			java.sql.Connection con = getConnection();
+			String insertQuery = generator.getInsertQuery(userSubjectColumnNames, DbCertificate.UserSubjectTable.TABLE_NAME);
+			con.createStatement().executeQuery(generator.getUseDatabaseQuery());
+			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+			setValues(getUserSubjectValues(us), st);
+
+			st.executeUpdate();
+			try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					us.setId(generatedKeys.getInt(1));
+				} else {
+					throw new SQLException();
+				}
+			}
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
+	private List<String> getUserSubjectValues(UserSubject us) {
+		return Arrays.asList(Integer.toString(us.getUserId()), Integer.toString(us.getSubjectId()));
+	}
 }

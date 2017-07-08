@@ -4,11 +4,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page import="Account.Models.*"%>
 <%@ page import="Account.AppCode.*"%>
-<%@ page import="Subject.Models.SubjectTerm"%>
+<%@ page import="Subject.Models.*"%>
 <%@ page import="java.util.List"%>  
 <%@ page import="java.util.ArrayList"%> 
 <html>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
 	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
@@ -22,24 +24,24 @@
 	User user = (User) request.getAttribute("user");
 	UserProfile profile = user.getProfile();
 	List<SubjectTerm> subjectTermsList = (ArrayList<SubjectTerm>) request.getAttribute("SubjectTerms");
+	List<Subject> userSubjects = (ArrayList<Subject>)request.getAttribute("UserSubjects");
 %>
 
 <title>Welcome</title>
 </head>
 
 <body>
-	<h1>
-		Hello,
-		<%=profile.getName()%>!
-	</h1>
-
+	<div class="w3-container w3-blue">
+		<h1>Hello, <%=profile.getName()%>!</h1>
+	</div>
 	<br>
+	
 	<div class="container">
+		<input type="hidden" id="hidden_user_id" value="<%=user.getId()%>">
 		<h3>Add Subject:</h3>
 		Subject: <input type='text' name='name' class="form-control" placeholder="Enter Subject" id='name_id'> 
 		Year: <input type='text' name='name' class="form-control" placeholder="Enter Year" id='year_id'>
-		Term: 
-		<select class="form-control" name="SubjectTerm" id="term_id">
+		Term: <select class="form-control" name="SubjectTerm" id="term_id">
 		<%
 			for (int i = 0; i < subjectTermsList.size(); i++) {
 				SubjectTerm term = subjectTermsList.get(i);
@@ -49,12 +51,21 @@
 		</select>
 		<input onclick="addUserSubject(); return false;" id="subject_add_Button_id" type='button' class='btn btn-primary' value='Add'>
 		<br>
-		<div style="display:none" class="alert alert-success" id="alert_div_id" role="alert">
+		<div style="display:none" class="alert alert-success" id="alert_div_id" role="alert"></div>
 	</div>
 
 	<br>
 
-	<h2>Your Subjects:</h2>
+	<div class="w3-container w3-green">
+		<h2>Your Subjects:</h2>
+		<%
+			for (Subject subject : userSubjects) {
+				out.print("<br>");
+				out.print("<h3>" + subject.getName() + "</h3>");
+			}
+		%>
+	</div>
+	
 
 </body>
 
@@ -63,6 +74,7 @@ function addUserSubject(){
 	subjectName = $("#name_id").val();
 	subjectYear = $("#year_id").val();
 	subjectTermId = $("#term_id").val();
+	userId = $("#hidden_user_id").val();
 		
 	if (subjectName == "" || subjectYear == "" || subjectTermId == ""){
 		$("#alert_div_id").removeClass("alert alert-success");
@@ -75,7 +87,8 @@ function addUserSubject(){
 	data = {
 			subjectName: subjectName,			
 			subjectYear: subjectYear,
-			subjectTermId: subjectTermId
+			subjectTermId: subjectTermId,
+			userId: userId
 		};
 		
 	$.ajax({

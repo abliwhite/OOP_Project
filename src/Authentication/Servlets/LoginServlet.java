@@ -1,6 +1,7 @@
 package Authentication.Servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -20,6 +21,8 @@ import Account.Models.UserProfile;
 import Common.AppCode.DaoController;
 import Common.AppCode.ViewTextContainer;
 import Database.DbCertificate;
+import Subject.Models.Subject;
+import Subject.Models.SubjectTerm;
 import Common.AppCode.*;
 
 /**
@@ -60,9 +63,7 @@ public class LoginServlet extends AuthenticationServletParent {
 
 		User user = manager.checkLoginValidation(new AuthModel(name, password));
 		if (user != null) {
-			request.setAttribute(ViewTextContainer.RESULT, "Gilocav");
-			
-			
+			request.setAttribute(ViewTextContainer.RESULT, "Success");
 			
 			if (user.getUsername().equals(DbCertificate.UserTable.ADMIN_USERNAME)
 					&& user.getPassword().equals(DbCertificate.UserTable.ADMIN_PASSWORD)) {
@@ -72,6 +73,9 @@ public class LoginServlet extends AuthenticationServletParent {
 					UserProfile profile = manager.getProfile(user);
 					user.setUserProfile(profile);
 				}
+				List<Subject> userSubjects = manager.getUserSubjects(user);
+				
+				request.setAttribute("UserSubjects", userSubjects);
 				request.setAttribute("user", user);
 				request.getRequestDispatcher("/ProfilePageGeneratorServlet").forward(request, response);
 			}
