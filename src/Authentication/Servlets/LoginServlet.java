@@ -62,7 +62,7 @@ public class LoginServlet extends AuthenticationServletParent {
 		if (user != null) {
 			request.setAttribute(ViewTextContainer.RESULT, "Gilocav");
 			
-			
+			addUserInSession(request, user);
 			
 			if (user.getUsername().equals(DbCertificate.UserTable.ADMIN_USERNAME)
 					&& user.getPassword().equals(DbCertificate.UserTable.ADMIN_PASSWORD)) {

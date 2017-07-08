@@ -40,6 +40,7 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		initialManager();
+		
 		String subjectId = (String) request.getAttribute("SubjectId");
 
 		List<CommonSubjectTemplate> cst = manager.getAllCommonSubjectTemplatesBySubjectID(Integer.parseInt(subjectId));
