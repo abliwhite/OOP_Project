@@ -35,6 +35,7 @@ public class AddSubjectPageGeneratorServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		initialManager();
+		//redirectToLoginIfNotLogged(request, response);
 		List<SubjectTerm> SubjectTerms = manager.GetAllSubjectTerms();
 
 		request.setAttribute("SubjectTerms", SubjectTerms);

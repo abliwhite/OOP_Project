@@ -24,6 +24,8 @@ public interface SubjectManagerInterface {
 	public void DeleteCommonSubjectTemplateByIDFields(int subjectId,int subjectComponentId);
 
 	public void AddSubjectComponentTemplate(SubjectComponentTemplates sct);
+	
+	public boolean CheckIfExistsSubjectComponentTemplate(SubjectComponentTemplates sct);
 
 	public void UpdateSubjectComponentTemplate(SubjectComponentTemplates sct);
 

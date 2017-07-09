@@ -60,7 +60,7 @@
 		
 		<input onclick="AddSubject(); return false;" id="subject_add_Button_id" type='button' class='btn btn-primary' value='Add'>
 	</div>
-	<div style="display:none" class="alert alert-success" id="alert_div_id" role="alert">
+	<div style="display:none" class="alert alert-success" id="subject_alert_div_id" role="alert">
 	</div>
 
 	<div style="display:none">
@@ -70,17 +70,26 @@
 		<div class="table-responsive" id="subjectComponents_id">
 			
 		</div>
-		
+		<input id='show_Add_Subject_Template_id' type='button' onclick="showAddSubjectTemplate();" class='btn btn-primary' value="Add Component" style="display: none;">
 		<div id="subjectComponentTemplateRow_id" style="display: none;">
 			Add Subject Component: <input type="text" name="subjectComponentTemplateName" class="form-control" placeholder="Name" id="subjectComponentNameInput_id">
 			<input type="number" name="subjectComponentTemplatePercentage" class="form-control" placeholder="Percent"  id="subjectComponentTemplatePercentageInput_id">
 			<input type ="number" name ="subjectComponentTemplateNumber" class="form-control" placeholder="Number" id="subjectComponentTemplateNumberInput_id">
-			<input onclick="addTemplate(); return false;" type='button' class='btn btn-primary' value='Add Template'>
+			<input onclick="addTemplate(); return false;" type='button' class='btn btn-primary' value='Save'>
 		</div>
 		
 	</div>
+	<div style="display:none" class="alert alert-success" id="subject_component_alert_div_id" role="alert">
+	</div>
 </body>
 <script>
+
+
+
+function showAddSubjectTemplate(){
+	$("#subjectComponentTemplateRow_id").show();
+	$("#show_Add_Subject_Template_id").hide();
+}
 
 function AddSubject(){
 	name = $('#name_id').val();
@@ -92,10 +101,12 @@ function AddSubject(){
 	lecturerName = $('#lecturerName_id').val();
 	
 	if(name == "" || language == "" || ects == "" || lecturerName == "" || year==""){
-		$("#alert_div_id").removeClass("alert alert-success");
-		$("#alert_div_id").addClass("alert alert-danger");
-		$("#alert_div_id").html("Fill All Fields!");
-    	$("#alert_div_id").show();
+		$("#subject_alert_div_id").removeClass("alert alert-success");
+		$("#subject_alert_div_id").addClass("alert alert-danger");
+		$("#subject_alert_div_id").html("Fill All Fields!");
+    	$("#subject_alert_div_id").show();
+    	
+    	fadeAlertMessage();
 		return;
 	}
 	
@@ -115,7 +126,18 @@ function AddSubject(){
 	    data: JSON.stringify(data),
 	    success: function(response) {
 	    	console.log(response);
-	    	$("#hidden_subject_id").val(response);
+	    	
+	    	if(response.isSuccess == false){
+	    		$("#subject_alert_div_id").removeClass("alert alert-success");
+	    		$("#subject_alert_div_id").addClass("alert alert-danger");
+	    		$("#subject_alert_div_id").html(response.resultMessage);
+	    		
+	    		fadeAlertMessage();
+	    		return;
+	    	}
+	    	
+	    	$("#hidden_subject_id").val(response.resultObject);	
+	    	
 	    	$("#subject_add_Button_id").hide();
 	    	$("#subject_optional_info").hide();
 	    	$("#subject_required_info").hide();
@@ -124,16 +146,14 @@ function AddSubject(){
 	    	$("#year_label_id").text(year);
 	    	$("#term_label_id").text(term);
 	    	$("#display_subject_required_info").show();
-	    	$("#subjectComponentTemplateRow_id").show();
+	    	$("#show_Add_Subject_Template_id").show();
 	    	
-	    	$("#alert_div_id").removeClass("alert alert-danger");
-	    	$("#alert_div_id").addClass("alert alert-success");
-	    	$("#alert_div_id").html("Success!");
-	    	$("#alert_div_id").show();
+	    	$("#subject_alert_div_id").removeClass("alert alert-danger");
+	    	$("#subject_alert_div_id").addClass("alert alert-success");
+	    	$("#subject_alert_div_id").html(response.resultMessage);
+	    	$("#subject_alert_div_id").show();
 	    	
-	    	$("#alert_div_id").fadeTo(1800, 600).slideUp(600, function(){
-	    	    $("#alert_div_id").slideUp(600);
-	    	});
+	    	fadeAlertMessage();
 	    }
 	});
 	

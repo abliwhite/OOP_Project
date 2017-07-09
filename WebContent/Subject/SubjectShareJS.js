@@ -2,6 +2,12 @@
  * 
  */
 
+function fadeAlertMessage(){
+	$("#subject_alert_div_id").fadeTo(1800, 600).slideUp(600, function(){
+	    $("#subject_alert_div_id").slideUp(600);
+	});
+}
+
 function buildNewComponentTemplateTable(arg){
 		var templatesDiv = $("#subjectComponents_id");
 		
@@ -97,7 +103,12 @@ function addTemplate(){
 	subjectId = $("#hidden_subject_id").val();
 	
 	if(componentName == "" || componentPercentage == "" || componentNumber == ""){
-		$("#alert").innerHTML = "Fill All Fields";
+		$("#subject_component_alert_div_id").removeClass("alert alert-success");
+		$("#subject_component_alert_div_id").addClass("alert alert-danger");
+		$("#subject_component_alert_div_id").html("Fill All Fields!");
+    	$("#subject_component_alert_div_id").show();
+    	
+    	fadeAlertMessage();
 		return;
 	}
 	
@@ -114,7 +125,23 @@ function addTemplate(){
 	    contentType: "application/json",
 	    data: JSON.stringify(data),
 	    success: function(response) {
-	    	buildNewComponentTemplateTable(response);
+	    	console.log(response);
+	    	if(!response.isSuccess){
+	    		$("#subject_component_alert_div_id").removeClass("alert alert-success");
+	    		$("#subject_component_alert_div_id").addClass("alert alert-danger");
+	    		$("#subject_component_alert_div_id").html(response.resultMessage);
+	    		
+	    		fadeAlertMessage();
+	    		return;
+	    	}
+	    	
+	    	$("#subject_component_alert_div_id").removeClass("alert alert-danger");
+	    	$("#subject_component_alert_div_id").addClass("alert alert-success");
+	    	$("#subject_component_alert_div_id").html(response.resultMessage);
+	    	$("#subject_component_alert_div_id").show();
+	    	
+	    	fadeAlertMessage();
+	    	buildNewComponentTemplateTable(response.resultList);
 	    }
 	});
 }

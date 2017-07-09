@@ -19,7 +19,7 @@ import Account.Models.User;
 import Account.Models.UserProfile;
 import Common.AppCode.CommonConstants;
 import Common.AppCode.DaoController;
-import Common.Models.ResponseMessage;
+import Common.Models.ResponseModel;
 import Database.DbCertificate;
 import Database.MyDBInfo;
 import Database.QueryGenerator;
@@ -168,8 +168,8 @@ public class AccountManager extends DaoController implements AccountManagerInter
 	}
 	
 
-	public ResponseMessage checkRegistrationValidity(RegisterModel register) {
-		ResponseMessage queryResult = null;
+	public ResponseModel checkRegistrationValidity(RegisterModel register) {
+		ResponseModel queryResult = null;
 		try {
 			java.sql.Connection con = getConnection();
 
@@ -189,9 +189,9 @@ public class AccountManager extends DaoController implements AccountManagerInter
 			con.close();
 
 			if (rs.next()) {
-				queryResult = new ResponseMessage(CommonConstants.UNSUCCESSFUL_REGISTRATION, false);
+				queryResult = new ResponseModel(CommonConstants.UNSUCCESSFUL_REGISTRATION, false);
 			} else {
-				queryResult = new ResponseMessage(CommonConstants.SUCCESSFUL_MESSAGE, true);
+				queryResult = new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE, true);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

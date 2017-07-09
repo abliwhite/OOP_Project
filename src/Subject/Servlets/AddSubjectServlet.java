@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import Common.AppCode.CommonConstants;
+import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
 import Subject.Models.CommonSubjectTemplate;
@@ -41,9 +42,10 @@ public class AddSubjectServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int subjectId = (int) request.getAttribute("SubjectId");
+		//redirectToLoginIfNotLogged(request,response);
+		ResponseModel res = (ResponseModel) request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
 
-		String json = new Gson().toJson(subjectId);
+		String json = new Gson().toJson(res);
 
 		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
 		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
@@ -58,6 +60,7 @@ public class AddSubjectServlet extends SubjectServletParent {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		initialManager();
+
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
 		String name = data.get("name").getAsString();
@@ -67,21 +70,33 @@ public class AddSubjectServlet extends SubjectServletParent {
 		String ects = data.get("ects").getAsString();
 		String lecturerName = data.get("lecturerName").getAsString();
 
-		if (fullNumericStringValidation(year) && fullNumericStringValidation(ects)
-				&& fullNumericStringValidation(termId)) {
-
-			SubjectInfo subjectInfo = new SubjectInfo(lecturerName, null, Integer.parseInt(ects), language);
-			manager.AddSubjectInfo(subjectInfo);
-			int subjectInfoId = subjectInfo.getId();
-
-			Subject subject = new Subject(name, Integer.parseInt(termId), Integer.parseInt(year), subjectInfoId);
-			manager.AddSubject(subject);
-			int subjectId = subjectInfo.getId();
-
-			request.setAttribute("SubjectId", subjectId);
-		} else {
-			// validation error
+		if (!(fullNumericStringValidation(year) && fullNumericStringValidation(ects)
+				&& fullNumericStringValidation(termId))) {
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Please enter numeric!", false));
+			
+			doGet(request, response);
+			return;
 		}
+
+		Subject existedSubject = manager.getSubjectByFilter(name, Integer.parseInt(year), Integer.parseInt(termId));
+
+		if (existedSubject != null) {
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Subject already exists!", false));
+			
+			doGet(request, response);
+			return;
+		}
+
+		SubjectInfo subjectInfo = new SubjectInfo(lecturerName, null, Integer.parseInt(ects), language);
+		manager.AddSubjectInfo(subjectInfo);
+		int subjectInfoId = subjectInfo.getId();
+
+		Subject subject = new Subject(name, Integer.parseInt(termId), Integer.parseInt(year), subjectInfoId);
+		manager.AddSubject(subject);
+		Integer subjectId = subject.getId();
+
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+				new ResponseModel(subjectId.toString(), true,CommonConstants.SUCCESSFUL_MESSAGE));
 
 		doGet(request, response);
 	}

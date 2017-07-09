@@ -12,7 +12,6 @@ import com.mysql.jdbc.Statement;
 
 import Common.AppCode.CommonConstants;
 import Common.AppCode.DaoController;
-import Common.Models.ResponseMessage;
 import Database.DbCertificate;
 import Database.MyDBInfo;
 import Subject.Models.CommonSubjectTemplate;
@@ -507,5 +506,33 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 
 	private List<String> getUserSubjectValues(UserSubject us) {
 		return Arrays.asList(Integer.toString(us.getUserId()), Integer.toString(us.getSubjectId()));
+	}
+
+	@Override
+	public boolean CheckIfExistsSubjectComponentTemplate(SubjectComponentTemplates sct) {
+		boolean result = false;
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = "SELECT * FROM " + DbCertificate.SubjectComponentTemplateTable.TABLE_NAME + 
+					" WHERE "
+					+ DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_NAME + " = " + "?"
+					+ " AND " + DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_NUMBER + " = " + "?"
+					+ " AND " + DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_MARKPERCENTAGE + " = " + "?";
+
+			
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+			
+			setValues(Arrays.asList(sct.getName(),Integer.toString(sct.getNumber()),Double.toString(sct.getMarkPercentage())), st);
+			ResultSet rs = st.executeQuery();
+
+			result = rs.next();
+			
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }

@@ -27,7 +27,7 @@ import Account.Models.RegisterModel;
 import Account.Models.User;
 import Account.Models.UserProfile;
 import Common.AppCode.CommonConstants;
-import Common.Models.ResponseMessage;
+import Common.Models.ResponseModel;
 import Database.DbCertificate;
 
 /**
@@ -80,7 +80,7 @@ public class RegisterServlet extends AuthenticationServletParent {
 			String surname = data.getString("surname");
 			String gender = data.getString("gender");
 
-			ResponseMessage resp = manager.checkRegistrationValidity(new RegisterModel(username, email));
+			ResponseModel resp = manager.checkRegistrationValidity(new RegisterModel(username, email));
 			if (resp.isSuccess()) {
 
 				UserProfile profile = new UserProfile(name, gender, CommonConstants.getDatetime(),

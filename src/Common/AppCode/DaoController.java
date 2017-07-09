@@ -12,7 +12,6 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.ResultSetMetaData;
 
-import Common.Models.ResponseMessage;
 import Database.DbCertificate;
 import Database.MyDBInfo;
 import Database.QueryGenerator;
