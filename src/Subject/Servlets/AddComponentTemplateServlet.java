@@ -41,17 +41,21 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		initialManager();
-		//redirectToLoginIfNotLogged(request,response);
+		// redirectToLoginIfNotLogged(request,response);
 
-		ResponseModel<SubjectComponentTemplates, String> res = (ResponseModel<SubjectComponentTemplates, String>) request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
-		
-		String subjectId = res.getResultObject().toString();
-		List<CommonSubjectTemplate> cst = manager.getAllCommonSubjectTemplatesBySubjectID(Integer.parseInt(subjectId));
-		List<SubjectComponentTemplates> templateList = manager.getAllSubjectComponentTemplatesByIDList(cst);
-		res.setResultList(templateList);
-		
+		ResponseModel<SubjectComponentTemplates, String> res = (ResponseModel<SubjectComponentTemplates, String>) request
+				.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
+
+		if (res.isSuccess()) {
+			
+			String subjectId = res.getResultObject().toString();
+			List<CommonSubjectTemplate> cst = manager
+					.getAllCommonSubjectTemplatesBySubjectID(Integer.parseInt(subjectId));
+			List<SubjectComponentTemplates> templateList = manager.getAllSubjectComponentTemplatesByIDList(cst);
+			res.setResultList(templateList);
+		}
 		String json = new Gson().toJson(res);
-
+		
 		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
 		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
 
@@ -74,27 +78,29 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 
 		if (!(fullNumericStringValidation(percentage) && fullNumericStringValidation(number)
 				&& fullNumericStringValidation(subjectId))) {
-			
-			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Please enter numeric!", false));
+
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+					new ResponseModel("Please enter numeric!", false));
 			doGet(request, response);
 			return;
 		}
-		
+
 		SubjectComponentTemplates sct = new SubjectComponentTemplates(name, Double.parseDouble(percentage),
 				Integer.parseInt(number));
 
-		if(manager.CheckIfExistsSubjectComponentTemplate(sct)){
-			
-			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Subject component already exists!", false));
+		if (manager.CheckIfExistsSubjectComponentTemplate(sct)) {
+
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+					new ResponseModel("Subject component already exists!", false));
 			doGet(request, response);
 			return;
 		}
-		
+
 		manager.AddSubjectComponentTemplate(sct);
 		manager.AddCommonSubjectTemplate(new CommonSubjectTemplate(sct.getId(), Integer.parseInt(subjectId)));
 
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-				new ResponseModel(subjectId.toString(), true,CommonConstants.SUCCESSFUL_MESSAGE));
+				new ResponseModel(subjectId.toString(), true, CommonConstants.SUCCESSFUL_MESSAGE));
 
 		doGet(request, response);
 	}

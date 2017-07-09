@@ -519,11 +519,10 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 					+ " AND " + DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_NUMBER + " = " + "?"
 					+ " AND " + DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_MARKPERCENTAGE + " = " + "?";
 
-			
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
-			st.executeQuery(generator.getUseDatabaseQuery());
-			
 			setValues(Arrays.asList(sct.getName(),Integer.toString(sct.getNumber()),Double.toString(sct.getMarkPercentage())), st);
+			
+			st.executeQuery(generator.getUseDatabaseQuery());
 			ResultSet rs = st.executeQuery();
 
 			result = rs.next();
