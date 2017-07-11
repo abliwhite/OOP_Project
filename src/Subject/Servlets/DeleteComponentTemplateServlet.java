@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import Common.AppCode.CommonConstants;
+import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
 
@@ -37,21 +38,21 @@ public class DeleteComponentTemplateServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		/*
-		 * String json = new Gson().toJson(CommonConstants.SUCCESSFUL_MESSAGE);
-		 * 
-		 * response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
-		 * response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
-		 * 
-		 * response.getWriter().write(json);
-		 */
+		ResponseModel res = (ResponseModel) request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
+
+		String json = new Gson().toJson(res);
+
+		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
+		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
+
+		response.getWriter().write(json);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		initialManager();
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
@@ -59,13 +60,19 @@ public class DeleteComponentTemplateServlet extends SubjectServletParent {
 		String id = data.get("id").getAsString();
 		String subjectId = data.get("subjectId").getAsString();
 
-		if (fullNumericStringValidation(subjectId)) {
-			manager.DeleteCommonSubjectTemplateByIDFields(Integer.parseInt(subjectId), Integer.parseInt(id));
-			manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
+		if (!fullNumericStringValidation(subjectId)) {
+
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Error", false));
+			doGet(request, response);
+			return;
 		}
 
-		doGet(request, response);
+		manager.DeleteCommonSubjectTemplateByIDFields(Integer.parseInt(subjectId), Integer.parseInt(id));
+		manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
 
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+				new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE, false));
+		doGet(request, response);
 	}
 
 }

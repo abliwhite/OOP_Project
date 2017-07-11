@@ -24,6 +24,7 @@ import Subject.Models.SubjectInfo;
 /**
  * Servlet implementation class AddSubjectServlet
  */
+@SuppressWarnings("WeakerAccess")
 @WebServlet("/AddSubjectServlet")
 public class AddSubjectServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
@@ -42,7 +43,7 @@ public class AddSubjectServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//redirectToLoginIfNotLogged(request,response);
+		super.doGet(request, response);
 		ResponseModel res = (ResponseModel) request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
 
 		String json = new Gson().toJson(res);
@@ -57,10 +58,10 @@ public class AddSubjectServlet extends SubjectServletParent {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	//TODO change to protected
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		initialManager();
-
+		super.doPost(request, response);
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
 		String name = data.get("name").getAsString();

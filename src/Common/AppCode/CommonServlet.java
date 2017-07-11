@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import Account.Models.User;
 
 public abstract class CommonServlet extends HttpServlet {
@@ -43,15 +46,24 @@ public abstract class CommonServlet extends HttpServlet {
 		return session.getAttribute(getRequestIp(request)) != null;
 	}
 	
-	public void redirectToLoginIfNotLogged(HttpServletRequest request,HttpServletResponse response){
+	private void redirectToLoginIfNotLogged(HttpServletRequest request,HttpServletResponse response){
 		if(!checkRequestPermission(request)){
 			try {
-				request.getRequestDispatcher("/ProfilePageGeneratorServlet").forward(request, response);
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} catch (ServletException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		initialManager();
+		//redirectToLoginIfNotLogged(request, response);
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		initialManager();
 	}
 	
 	public abstract void initialManager();

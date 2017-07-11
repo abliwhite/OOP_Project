@@ -54,9 +54,9 @@ public class LoginServlet extends AuthenticationServletParent {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		initialManager();
+		super.doPost(request, response);
 		
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
