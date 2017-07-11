@@ -13,20 +13,21 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import Common.AppCode.CommonConstants;
+import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
 import Subject.Models.CommonSubjectTemplate;
 import Subject.Models.Subject;
 import Subject.Models.SubjectComponentTemplates;
+import Subject.Models.SubjectInfo;
 
 /**
  * Servlet implementation class AddSubjectServlet
  */
+@SuppressWarnings("WeakerAccess")
 @WebServlet("/AddSubjectServlet")
-public class AddSubjectServlet extends HttpServlet {
+public class AddSubjectServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
-
-	private SubjectManagerInterface manager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -42,9 +43,10 @@ public class AddSubjectServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int subjectId = (int) request.getAttribute("SubjectId");
-		
-		String json = new Gson().toJson(subjectId);
+		super.doGet(request, response);
+		ResponseModel res = (ResponseModel) request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
+
+		String json = new Gson().toJson(res);
 
 		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
 		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
@@ -56,22 +58,47 @@ public class AddSubjectServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	//TODO change to protected
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
+		super.doPost(request, response);
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
 		String name = data.get("name").getAsString();
+		String year = data.get("year").getAsString();
+		String termId = data.get("termId").getAsString();
 		String language = data.get("language").getAsString();
 		String ects = data.get("ects").getAsString();
 		String lecturerName = data.get("lecturerName").getAsString();
-		
-		Subject subject = new Subject((Integer) null,name,language,Integer.parseInt(ects),lecturerName,null);
+
+		if (!(fullNumericStringValidation(year) && fullNumericStringValidation(ects)
+				&& fullNumericStringValidation(termId))) {
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Please enter numeric!", false));
+			
+			doGet(request, response);
+			return;
+		}
+
+		Subject existedSubject = manager.getSubjectByFilter(name, Integer.parseInt(year), Integer.parseInt(termId));
+
+		if (existedSubject != null) {
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Subject already exists!", false));
+			
+			doGet(request, response);
+			return;
+		}
+
+		SubjectInfo subjectInfo = new SubjectInfo(lecturerName, null, Integer.parseInt(ects), language);
+		manager.AddSubjectInfo(subjectInfo);
+		int subjectInfoId = subjectInfo.getId();
+
+		Subject subject = new Subject(name, Integer.parseInt(termId), Integer.parseInt(year), subjectInfoId);
 		manager.AddSubject(subject);
-		
-		request.setAttribute("SubjectId", subject.getId());
+		Integer subjectId = subject.getId();
+
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+				new ResponseModel(subjectId.toString(), true,CommonConstants.SUCCESSFUL_MESSAGE));
+
 		doGet(request, response);
 	}
 

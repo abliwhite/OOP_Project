@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import Common.AppCode.CommonConstants;
+import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
 import Subject.Models.CommonSubjectTemplate;
@@ -22,9 +23,8 @@ import Subject.Models.SubjectComponentTemplates;
  * Servlet implementation class AddComponentTemplateServlet
  */
 @WebServlet("/AddComponentTemplateServlet")
-public class AddComponentTemplateServlet extends HttpServlet {
+public class AddComponentTemplateServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
-	private SubjectManagerInterface manager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -40,17 +40,22 @@ public class AddComponentTemplateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String subjectId = (String) request.getAttribute("SubjectId");
+		initialManager();
+		// redirectToLoginIfNotLogged(request,response);
+
+		ResponseModel<SubjectComponentTemplates, String> res = (ResponseModel<SubjectComponentTemplates, String>) request
+				.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
+
+		if (res.isSuccess()) {
+			
+			String subjectId = res.getResultObject().toString();
+			List<CommonSubjectTemplate> cst = manager
+					.getAllCommonSubjectTemplatesBySubjectID(Integer.parseInt(subjectId));
+			List<SubjectComponentTemplates> templateList = manager.getAllSubjectComponentTemplatesByIDList(cst);
+			res.setResultList(templateList);
+		}
+		String json = new Gson().toJson(res);
 		
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
-				
-		List<CommonSubjectTemplate> cst = manager.getAllCommonSubjectTemplatesBySubjectID(Integer.parseInt(subjectId));
-		List<SubjectComponentTemplates> templateList = manager.getAllSubjectComponentTemplatesByIDList(cst);
-
-		String json = new Gson().toJson(templateList);
-
 		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
 		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
 
@@ -61,27 +66,42 @@ public class AddComponentTemplateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
-
+		super.doPost(request, response);
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
-		//String id = data.get("id") == null ? null : data.get("id").getAsString();
 		String name = data.get("name").getAsString();
 		String percentage = data.get("percentage").getAsString();
 		String number = data.get("number").getAsString();
 		String subjectId = data.get("subjectId").getAsString();
 
-		SubjectComponentTemplates sct = new SubjectComponentTemplates(null, name, Double.parseDouble(percentage),
+		if (!(fullNumericStringValidation(percentage) && fullNumericStringValidation(number)
+				&& fullNumericStringValidation(subjectId))) {
+
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+					new ResponseModel("Please enter numeric!", false));
+			doGet(request, response);
+			return;
+		}
+
+		SubjectComponentTemplates sct = new SubjectComponentTemplates(name, Double.parseDouble(percentage),
 				Integer.parseInt(number));
-		
+
+		if (manager.CheckIfExistsSubjectComponentTemplate(sct)) {
+
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+					new ResponseModel("Subject component already exists!", false));
+			doGet(request, response);
+			return;
+		}
+
 		manager.AddSubjectComponentTemplate(sct);
-		manager.AddCommonSubjectTemplate(new CommonSubjectTemplate((Integer) null, sct.getId(), Integer.parseInt(subjectId)));
-		
-		request.setAttribute("SubjectId", subjectId);
+		manager.AddCommonSubjectTemplate(new CommonSubjectTemplate(sct.getId(), Integer.parseInt(subjectId)));
+
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+				new ResponseModel(subjectId.toString(), true, CommonConstants.SUCCESSFUL_MESSAGE));
+
 		doGet(request, response);
 	}
 

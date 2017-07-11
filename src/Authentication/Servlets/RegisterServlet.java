@@ -27,20 +27,21 @@ import Account.Models.RegisterModel;
 import Account.Models.User;
 import Account.Models.UserProfile;
 import Common.AppCode.CommonConstants;
-import Common.Models.ResponseMessage;
+import Common.Models.ResponseModel;
 import Database.DbCertificate;
 
 /**
  * Servlet implementation class RegisterServlet
  */
 @WebServlet("/RegisterServlet")
-public class RegisterServlet extends HttpServlet {
+public class RegisterServlet extends AuthenticationServletParent {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public RegisterServlet() {
+		
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -59,9 +60,9 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		super.doPost(request, response);
 		JSONObject data;
 
 		try {
@@ -70,12 +71,7 @@ public class RegisterServlet extends HttpServlet {
 			throw new IOException("Error parsing JSON request string");
 		}
 
-		ServletContext context = getServletContext();
-		AccountManagerInterface manager = (AccountManagerInterface) context
-				.getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE);
-
 		try {
-			// todo gadasaketebelia constatntebit
 			String username = data.getString("username");
 			String password = data.getString("password");
 
@@ -84,14 +80,14 @@ public class RegisterServlet extends HttpServlet {
 			String surname = data.getString("surname");
 			String gender = data.getString("gender");
 
-			ResponseMessage resp = manager.checkRegistrationValidity(new RegisterModel(username, email));
+			ResponseModel resp = manager.checkRegistrationValidity(new RegisterModel(username, email));
 			if (resp.isSuccess()) {
 
-				UserProfile profile = new UserProfile((Integer) null, name, gender, CommonConstants.getDatetime(),
+				UserProfile profile = new UserProfile(name, gender, CommonConstants.getDatetime(),
 						surname);
 				manager.addProfile(profile);
 
-				User user = new User((Integer) null, username, password, email, DbCertificate.UserTable.STUDENT_ROLE,
+				User user = new User(username, password, email, DbCertificate.UserTable.STUDENT_ROLE,
 						null, null, profile.getId(), profile);
 				manager.addUser(user);
 

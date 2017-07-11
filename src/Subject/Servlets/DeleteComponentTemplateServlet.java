@@ -12,6 +12,8 @@ import org.apache.catalina.servlet4preview.RequestDispatcher;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import Common.AppCode.CommonConstants;
+import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
 
@@ -19,10 +21,8 @@ import Subject.AppCode.SubjectManagerInterface;
  * Servlet implementation class ComponentTemplateDeleteServlet
  */
 @WebServlet("/DeleteComponentTemplateServlet")
-public class DeleteComponentTemplateServlet extends HttpServlet {
+public class DeleteComponentTemplateServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
-
-	private SubjectManagerInterface manager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -38,30 +38,41 @@ public class DeleteComponentTemplateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// request.getRequestDispatcher("/ComponentTemplateAddEditServlet").forward(request,
-		// response);
+		ResponseModel res = (ResponseModel) request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
+
+		String json = new Gson().toJson(res);
+
+		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
+		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
+
+		response.getWriter().write(json);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
-
+		initialManager();
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
 		String id = data.get("id").getAsString();
 		String subjectId = data.get("subjectId").getAsString();
 
+		if (!fullNumericStringValidation(subjectId)) {
+
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Error", false));
+			doGet(request, response);
+			return;
+		}
+
 		manager.DeleteCommonSubjectTemplateByIDFields(Integer.parseInt(subjectId), Integer.parseInt(id));
 		manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
 
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+				new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE, false));
 		doGet(request, response);
-
 	}
 
 }

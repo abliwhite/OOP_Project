@@ -12,7 +12,6 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.ResultSetMetaData;
 
-import Common.Models.ResponseMessage;
 import Database.DbCertificate;
 import Database.MyDBInfo;
 import Database.QueryGenerator;
@@ -53,6 +52,7 @@ public abstract class DaoController {
 		for (int i = 1; i <= meta.getColumnCount(); i++) {
 			columnNames.add(meta.getColumnName(i));
 		}
+		
 		return columnNames;
 	}
 

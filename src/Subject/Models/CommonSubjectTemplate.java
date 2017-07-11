@@ -12,6 +12,10 @@ public class CommonSubjectTemplate {
 		this.subjectTemplateID = subjectTemplateID;
 	}
 
+	public CommonSubjectTemplate(int subjectComponentTemplateID, int subjectTemplateID) {
+		this((Integer) null, subjectComponentTemplateID, subjectTemplateID);
+	}
+
 	public Integer getId() {
 		return id;
 	}

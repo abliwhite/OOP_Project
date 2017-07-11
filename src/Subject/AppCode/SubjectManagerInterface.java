@@ -5,9 +5,16 @@ import java.util.List;
 import Subject.Models.CommonSubjectTemplate;
 import Subject.Models.Subject;
 import Subject.Models.SubjectComponentTemplates;
+import Subject.Models.SubjectInfo;
+import Subject.Models.SubjectTerm;
+import Subject.Models.UserSubject;
 
 public interface SubjectManagerInterface {
 
+	public void AddSubjectInfo(SubjectInfo subjectInfo);
+	
+	public List<SubjectTerm> GetAllSubjectTerms();
+	
 	public void AddSubject(Subject subject);
 	
 	public void UpdateSubject(Subject subject);
@@ -17,6 +24,8 @@ public interface SubjectManagerInterface {
 	public void DeleteCommonSubjectTemplateByIDFields(int subjectId,int subjectComponentId);
 
 	public void AddSubjectComponentTemplate(SubjectComponentTemplates sct);
+	
+	public boolean CheckIfExistsSubjectComponentTemplate(SubjectComponentTemplates sct);
 
 	public void UpdateSubjectComponentTemplate(SubjectComponentTemplates sct);
 
@@ -30,4 +39,9 @@ public interface SubjectManagerInterface {
 	public List<CommonSubjectTemplate> getAllCommonSubjectTemplatesBySubjectID(int subjectId);
 
 	public Subject getSubjectById(int subjectId);
+	
+	public Subject getSubjectByFilter(String subjectName, int year, int termId);
+	
+	public void addUserSubject(UserSubject us);
+	
 }

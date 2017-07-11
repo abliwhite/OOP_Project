@@ -2,7 +2,7 @@ package Subject.Models;
 
 import java.util.Objects;
 
-public class SubjectComponentTemplates  {
+public class SubjectComponentTemplates {
 
 	private Integer id;
 	private String name;
@@ -14,6 +14,10 @@ public class SubjectComponentTemplates  {
 		this.name = name;
 		this.markPercentage = markPercentage;
 		this.number = number;
+	}
+
+	public SubjectComponentTemplates(String name, double markPercentage, int number) {
+		this((Integer) null, name, markPercentage, number);
 	}
 
 	public String getName() {
@@ -35,19 +39,18 @@ public class SubjectComponentTemplates  {
 	public int getNumber() {
 		return number;
 	}
-	
-	public Integer getId(){
+
+	public Integer getId() {
 		return id;
 	}
-	
-	public void setId(Integer id){
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
 	public void setNumber(int number) {
 		this.number = number;
 	}
-
 
 	public int hashCode() {
 		return Objects.hash(id, name, markPercentage, number);

@@ -213,5 +213,10 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/java,macos,linux,eclipse,windows,intellij
 /target/
+<<<<<<< HEAD
 WebContent/Profiles/AdminProfile.jsp
 WebContent/Profiles/AdminProfile.jsp
+=======
+src/Database/MyDBInfo.java
+src/Database/MyDBInfo.java
+>>>>>>> cb2bc8f7fe01d894e6b31a147404f7b74ad0e969

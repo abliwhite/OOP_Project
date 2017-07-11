@@ -6,71 +6,65 @@ public class Subject {
 
 	private Integer id;
 	private String name;
-	private String language;
-	private int ects;
-	private String lecturerName;
-	private String syllabusPath;
+	private int termId;
+	private int year;
+	private int subjectInfoID;
 
-	public Subject(Integer id, String name, String language, int ects, String lecturerName, String syllabusPath) {
+	public Subject(Integer id, String name, int termId, int year, int subjectInfoID) {
 		this.id = id;
 		this.name = name;
-		this.language = language;
-		this.ects = ects;
-		this.lecturerName = lecturerName;
-		this.syllabusPath = syllabusPath;
+		this.termId = termId;
+		this.year = year;
+		this.subjectInfoID = subjectInfoID;
+	}
+
+	public Subject(String name, int termId, int year, int subjectInfoID) {
+		this((Integer) null, name, termId, year, subjectInfoID);
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getLanguage() {
-		return language;
-	}
-
-	public int getEcts() {
-		return ects;
-	}
-
-	public String getLecturerName() {
-		return lecturerName;
-	}
-
-	public String getSyllabusPath() {
-		return syllabusPath;
-	}
-
-	public Integer getId(){
+	public Integer getId() {
 		return id;
 	}
-	
-	public void setId(Integer id){
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setLanguage(String language) {
-		this.language = language;
+	public int getTermId() {
+		return termId;
 	}
 
-	public void setEcts(int ects) {
-		this.ects = ects;
+	public void setTermId(int termId) {
+		this.termId = termId;
 	}
 
-	public void setLecturerName(String lecturerName) {
-		this.lecturerName = lecturerName;
+	public int getYear() {
+		return year;
 	}
 
-	public void setSyllabusPath(String syllabusPath) {
-		this.syllabusPath = syllabusPath;
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public int getSubjectInfoID() {
+		return subjectInfoID;
+	}
+
+	public void setSubjectInfoID(int subjectInfoID) {
+		this.subjectInfoID = subjectInfoID;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, language, ects, lecturerName, syllabusPath);
+		return Objects.hash(id, name, termId, year, subjectInfoID);
 	}
 
 	@Override
@@ -84,7 +78,7 @@ public class Subject {
 
 		Subject other = (Subject) obj;
 
-		return other.name.equals(name) && other.ects == ects && other.getId().equals(id) && other.language.equals(language)
-				&& other.lecturerName.equals(lecturerName) && other.syllabusPath.equals(syllabusPath);
+		return other.getName().equals(name) && other.getTermId() == termId && other.getId().equals(id)
+				&& other.getYear() == year && other.getSubjectInfoID() == subjectInfoID;
 	}
 }

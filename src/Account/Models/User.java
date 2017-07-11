@@ -44,6 +44,7 @@ public class User {
 	public User(Integer id, String username, String password, String email, String role, String gmailID, String facebookID,
 			Integer profileID, UserProfile profile) {
 		
+		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -52,6 +53,11 @@ public class User {
 		this.facebookID = facebookID;
 		this.profileID = profileID;
 		this.profile = profile;
+	}
+	
+	public User(String username, String password, String email, String role, String gmailID, String facebookID,
+			Integer profileID, UserProfile profile) {
+		this((Integer)null,username,password,email,role,gmailID,facebookID,profileID,profile);
 	}
 
 	public String getGmailID() {
@@ -88,6 +94,22 @@ public class User {
 
 	public String getUsername() {
 		return username;
+	}
+
+	public UserProfile getProfile() {
+		return profile;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public void setProfileID(Integer profileID) {
+		this.profileID = profileID;
 	}
 
 	public void setUsername(String username) {

@@ -18,9 +18,8 @@ import Subject.Models.Subject;
  * Servlet implementation class EditSubjectServlet
  */
 @WebServlet("/EditSubjectServlet")
-public class EditSubjectServlet extends HttpServlet {
+public class EditSubjectServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
-	private SubjectManagerInterface manager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -44,11 +43,9 @@ public class EditSubjectServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
+		initialManager();
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
 		String name = data.get("name").getAsString();
@@ -57,10 +54,13 @@ public class EditSubjectServlet extends HttpServlet {
 		String lecturerName = data.get("lecturerName").getAsString();
 		String subjectId = data.get("subjectId").getAsString();
 
+		
+		/*
 		Subject subject = new Subject(Integer.parseInt(subjectId), name, language, Integer.parseInt(ects), lecturerName,
 				null);
+		*/
 		
-		manager.UpdateSubject(subject);
+		//manager.UpdateSubject(subject);
 
 		doGet(request, response);
 	}

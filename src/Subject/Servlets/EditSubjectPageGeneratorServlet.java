@@ -23,9 +23,8 @@ import Subject.Models.SubjectViewEntity;
  * Servlet implementation class EditSubjectServlet
  */
 @WebServlet("/EditSubjectPageGeneratorServlet")
-public class EditSubjectPageGeneratorServlet extends HttpServlet {
+public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
-	private SubjectManagerInterface manager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -41,11 +40,10 @@ public class EditSubjectPageGeneratorServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		initialManager();
 		String subjectId = request.getParameter("id");
-		manager = manager == null
-				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
-				: manager;
-		if (isValidRequest(subjectId)) {
+		
+		if (fullNumericStringValidation(subjectId)) {
 			int id = Integer.parseInt(subjectId);
 
 			List<CommonSubjectTemplate> cst = manager.getAllCommonSubjectTemplatesBySubjectID(id);
@@ -63,7 +61,6 @@ public class EditSubjectPageGeneratorServlet extends HttpServlet {
 					getSubjectComponentTemplatesViewEntities(sc));
 
 			request.setAttribute(SubjectViewEntity.SUBJECT_VIEW_ENTITY_ATTRIBUTE, subjectViewEntity);
-
 			request.getRequestDispatcher("Subject/Edit.jsp").forward(request, response);
 		} else {
 			// page not found
@@ -80,21 +77,11 @@ public class EditSubjectPageGeneratorServlet extends HttpServlet {
 		return result;
 	}
 
-	private Boolean isValidRequest(String subjectId) {
-		if (subjectId == null)
-			return false;
-		boolean result = true;
-		for (int i = 0; i < subjectId.length(); i++) {
-			result = result && Character.isDigit(subjectId.charAt(i));
-		}
-		return result;
-	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
