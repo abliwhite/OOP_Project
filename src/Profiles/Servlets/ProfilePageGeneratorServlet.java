@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Subject.Models.SubjectTerm;
+import Subject.Models.DbModels.SubjectTerm;
 import Subject.Servlets.SubjectServletParent;
 
 /**

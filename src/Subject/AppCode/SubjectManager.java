@@ -14,12 +14,12 @@ import Common.AppCode.CommonConstants;
 import Common.AppCode.DaoController;
 import Database.DbCertificate;
 import Database.MyDBInfo;
-import Subject.Models.CommonSubjectTemplate;
-import Subject.Models.Subject;
-import Subject.Models.SubjectComponentTemplates;
-import Subject.Models.SubjectInfo;
-import Subject.Models.SubjectTerm;
-import Subject.Models.UserSubject;
+import Subject.Models.DbModels.CommonSubjectTemplate;
+import Subject.Models.DbModels.Subject;
+import Subject.Models.DbModels.SubjectComponentTemplates;
+import Subject.Models.DbModels.SubjectInfo;
+import Subject.Models.DbModels.SubjectTerm;
+import Subject.Models.DbModels.UserSubject;
 
 public class SubjectManager extends DaoController implements SubjectManagerInterface {
 
@@ -133,7 +133,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 
 	private List<String> getSubjectValues(Subject subject) {
 		return Arrays.asList(subject.getName(), Integer.toString(subject.getTermId()),
-				Integer.toString(subject.getYear()),Integer.toString(subject.getSubjectInfoID()));
+				Integer.toString(subject.getYear()), Integer.toString(subject.getSubjectInfoID()));
 	}
 
 	@Override
@@ -427,22 +427,21 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 
 			result = getSubjectTermsList(rs);
 
-			
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
 
 	private List<SubjectTerm> getSubjectTermsList(ResultSet rs) throws SQLException {
 		List<SubjectTerm> result = new ArrayList<SubjectTerm>();
-		
+
 		while (rs.next()) {
 			int id = rs.getInt(DbCertificate.SubjectTermTable.COLUMN_NAME_ID);
 			String name = rs.getString(DbCertificate.SubjectTermTable.COLUMN_NAME_NAME);
-			
+
 			SubjectTerm temp = new SubjectTerm(name, id);
 			result.add(temp);
 		}
@@ -456,22 +455,21 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		try {
 			java.sql.Connection con = getConnection();
 			String selectQuery = "SELECT * FROM " + DbCertificate.SubjectTable.TABLE_NAME + " WHERE "
-					+ DbCertificate.SubjectTable.COLUMN_NAME_NAME + " = \"" + subjectName + "\""
-					+ " AND " + DbCertificate.SubjectTable.COLUMN_NAME_YEAR + " = " + year
-					+ " AND " + DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID + " = " + termId;
+					+ DbCertificate.SubjectTable.COLUMN_NAME_NAME + " = \"" + subjectName + "\"" + " AND "
+					+ DbCertificate.SubjectTable.COLUMN_NAME_YEAR + " = " + year + " AND "
+					+ DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID + " = " + termId;
 
-			
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
 			st.executeQuery(generator.getUseDatabaseQuery());
 
 			ResultSet rs = st.executeQuery();
 
 			List<Subject> result = getSubjectsList(rs);
-			
+
 			if (!result.isEmpty()) {
 				subject = result.get(0);
 			}
-			
+
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -483,7 +481,8 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	public void addUserSubject(UserSubject us) {
 		try {
 			java.sql.Connection con = getConnection();
-			String insertQuery = generator.getInsertQuery(userSubjectColumnNames, DbCertificate.UserSubjectTable.TABLE_NAME);
+			String insertQuery = generator.getInsertQuery(userSubjectColumnNames,
+					DbCertificate.UserSubjectTable.TABLE_NAME);
 			con.createStatement().executeQuery(generator.getUseDatabaseQuery());
 			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
@@ -509,8 +508,32 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	}
 
 	@Override
-	public boolean CheckIfExistsSubjectComponentTemplate(SubjectComponentTemplates sct) {
-		boolean result = false;
+	public SubjectComponentTemplates getSubjectComponentTemplateByName(SubjectComponentTemplates sct) {
+		SubjectComponentTemplates result = null;
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = "SELECT * FROM " + DbCertificate.SubjectComponentTemplateTable.TABLE_NAME + " WHERE "
+					+ DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_NAME + " = " + "?";
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			setValues(Arrays.asList(sct.getName()), st);
+
+			st.executeQuery(generator.getUseDatabaseQuery());
+			ResultSet rs = st.executeQuery();
+
+			List<SubjectComponentTemplates> get = getSubjectComponentTemplatesList(rs);
+			result = get.size() == 0 ? result : get.get(0);
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	@Override
+	public SubjectComponentTemplates getSubjectComponentTemplatesByAllFields(SubjectComponentTemplates sct) {
+		SubjectComponentTemplates result = null;
 		try {
 			java.sql.Connection con = getConnection();
 			String selectQuery = "SELECT * FROM " + DbCertificate.SubjectComponentTemplateTable.TABLE_NAME + 
@@ -525,13 +548,13 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 			st.executeQuery(generator.getUseDatabaseQuery());
 			ResultSet rs = st.executeQuery();
 
-			result = rs.next();
-			
+			List<SubjectComponentTemplates> get = getSubjectComponentTemplatesList(rs);
+			result = get.size() == 0 ? result : get.get(0);
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
 }

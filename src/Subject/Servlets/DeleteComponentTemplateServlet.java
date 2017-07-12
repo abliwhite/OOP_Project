@@ -68,7 +68,7 @@ public class DeleteComponentTemplateServlet extends SubjectServletParent {
 		}
 
 		manager.DeleteCommonSubjectTemplateByIDFields(Integer.parseInt(subjectId), Integer.parseInt(id));
-		manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
+		//manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
 
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
 				new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE, false));

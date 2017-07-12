@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page import="Account.Models.*"%>
 <%@ page import="Account.AppCode.*"%>
-<%@ page import="Subject.Models.*"%>
+<%@ page import="Subject.Models.DbModels.*"%>
 <%@ page import="java.util.List"%>  
 <%@ page import="java.util.ArrayList"%> 
 <html>

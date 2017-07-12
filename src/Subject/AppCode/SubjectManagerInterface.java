@@ -2,12 +2,12 @@ package Subject.AppCode;
 
 import java.util.List;
 
-import Subject.Models.CommonSubjectTemplate;
-import Subject.Models.Subject;
-import Subject.Models.SubjectComponentTemplates;
-import Subject.Models.SubjectInfo;
-import Subject.Models.SubjectTerm;
-import Subject.Models.UserSubject;
+import Subject.Models.DbModels.CommonSubjectTemplate;
+import Subject.Models.DbModels.Subject;
+import Subject.Models.DbModels.SubjectComponentTemplates;
+import Subject.Models.DbModels.SubjectInfo;
+import Subject.Models.DbModels.SubjectTerm;
+import Subject.Models.DbModels.UserSubject;
 
 public interface SubjectManagerInterface {
 
@@ -25,7 +25,9 @@ public interface SubjectManagerInterface {
 
 	public void AddSubjectComponentTemplate(SubjectComponentTemplates sct);
 	
-	public boolean CheckIfExistsSubjectComponentTemplate(SubjectComponentTemplates sct);
+	public SubjectComponentTemplates getSubjectComponentTemplateByName(SubjectComponentTemplates sct);
+	
+	public SubjectComponentTemplates getSubjectComponentTemplatesByAllFields(SubjectComponentTemplates sct);
 
 	public void UpdateSubjectComponentTemplate(SubjectComponentTemplates sct);
 

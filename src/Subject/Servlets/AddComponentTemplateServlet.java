@@ -16,8 +16,8 @@ import Common.AppCode.CommonConstants;
 import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
-import Subject.Models.CommonSubjectTemplate;
-import Subject.Models.SubjectComponentTemplates;
+import Subject.Models.DbModels.CommonSubjectTemplate;
+import Subject.Models.DbModels.SubjectComponentTemplates;
 
 /**
  * Servlet implementation class AddComponentTemplateServlet
@@ -47,7 +47,7 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 				.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
 
 		if (res.isSuccess()) {
-			
+
 			String subjectId = res.getResultObject().toString();
 			List<CommonSubjectTemplate> cst = manager
 					.getAllCommonSubjectTemplatesBySubjectID(Integer.parseInt(subjectId));
@@ -55,7 +55,7 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 			res.setResultList(templateList);
 		}
 		String json = new Gson().toJson(res);
-		
+
 		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
 		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
 
@@ -66,8 +66,7 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doPost(request, response);
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
@@ -75,6 +74,7 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 		String percentage = data.get("percentage").getAsString();
 		String number = data.get("number").getAsString();
 		String subjectId = data.get("subjectId").getAsString();
+		boolean isNewName = data.get("isNewName").getAsBoolean();
 
 		if (!(fullNumericStringValidation(percentage) && fullNumericStringValidation(number)
 				&& fullNumericStringValidation(subjectId))) {
@@ -88,20 +88,34 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 		SubjectComponentTemplates sct = new SubjectComponentTemplates(name, Double.parseDouble(percentage),
 				Integer.parseInt(number));
 
-		if (manager.CheckIfExistsSubjectComponentTemplate(sct)) {
+		SubjectComponentTemplates temp = manager.getSubjectComponentTemplatesByAllFields(sct);
+		
+		if (manager.getSubjectComponentTemplateByName(sct) != null) {
+			if (!isNewName) {
+				if (temp != null) {
+					sct = temp;
+				} else {
+					manager.AddSubjectComponentTemplate(sct);
+				}
+				manager.AddCommonSubjectTemplate(
+						new CommonSubjectTemplate(sct.getId(), Integer.parseInt(subjectId)));
+				request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+						new ResponseModel(subjectId.toString(), true, CommonConstants.SUCCESSFUL_MESSAGE));
+			} else {
+				request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+						new ResponseModel("Select name from drop down!", false));
+			}
+		} else {
+			if (temp != null) {
+				sct = temp;
+			} else {
+				manager.AddSubjectComponentTemplate(sct);
+			}
+			manager.AddCommonSubjectTemplate(new CommonSubjectTemplate(sct.getId(), Integer.parseInt(subjectId)));
 
 			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-					new ResponseModel("Subject component already exists!", false));
-			doGet(request, response);
-			return;
+					new ResponseModel(subjectId.toString(), true, CommonConstants.SUCCESSFUL_MESSAGE));
 		}
-
-		manager.AddSubjectComponentTemplate(sct);
-		manager.AddCommonSubjectTemplate(new CommonSubjectTemplate(sct.getId(), Integer.parseInt(subjectId)));
-
-		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-				new ResponseModel(subjectId.toString(), true, CommonConstants.SUCCESSFUL_MESSAGE));
-
 		doGet(request, response);
 	}
 

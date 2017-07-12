@@ -2,9 +2,9 @@
  * 
  */
 
-function fadeAlertMessage() {
-	$("#subject_alert_div_id").fadeTo(1800, 600).slideUp(600, function() {
-		$("#subject_alert_div_id").slideUp(600);
+function fadeAlertMessage(id) {
+	$("#"+id).fadeTo(1800, 600).slideUp(600, function() {
+		$("#"+id).slideUp(600);
 	});
 }
 
@@ -42,35 +42,42 @@ function buildNewComponentTemplateTable(arg) {
 		tr.setAttribute("class", "info");
 
 		var nameTd = document.createElement('td');
-		var name = document.createElement("INPUT");
-		name.setAttribute("type", "text");
-		name.setAttribute("value", args.name);
+		var name = document.createElement("label");
+		//name.setAttribute("type", "text");
+		//name.setAttribute("value", args.name);
 		name.setAttribute("id", "subjectComponentNameInput_" + args.id);
-		name.setAttribute("class", "form-control");
-		name.setAttribute("placeholder", "Name");
+		//name.setAttribute("class", "form-control");
+		//name.setAttribute("placeholder", "Name");
+		//name.setAttribute("disabled",true);
+		name.innerHTML = args.name;
 		nameTd.append(name);
 
 		var numberTd = document.createElement('td');
-		var number = document.createElement("INPUT");
-		number.setAttribute("type", "number");
-		number.setAttribute("value", args.number);
+		var number = document.createElement("label");
+		//number.setAttribute("type", "number");
+		//number.setAttribute("value", args.number);
 		number.setAttribute("id", "subjectComponentTemplateNumberInput_"
 				+ args.id);
-		number.setAttribute("class", "form-control");
-		number.setAttribute("placeholder", "Number");
+		//number.setAttribute("class", "form-control");
+		//number.setAttribute("placeholder", "Number");
+		//number.setAttribute("disabled",true);
+		number.innerHTML = args.number;
 		numberTd.append(number);
 
 		var percentageTd = document.createElement('td');
-		var percentage = document.createElement("INPUT");
-		percentage.setAttribute("type", "number");
-		percentage.setAttribute("value", args.markPercentage);
+		var percentage = document.createElement("label");
+		//percentage.setAttribute("type", "number");
+		//percentage.setAttribute("value", args.markPercentage);
 		percentage.setAttribute("id",
 				"subjectComponentTemplatePercentageInput_" + args.id);
-		percentage.setAttribute("class", "form-control");
-		percentage.setAttribute("placeholder", "Percentage");
+		//percentage.setAttribute("class", "form-control");
+		//percentage.setAttribute("placeholder", "Percentage");
+		//percentage.setAttribute("readonly",true);
+		percentage.innerHTML = args.markPercentage;
 		percentageTd.append(percentage);
 
 		var removeEditTd = document.createElement('td');
+		/*
 		var edit = document.createElement("INPUT");
 		edit.setAttribute("type", "button");
 		edit.setAttribute("value", "Edit");
@@ -78,7 +85,7 @@ function buildNewComponentTemplateTable(arg) {
 				+ "); return false;");
 		edit.setAttribute("class", "btn btn-warning");
 		removeEditTd.append(edit);
-
+		*/
 		var remove = document.createElement("INPUT");
 		remove.setAttribute("type", "button");
 		remove.setAttribute("value", "Delete");
@@ -98,8 +105,23 @@ function buildNewComponentTemplateTable(arg) {
 	templatesDiv.append(templates);
 }
 
+function scNameSelectOnchange(){
+	if($("#subjectComponentNameSelect_id").find(":selected").text() == "Other"){
+		$("#subjectComponentNameInput_id").show();
+	}else{
+		$("#subjectComponentNameInput_id").hide();
+	}
+}
+
 function addTemplate() {
-	componentName = $("#subjectComponentNameInput_id").val();
+	if($("#subjectComponentNameSelect_id").find(":selected").text() != "Other"){
+		isNewName = false;
+		componentName = $("#subjectComponentNameSelect_id").find(":selected").text();
+	}else{
+		isNewName = true;
+		componentName = $("#subjectComponentNameInput_id").val();
+	}
+	
 	componentPercentage = $("#subjectComponentTemplatePercentageInput_id")
 			.val();
 	componentNumber = $("#subjectComponentTemplateNumberInput_id").val();
@@ -112,7 +134,7 @@ function addTemplate() {
 		$("#subject_component_alert_div_id").html("Fill All Fields!");
 		$("#subject_component_alert_div_id").show();
 
-		fadeAlertMessage();
+		fadeAlertMessage("subject_component_alert_div_id");
 		return;
 	}
 
@@ -120,7 +142,8 @@ function addTemplate() {
 		subjectId : subjectId,
 		name : componentName,
 		percentage : componentPercentage,
-		number : componentNumber
+		number : componentNumber,
+		isNewName : isNewName,
 	};
 
 	$.ajax({
@@ -137,8 +160,9 @@ function addTemplate() {
 						"alert alert-danger");
 				$("#subject_component_alert_div_id").html(
 						response.resultMessage);
-
-				fadeAlertMessage();
+				$("#subject_component_alert_div_id").show();
+				
+				fadeAlertMessage("subject_component_alert_div_id");
 				return;
 			}
 
@@ -149,7 +173,7 @@ function addTemplate() {
 			$("#subject_component_alert_div_id").html(response.resultMessage);
 			$("#subject_component_alert_div_id").show();
 
-			fadeAlertMessage();
+			fadeAlertMessage("subject_component_alert_div_id");
 			buildNewComponentTemplateTable(response.resultList);
 		}
 	});

@@ -21,8 +21,8 @@ import Account.Models.UserProfile;
 import Common.AppCode.DaoController;
 import Common.AppCode.ViewTextContainer;
 import Database.DbCertificate;
-import Subject.Models.Subject;
-import Subject.Models.SubjectTerm;
+import Subject.Models.DbModels.Subject;
+import Subject.Models.DbModels.SubjectTerm;
 import Common.AppCode.*;
 
 /**

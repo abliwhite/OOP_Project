@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 <%@page import="Database.DbCertificate"%>
-<%@ page import="Subject.Models.SubjectTerm"%>
+<%@ page import="Subject.Models.DbModels.SubjectTerm"%>
+<%@ page import="Subject.Models.ViewModels.*"%>
+<%@ page import="Common.Models.*"%>
 <%@ page import="java.util.List"%>  
 <%@ page import="java.util.ArrayList"%> 
 	
@@ -27,7 +29,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <title>Add Subject</title>
 <%
-	List<SubjectTerm> subjectTermsList = (ArrayList<SubjectTerm>) request.getAttribute("SubjectTerms");
+	ResponseModel<Object, SubjectTemplateListsViewModel> responseModel = (ResponseModel)request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
+    
+	List<SubjectTerm> subjectTermsList = responseModel.getResultObject().getsTerms();
+    
+	List<String> scNames = responseModel.getResultObject().getScNames();
 %>
 </head>
 <body>
@@ -72,7 +78,17 @@
 		</div>
 		<input id='show_Add_Subject_Template_id' type='button' onclick="showAddSubjectTemplate();" class='btn btn-primary' value="Add Component" style="display: none;">
 		<div id="subjectComponentTemplateRow_id" style="display: none;">
-			Add Subject Component: <input type="text" name="subjectComponentTemplateName" class="form-control" placeholder="Name" id="subjectComponentNameInput_id">
+			Add Subject Component: 
+			<select onchange='scNameSelectOnchange()' class="form-control" name="SubjectTerm" id="subjectComponentNameSelect_id">
+			<%
+				for(int i=0; i < scNames.size(); i++)
+				{
+					out.print("<option>" + scNames.get(i) + "</option>");
+				}
+			%>
+				<option>Other</option>
+			</select>
+			<input type="name" name="subjectComponentTemplateName" class="form-control" placeholder="Name"  id="subjectComponentNameInput_id" style="display: none;">
 			<input type="number" name="subjectComponentTemplatePercentage" class="form-control" placeholder="Percent"  id="subjectComponentTemplatePercentageInput_id">
 			<input type ="number" name ="subjectComponentTemplateNumber" class="form-control" placeholder="Number" id="subjectComponentTemplateNumberInput_id">
 			<input onclick="addTemplate(); return false;" type='button' class='btn btn-primary' value='Save'>
@@ -106,7 +122,7 @@ function AddSubject(){
 		$("#subject_alert_div_id").html("Fill All Fields!");
     	$("#subject_alert_div_id").show();
     	
-    	fadeAlertMessage();
+    	fadeAlertMessage("subject_alert_div_id");
 		return;
 	}
 	
@@ -132,7 +148,7 @@ function AddSubject(){
 	    		$("#subject_alert_div_id").addClass("alert alert-danger");
 	    		$("#subject_alert_div_id").html(response.resultMessage);
 	    		
-	    		fadeAlertMessage();
+	    		fadeAlertMessage("subject_alert_div_id");
 	    		return;
 	    	}
 	    	
@@ -153,7 +169,7 @@ function AddSubject(){
 	    	$("#subject_alert_div_id").html(response.resultMessage);
 	    	$("#subject_alert_div_id").show();
 	    	
-	    	fadeAlertMessage();
+	    	fadeAlertMessage("subject_alert_div_id");
 	    }
 	});
 	

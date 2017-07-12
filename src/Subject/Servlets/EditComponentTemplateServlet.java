@@ -16,8 +16,8 @@ import Common.AppCode.CommonConstants;
 import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
-import Subject.Models.CommonSubjectTemplate;
-import Subject.Models.SubjectComponentTemplates;
+import Subject.Models.DbModels.CommonSubjectTemplate;
+import Subject.Models.DbModels.SubjectComponentTemplates;
 
 /**
  * Servlet implementation class EditComponentTemplateServlet

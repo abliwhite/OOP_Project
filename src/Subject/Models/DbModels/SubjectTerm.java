@@ -1,4 +1,4 @@
-package Subject.Models;
+package Subject.Models.DbModels;
 
 public class SubjectTerm {
 

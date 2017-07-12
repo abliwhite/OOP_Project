@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="Subject.Models.SubjectViewEntity"%>
-<%@ page import="Subject.Models.SubjectComponentTemplatesViewEntity"%>
-<%@ page import="Subject.Models.Subject"%>
+<%@ page import="Subject.Models.ViewModels.SubjectViewModel"%>
+<%@ page import="Subject.Models.ViewModels.SubjectComponentTemplatesViewModel"%>
+<%@ page import="Subject.Models.DbModels.Subject"%>
 <%@ page import="java.util.List"%>    
 
 
@@ -27,7 +27,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <title>Edit Subject</title>
 <% 
-	SubjectViewEntity viewModel = (SubjectViewEntity)request.getAttribute(SubjectViewEntity.SUBJECT_VIEW_ENTITY_ATTRIBUTE);
+	SubjectViewModel viewModel = (SubjectViewModel)request.getAttribute(SubjectViewModel.SUBJECT_VIEW_ENTITY_ATTRIBUTE);
 	Subject subject = viewModel.getSubject();
 %>
 
@@ -66,7 +66,7 @@
 					</tr>
 				</thead>
 			<%
-				List<SubjectComponentTemplatesViewEntity> temp = viewModel.getSubjecComponentTemplatesViewEnties();
+				List<SubjectComponentTemplatesViewModel> temp = viewModel.getSubjecComponentTemplatesViewEnties();
 				for(int i = 0;i < temp.size();i++){
 					int componentId = temp.get(i).getSubjectComponentTemplate().getId();
 					String componentName = temp.get(i).getSubjectComponentTemplate().getName();

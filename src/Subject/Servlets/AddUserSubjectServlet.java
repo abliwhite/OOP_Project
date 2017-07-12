@@ -10,10 +10,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import Common.AppCode.CommonConstants;
-import Subject.Models.CommonSubjectTemplate;
-import Subject.Models.Subject;
-import Subject.Models.SubjectComponentTemplates;
-import Subject.Models.UserSubject;
+import Subject.Models.DbModels.CommonSubjectTemplate;
+import Subject.Models.DbModels.Subject;
+import Subject.Models.DbModels.SubjectComponentTemplates;
+import Subject.Models.DbModels.UserSubject;
 
 /**
  * Servlet implementation class AddUserSubjectServlet

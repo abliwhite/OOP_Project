@@ -1,10 +1,12 @@
-package Subject.Models;
+package Subject.Models.ViewModels;
 
-public class SubjectComponentTemplatesViewEntity {
+import Subject.Models.DbModels.SubjectComponentTemplates;
+
+public class SubjectComponentTemplatesViewModel {
 
 	private SubjectComponentTemplates subjectComponentTemplate;
 
-	public SubjectComponentTemplatesViewEntity(SubjectComponentTemplates subjectComponentTemplate) {
+	public SubjectComponentTemplatesViewModel(SubjectComponentTemplates subjectComponentTemplate) {
 		this.subjectComponentTemplate = subjectComponentTemplate;
 	}
 

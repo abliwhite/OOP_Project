@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
-import Subject.Models.Subject;
+import Subject.Models.DbModels.Subject;
 
 /**
  * Servlet implementation class EditSubjectServlet

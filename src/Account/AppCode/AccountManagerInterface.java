@@ -7,7 +7,7 @@ import Account.Models.RegisterModel;
 import Account.Models.User;
 import Account.Models.UserProfile;
 import Common.Models.ResponseModel;
-import Subject.Models.Subject;
+import Subject.Models.DbModels.Subject;
 
 public interface AccountManagerInterface {
 

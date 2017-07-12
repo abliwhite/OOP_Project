@@ -24,7 +24,7 @@ import Database.DbCertificate;
 import Database.MyDBInfo;
 import Database.QueryGenerator;
 import Subject.AppCode.SubjectManager;
-import Subject.Models.Subject;
+import Subject.Models.DbModels.Subject;
 
 public class AccountManager extends DaoController implements AccountManagerInterface {
 

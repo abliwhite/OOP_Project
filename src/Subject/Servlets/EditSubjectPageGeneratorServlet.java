@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import Common.AppCode.CommonConstants;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
-import Subject.Models.CommonSubjectTemplate;
-import Subject.Models.Subject;
-import Subject.Models.SubjectComponentTemplates;
-import Subject.Models.SubjectComponentTemplatesViewEntity;
-import Subject.Models.SubjectViewEntity;
+import Subject.Models.DbModels.CommonSubjectTemplate;
+import Subject.Models.DbModels.Subject;
+import Subject.Models.DbModels.SubjectComponentTemplates;
+import Subject.Models.ViewModels.SubjectComponentTemplatesViewModel;
+import Subject.Models.ViewModels.SubjectViewModel;
 
 /**
  * Servlet implementation class EditSubjectServlet
@@ -57,22 +57,22 @@ public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 				return;
 			}
 
-			SubjectViewEntity subjectViewEntity = new SubjectViewEntity(subject,
+			SubjectViewModel subjectViewEntity = new SubjectViewModel(subject,
 					getSubjectComponentTemplatesViewEntities(sc));
 
-			request.setAttribute(SubjectViewEntity.SUBJECT_VIEW_ENTITY_ATTRIBUTE, subjectViewEntity);
+			request.setAttribute(SubjectViewModel.SUBJECT_VIEW_ENTITY_ATTRIBUTE, subjectViewEntity);
 			request.getRequestDispatcher("Subject/Edit.jsp").forward(request, response);
 		} else {
 			// page not found
 		}
 	}
 
-	private List<SubjectComponentTemplatesViewEntity> getSubjectComponentTemplatesViewEntities(
+	private List<SubjectComponentTemplatesViewModel> getSubjectComponentTemplatesViewEntities(
 			List<SubjectComponentTemplates> sc) {
-		List<SubjectComponentTemplatesViewEntity> result = new ArrayList<SubjectComponentTemplatesViewEntity>();
+		List<SubjectComponentTemplatesViewModel> result = new ArrayList<SubjectComponentTemplatesViewModel>();
 
 		for (int i = 0; i < sc.size(); i++) {
-			result.add(new SubjectComponentTemplatesViewEntity(sc.get(i)));
+			result.add(new SubjectComponentTemplatesViewModel(sc.get(i)));
 		}
 		return result;
 	}
