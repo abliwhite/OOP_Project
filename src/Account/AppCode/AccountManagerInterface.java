@@ -27,4 +27,6 @@ public interface AccountManagerInterface {
 
 	public List<Subject> getUserSubjects(User user);
 	
+	public List<Subject> getAllSubjects();
+	
 }

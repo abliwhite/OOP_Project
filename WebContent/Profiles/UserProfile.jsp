@@ -18,8 +18,6 @@
 <script src="http://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.js" type="text/javascript"></script>
 
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%
 	User user = (User) request.getAttribute("user");
 	UserProfile profile = user.getProfile();
@@ -27,6 +25,8 @@
 	List<Subject> userSubjects = (ArrayList<Subject>)request.getAttribute("UserSubjects");
 %>
 
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Welcome</title>
 </head>
 
@@ -56,12 +56,11 @@
 
 	<br>
 
-	<div class="w3-container w3-green">
+	<div class="w3-container w3-black">
 		<h2>Your Subjects:</h2>
 		<%
 			for (Subject subject : userSubjects) {
-				out.print("<br>");
-				out.print("<h3>" + subject.getName() + "</h3>");
+				out.print("<h3> <a href= ''>" + subject.getName() + "</a> </h3>");
 			}
 		%>
 	</div>
