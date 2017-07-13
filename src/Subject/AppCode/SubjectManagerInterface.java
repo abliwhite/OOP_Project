@@ -2,12 +2,13 @@ package Subject.AppCode;
 
 import java.util.List;
 
-import Subject.Models.DbModels.CommonSubjectTemplate;
+import Subject.Models.DbModels.CommonSubjectComponent;
 import Subject.Models.DbModels.Subject;
-import Subject.Models.DbModels.SubjectComponentTemplates;
+import Subject.Models.DbModels.SubjectComponentType;
 import Subject.Models.DbModels.SubjectInfo;
 import Subject.Models.DbModels.SubjectTerm;
 import Subject.Models.DbModels.UserSubject;
+import Subject.Models.ViewModels.CommonSubjectComponentViewModel;
 
 public interface SubjectManagerInterface {
 
@@ -19,26 +20,17 @@ public interface SubjectManagerInterface {
 	
 	public void UpdateSubject(Subject subject);
 	
-	public void AddCommonSubjectTemplate(CommonSubjectTemplate cst);
+	public void AddCommonSubjectComponent(CommonSubjectComponent cst);
 	
-	public void DeleteCommonSubjectTemplateByIDFields(int subjectId,int subjectComponentId);
+	public void DeleteCommonSubjectComponentByID(int id);
 
-	public void AddSubjectComponentTemplate(SubjectComponentTemplates sct);
+	public void AddSubjectComponentType(SubjectComponentType sct);
 	
-	public SubjectComponentTemplates getSubjectComponentTemplateByName(SubjectComponentTemplates sct);
-	
-	public SubjectComponentTemplates getSubjectComponentTemplatesByAllFields(SubjectComponentTemplates sct);
+	public void UpdateCommonSubjectComponent(CommonSubjectComponent csc);
 
-	public void UpdateSubjectComponentTemplate(SubjectComponentTemplates sct);
+	public List<SubjectComponentType> getAllSubjectComponentTypes();
 
-	public void DeleteSubjectComponentTemplateByID(int id);
-
-	public List<SubjectComponentTemplates> getAllSubjectComponentTemplates();
-
-	public List<SubjectComponentTemplates> getAllSubjectComponentTemplatesByIDList(
-			List<CommonSubjectTemplate> commonSubjectTemplates);
-
-	public List<CommonSubjectTemplate> getAllCommonSubjectTemplatesBySubjectID(int subjectId);
+	public List<CommonSubjectComponentViewModel> getAllCommonSubjectComponentsViewModelBySubjectID(int subjectId);
 
 	public Subject getSubjectById(int subjectId);
 	
@@ -47,3 +39,6 @@ public interface SubjectManagerInterface {
 	public void addUserSubject(UserSubject us);
 	
 }
+
+
+

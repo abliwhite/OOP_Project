@@ -21,13 +21,13 @@ import Subject.AppCode.SubjectManagerInterface;
  * Servlet implementation class ComponentTemplateDeleteServlet
  */
 @WebServlet("/DeleteComponentTemplateServlet")
-public class DeleteComponentTemplateServlet extends SubjectServletParent {
+public class DeleteCommonSubjectComponentServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public DeleteComponentTemplateServlet() {
+	public DeleteCommonSubjectComponentServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -54,20 +54,19 @@ public class DeleteComponentTemplateServlet extends SubjectServletParent {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		initialManager();
+		super.doPost(request, response);
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
 		String id = data.get("id").getAsString();
-		String subjectId = data.get("subjectId").getAsString();
 
-		if (!fullNumericStringValidation(subjectId)) {
+		if (!fullNumericStringValidation(id)) {
 
 			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Error", false));
 			doGet(request, response);
 			return;
 		}
 
-		manager.DeleteCommonSubjectTemplateByIDFields(Integer.parseInt(subjectId), Integer.parseInt(id));
+		manager.DeleteCommonSubjectComponentByID(Integer.parseInt(id));
 		//manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
 
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,

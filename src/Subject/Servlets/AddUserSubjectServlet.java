@@ -10,9 +10,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import Common.AppCode.CommonConstants;
-import Subject.Models.DbModels.CommonSubjectTemplate;
+import Subject.Models.DbModels.CommonSubjectComponent;
 import Subject.Models.DbModels.Subject;
-import Subject.Models.DbModels.SubjectComponentTemplates;
+import Subject.Models.DbModels.SubjectComponentType;
 import Subject.Models.DbModels.UserSubject;
 
 /**

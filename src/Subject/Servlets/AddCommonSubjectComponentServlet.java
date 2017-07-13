@@ -16,20 +16,21 @@ import Common.AppCode.CommonConstants;
 import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
-import Subject.Models.DbModels.CommonSubjectTemplate;
-import Subject.Models.DbModels.SubjectComponentTemplates;
+import Subject.Models.DbModels.CommonSubjectComponent;
+import Subject.Models.DbModels.SubjectComponentType;
+import Subject.Models.ViewModels.CommonSubjectComponentViewModel;
 
 /**
  * Servlet implementation class AddComponentTemplateServlet
  */
 @WebServlet("/AddComponentTemplateServlet")
-public class AddComponentTemplateServlet extends SubjectServletParent {
+public class AddCommonSubjectComponentServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AddComponentTemplateServlet() {
+	public AddCommonSubjectComponentServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -40,19 +41,19 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		initialManager();
+		super.doGet(request, response);
 		// redirectToLoginIfNotLogged(request,response);
 
-		ResponseModel<SubjectComponentTemplates, String> res = (ResponseModel<SubjectComponentTemplates, String>) request
+		ResponseModel<CommonSubjectComponentViewModel, String> res = (ResponseModel<CommonSubjectComponentViewModel, String>) request
 				.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
 
 		if (res.isSuccess()) {
 
 			String subjectId = res.getResultObject().toString();
-			List<CommonSubjectTemplate> cst = manager
-					.getAllCommonSubjectTemplatesBySubjectID(Integer.parseInt(subjectId));
-			List<SubjectComponentTemplates> templateList = manager.getAllSubjectComponentTemplatesByIDList(cst);
-			res.setResultList(templateList);
+			List<CommonSubjectComponentViewModel> cst = manager
+					.getAllCommonSubjectComponentsViewModelBySubjectID(Integer.parseInt(subjectId));
+			// getAllSubjectComponentTypesByIDList
+			res.setResultList(cst);
 		}
 		String json = new Gson().toJson(res);
 
@@ -70,14 +71,13 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 		super.doPost(request, response);
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
-		String name = data.get("name").getAsString();
 		String percentage = data.get("percentage").getAsString();
 		String number = data.get("number").getAsString();
 		String subjectId = data.get("subjectId").getAsString();
-		boolean isNewName = data.get("isNewName").getAsBoolean();
+		String typeId = data.get("typeId").getAsString();
 
 		if (!(fullNumericStringValidation(percentage) && fullNumericStringValidation(number)
-				&& fullNumericStringValidation(subjectId))) {
+				&& fullNumericStringValidation(subjectId) && fullNumericStringValidation(typeId))) {
 
 			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
 					new ResponseModel("Please enter numeric!", false));
@@ -85,37 +85,14 @@ public class AddComponentTemplateServlet extends SubjectServletParent {
 			return;
 		}
 
-		SubjectComponentTemplates sct = new SubjectComponentTemplates(name, Double.parseDouble(percentage),
-				Integer.parseInt(number));
+		CommonSubjectComponent csc = new CommonSubjectComponent(Integer.parseInt(typeId), Integer.parseInt(subjectId),
+				Double.parseDouble(percentage), Integer.parseInt(number));
 
-		SubjectComponentTemplates temp = manager.getSubjectComponentTemplatesByAllFields(sct);
-		
-		if (manager.getSubjectComponentTemplateByName(sct) != null) {
-			if (!isNewName) {
-				if (temp != null) {
-					sct = temp;
-				} else {
-					manager.AddSubjectComponentTemplate(sct);
-				}
-				manager.AddCommonSubjectTemplate(
-						new CommonSubjectTemplate(sct.getId(), Integer.parseInt(subjectId)));
-				request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-						new ResponseModel(subjectId.toString(), true, CommonConstants.SUCCESSFUL_MESSAGE));
-			} else {
-				request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-						new ResponseModel("Select name from drop down!", false));
-			}
-		} else {
-			if (temp != null) {
-				sct = temp;
-			} else {
-				manager.AddSubjectComponentTemplate(sct);
-			}
-			manager.AddCommonSubjectTemplate(new CommonSubjectTemplate(sct.getId(), Integer.parseInt(subjectId)));
+		manager.AddCommonSubjectComponent(csc);
 
-			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-					new ResponseModel(subjectId.toString(), true, CommonConstants.SUCCESSFUL_MESSAGE));
-		}
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+				new ResponseModel(subjectId.toString(), true, CommonConstants.SUCCESSFUL_MESSAGE));
+
 		doGet(request, response);
 	}
 

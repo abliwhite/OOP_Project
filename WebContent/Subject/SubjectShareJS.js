@@ -43,13 +43,8 @@ function buildNewComponentTemplateTable(arg) {
 
 		var nameTd = document.createElement('td');
 		var name = document.createElement("label");
-		//name.setAttribute("type", "text");
-		//name.setAttribute("value", args.name);
 		name.setAttribute("id", "subjectComponentNameInput_" + args.id);
-		//name.setAttribute("class", "form-control");
-		//name.setAttribute("placeholder", "Name");
-		//name.setAttribute("disabled",true);
-		name.innerHTML = args.name;
+		name.innerHTML = args.subjectComponentType.name;
 		nameTd.append(name);
 
 		var numberTd = document.createElement('td');
@@ -66,26 +61,12 @@ function buildNewComponentTemplateTable(arg) {
 
 		var percentageTd = document.createElement('td');
 		var percentage = document.createElement("label");
-		//percentage.setAttribute("type", "number");
-		//percentage.setAttribute("value", args.markPercentage);
 		percentage.setAttribute("id",
 				"subjectComponentTemplatePercentageInput_" + args.id);
-		//percentage.setAttribute("class", "form-control");
-		//percentage.setAttribute("placeholder", "Percentage");
-		//percentage.setAttribute("readonly",true);
 		percentage.innerHTML = args.markPercentage;
 		percentageTd.append(percentage);
 
 		var removeEditTd = document.createElement('td');
-		/*
-		var edit = document.createElement("INPUT");
-		edit.setAttribute("type", "button");
-		edit.setAttribute("value", "Edit");
-		edit.setAttribute("onclick", "EditTemplate(" + args.id
-				+ "); return false;");
-		edit.setAttribute("class", "btn btn-warning");
-		removeEditTd.append(edit);
-		*/
 		var remove = document.createElement("INPUT");
 		remove.setAttribute("type", "button");
 		remove.setAttribute("value", "Delete");
@@ -105,23 +86,9 @@ function buildNewComponentTemplateTable(arg) {
 	templatesDiv.append(templates);
 }
 
-function scNameSelectOnchange(){
-	if($("#subjectComponentNameSelect_id").find(":selected").text() == "Other"){
-		$("#subjectComponentNameInput_id").show();
-	}else{
-		$("#subjectComponentNameInput_id").hide();
-	}
-}
-
 function addTemplate() {
-	if($("#subjectComponentNameSelect_id").find(":selected").text() != "Other"){
-		isNewName = false;
-		componentName = $("#subjectComponentNameSelect_id").find(":selected").text();
-	}else{
-		isNewName = true;
-		componentName = $("#subjectComponentNameInput_id").val();
-	}
 	
+	typeId = $("#subjectComponentNameSelect_id").val();
 	componentPercentage = $("#subjectComponentTemplatePercentageInput_id")
 			.val();
 	componentNumber = $("#subjectComponentTemplateNumberInput_id").val();
@@ -140,15 +107,14 @@ function addTemplate() {
 
 	data = {
 		subjectId : subjectId,
-		name : componentName,
+		typeId : typeId,
 		percentage : componentPercentage,
 		number : componentNumber,
-		isNewName : isNewName,
 	};
 
 	$.ajax({
 		type : "POST",
-		url : "/AddComponentTemplateServlet",
+		url : "/AddCommonSubjectComponentServlet",
 		contentType : "application/json",
 		data : JSON.stringify(data),
 		success : function(response) {
@@ -180,16 +146,14 @@ function addTemplate() {
 }
 
 function deleteComponentTemplate(id) {
-	subjectId = $("#hidden_subject_id").val();
 
 	data = {
 		id : id,
-		subjectId : subjectId
 	};
 
 	$.ajax({
 		type : "POST",
-		url : "/DeleteComponentTemplateServlet",
+		url : "/DeleteCommonSubjectComponentServlet",
 		contentType : "application/json",
 		data : JSON.stringify(data),
 		success : function(response) {

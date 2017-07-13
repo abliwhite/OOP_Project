@@ -9,20 +9,20 @@ public class SubjectViewModel {
 	public static final String SUBJECT_VIEW_ENTITY_ATTRIBUTE = "Subject view entity attribute";
 	
 	private Subject subject;
-	private List<SubjectComponentTemplatesViewModel> subjecComponentTemplatesViewEnties;
+	private List<CommonSubjectComponentViewModel> CommonSubjectComponentViewModels;
 
 	public SubjectViewModel(Subject subject,
-			List<SubjectComponentTemplatesViewModel> subjecComponentTemplatesViewEnties) {
-		this.subjecComponentTemplatesViewEnties = subjecComponentTemplatesViewEnties;
+			List<CommonSubjectComponentViewModel> CommonSubjectComponentViewModels) {
+		this.CommonSubjectComponentViewModels = CommonSubjectComponentViewModels;
 		this.subject = subject;
 	}
 
-	public List<SubjectComponentTemplatesViewModel> getSubjecComponentTemplatesViewEnties() {
-		return subjecComponentTemplatesViewEnties;
+	public List<CommonSubjectComponentViewModel> getCommonSubjectComponentViewModels() {
+		return CommonSubjectComponentViewModels;
 	}
 
-	public void setSubjecComponentTemplatesViewEnties(List<SubjectComponentTemplatesViewModel> subjecComponentTemplatesViewEnties) {
-		this.subjecComponentTemplatesViewEnties = subjecComponentTemplatesViewEnties;
+	public void setSubjecComponentTemplatesViewEnties(List<CommonSubjectComponentViewModel> CommonSubjectComponentViewModels) {
+		this.CommonSubjectComponentViewModels = CommonSubjectComponentViewModels;
 	}
 
 	public Subject getSubject() {

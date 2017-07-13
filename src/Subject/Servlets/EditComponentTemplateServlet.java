@@ -16,8 +16,8 @@ import Common.AppCode.CommonConstants;
 import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
-import Subject.Models.DbModels.CommonSubjectTemplate;
-import Subject.Models.DbModels.SubjectComponentTemplates;
+import Subject.Models.DbModels.CommonSubjectComponent;
+import Subject.Models.DbModels.SubjectComponentType;
 
 /**
  * Servlet implementation class EditComponentTemplateServlet
@@ -41,9 +41,6 @@ public class EditComponentTemplateServlet extends SubjectServletParent {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		super.doGet(request, response);
-		
-		initialManager();
-		// redirectToLoginIfNotLogged(request,response);
 
 		ResponseModel res = (ResponseModel) request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
 
@@ -59,19 +56,18 @@ public class EditComponentTemplateServlet extends SubjectServletParent {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		initialManager();
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
 		String id = data.get("id").getAsString();
-		String name = data.get("name").getAsString();
+		String typeId = data.get("typeId").getAsString();
 		String percentage = data.get("percentage").getAsString();
 		String number = data.get("number").getAsString();
 		// String subjectId = data.get("subjectId").getAsString();
 
 		if (!(fullNumericStringValidation(id) && fullNumericStringValidation(percentage)
-				&& fullNumericStringValidation(number))) {
+				&& fullNumericStringValidation(number) && fullNumericStringValidation(typeId))) {
 
 			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
 					new ResponseModel("Please enter numeric!", false));
@@ -79,12 +75,12 @@ public class EditComponentTemplateServlet extends SubjectServletParent {
 			return;
 		}
 
-		SubjectComponentTemplates sct = new SubjectComponentTemplates(Integer.parseInt(id), name,
+		CommonSubjectComponent csc = new CommonSubjectComponent(Integer.parseInt(id), Integer.parseInt(typeId),
 				Double.parseDouble(percentage), Integer.parseInt(number));
-		manager.UpdateSubjectComponentTemplate(sct);
-		
+		manager.UpdateCommonSubjectComponent(csc);
+
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-				new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE,true));
+				new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE, true));
 
 		doGet(request, response);
 

@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="UTF-8"%>
 <%@ page import="Subject.Models.ViewModels.SubjectViewModel"%>
 <%@ page import="Subject.Models.ViewModels.SubjectComponentTemplatesViewModel"%>
 <%@ page import="Subject.Models.DbModels.Subject"%>
-<%@ page import="java.util.List"%>    
+<%@ page import="java.util.List"%>  
+<%@ page import="Common.Models.*" %>  
 
 
    
@@ -27,8 +28,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <title>Edit Subject</title>
 <% 
-	SubjectViewModel viewModel = (SubjectViewModel)request.getAttribute(SubjectViewModel.SUBJECT_VIEW_ENTITY_ATTRIBUTE);
+	ResponseModel resp = (ResponseModel)request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
+	SubjectViewModel viewModel = (SubjectViewModel)resp.getResultObject();
 	Subject subject = viewModel.getSubject();
+	
 %>
 
 <body>

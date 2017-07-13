@@ -14,12 +14,13 @@ import Common.AppCode.CommonConstants;
 import Common.AppCode.DaoController;
 import Database.DbCertificate;
 import Database.MyDBInfo;
-import Subject.Models.DbModels.CommonSubjectTemplate;
+import Subject.Models.DbModels.CommonSubjectComponent;
 import Subject.Models.DbModels.Subject;
-import Subject.Models.DbModels.SubjectComponentTemplates;
+import Subject.Models.DbModels.SubjectComponentType;
 import Subject.Models.DbModels.SubjectInfo;
 import Subject.Models.DbModels.SubjectTerm;
 import Subject.Models.DbModels.UserSubject;
+import Subject.Models.ViewModels.CommonSubjectComponentViewModel;
 
 public class SubjectManager extends DaoController implements SubjectManagerInterface {
 
@@ -27,7 +28,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 
 	private List<String> subjectInfoColumnNames;
 	private List<String> subjectColumnNames;
-	private List<String> subjectComponentColumnNames;
+	private List<String> subjectComponentTypeColumnNames;
 	private List<String> commonSubjectTemplateColumnNames;
 	private List<String> userSubjectColumnNames;
 
@@ -35,7 +36,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		super(pool);
 		subjectInfoColumnNames = getColumnsNames(DbCertificate.SubjectInfoTable.TABLE_NAME);
 		subjectColumnNames = getColumnsNames(DbCertificate.SubjectTable.TABLE_NAME);
-		subjectComponentColumnNames = getColumnsNames(DbCertificate.SubjectComponentTemplateTable.TABLE_NAME);
+		subjectComponentTypeColumnNames = getColumnsNames(DbCertificate.SubjectComponentTypeTable.TABLE_NAME);
 		commonSubjectTemplateColumnNames = getColumnsNames(DbCertificate.CommonSubjectComponentTable.TABLE_NAME);
 		userSubjectColumnNames = getColumnsNames(DbCertificate.UserSubjectTable.TABLE_NAME);
 	}
@@ -99,16 +100,16 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	}
 
 	@Override
-	public void AddSubjectComponentTemplate(SubjectComponentTemplates sct) {
+	public void AddSubjectComponentType(SubjectComponentType sct) {
 		try {
 			java.sql.Connection con = getConnection();
-			String insertQuery = generator.getInsertQuery(subjectComponentColumnNames,
-					DbCertificate.SubjectComponentTemplateTable.TABLE_NAME);
+			String insertQuery = generator.getInsertQuery(subjectComponentTypeColumnNames,
+					DbCertificate.SubjectComponentTypeTable.TABLE_NAME);
 
 			con.createStatement().executeQuery(generator.getUseDatabaseQuery());
 			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
-			setValues(getSubjectComponentTemplateValues(sct), st);
+			setValues(getSubjectComponentTypeValues(sct), st);
 			st.executeUpdate();
 
 			try (ResultSet generatedKeys = st.getGeneratedKeys()) {
@@ -126,9 +127,8 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		}
 	}
 
-	private List<String> getSubjectComponentTemplateValues(SubjectComponentTemplates sct) {
-		return Arrays.asList(sct.getName(), Double.toString(sct.getMarkPercentage()),
-				Integer.toString(sct.getNumber()));
+	private List<String> getSubjectComponentTypeValues(SubjectComponentType sct) {
+		return Arrays.asList(sct.getName());
 	}
 
 	private List<String> getSubjectValues(Subject subject) {
@@ -137,18 +137,18 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	}
 
 	@Override
-	public List<SubjectComponentTemplates> getAllSubjectComponentTemplates() {
-		List<SubjectComponentTemplates> result = new ArrayList<SubjectComponentTemplates>();
+	public List<SubjectComponentType> getAllSubjectComponentTypes() {
+		List<SubjectComponentType> result = new ArrayList<SubjectComponentType>();
 
 		try {
 			java.sql.Connection con = getConnection();
 			java.sql.Statement st = con.createStatement();
 
-			String selectAllQuery = generator.getSelectAllQuery(DbCertificate.SubjectComponentTemplateTable.TABLE_NAME);
+			String selectAllQuery = generator.getSelectAllQuery(DbCertificate.SubjectComponentTypeTable.TABLE_NAME);
 
 			ResultSet rs = st.executeQuery(selectAllQuery);
 
-			result = getSubjectComponentTemplatesList(rs);
+			result = getSubjectComponentTypeList(rs);
 
 			con.close();
 		} catch (SQLException e) {
@@ -157,106 +157,33 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		return result;
 	}
 
-	private List<SubjectComponentTemplates> getSubjectComponentTemplatesList(ResultSet rs) throws SQLException {
-		List<SubjectComponentTemplates> result = new ArrayList<SubjectComponentTemplates>();
+	private List<SubjectComponentType> getSubjectComponentTypeList(ResultSet rs) throws SQLException {
+		List<SubjectComponentType> result = new ArrayList<SubjectComponentType>();
 
 		while (rs.next()) {
-			int i = rs.getInt(DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_ID);
-			String n = rs.getString(DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_NAME);
-			double m = rs.getDouble(DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_MARKPERCENTAGE);
-			int num = rs.getInt(DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_NUMBER);
+			int i = rs.getInt(DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_ID);
+			String n = rs.getString(DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_NAME);
 
-			SubjectComponentTemplates temp = new SubjectComponentTemplates(i, n, m, num);
+			SubjectComponentType temp = new SubjectComponentType(i, n);
 			result.add(temp);
 		}
 
 		return result;
 	}
 
-	@Override
-	public void UpdateSubjectComponentTemplate(SubjectComponentTemplates sct) {
-		try {
-			java.sql.Connection con = getConnection();
-			String updateStatement = generator.getUpdateByIdQuery(subjectComponentColumnNames,
-					DbCertificate.SubjectComponentTemplateTable.TABLE_NAME, sct.getId());
-
-			java.sql.PreparedStatement st = con.prepareStatement(updateStatement);
-
-			setValues(getSubjectComponentTemplateValues(sct), st);
-			st.executeUpdate();
-
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void DeleteSubjectComponentTemplateByID(int id) {
-		try {
-			java.sql.Connection con = getConnection();
-			String deleteStatement = generator.getDeleteByIdQuery(id,
-					DbCertificate.SubjectComponentTemplateTable.TABLE_NAME);
-
-			java.sql.Statement st = con.createStatement();
-			st.execute(generator.getUseDatabaseQuery());
-
-			st.execute(deleteStatement);
-
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public List<SubjectComponentTemplates> getAllSubjectComponentTemplatesByIDList(
-			List<CommonSubjectTemplate> commonSubjectTemplates) {
-		List<SubjectComponentTemplates> result = new ArrayList<SubjectComponentTemplates>();
-		if (commonSubjectTemplates.size() == 0)
-			return result;
-
-		try {
-			java.sql.Connection con = getConnection();
-
-			String selectQuery = generator.getSelectByIDQuery(DbCertificate.SubjectComponentTemplateTable.TABLE_NAME,
-					DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_ID, commonSubjectTemplates.size());
-
-			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
-			st.executeQuery(generator.getUseDatabaseQuery());
-			setValues(getSubjectTemplateIDsForInClause(commonSubjectTemplates), st);
-
-			ResultSet rs = st.executeQuery();
-			result = getSubjectComponentTemplatesList(rs);
-
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	private List<String> getSubjectTemplateIDsForInClause(List<CommonSubjectTemplate> commonSubjectTemplates) {
-		List<String> result = new ArrayList<String>();
-		for (int i = 0; i < commonSubjectTemplates.size(); i++) {
-			Integer id = commonSubjectTemplates.get(i).getSubjectComponentTemplateID();
-			if (id != null)
-				result.add(id.toString());
-		}
-
-		return result;
-	}
 
 	// todo gasatestia
 	@Override
-	public List<CommonSubjectTemplate> getAllCommonSubjectTemplatesBySubjectID(int subjectId) {
-		List<CommonSubjectTemplate> result = new ArrayList<CommonSubjectTemplate>();
+	public List<CommonSubjectComponentViewModel> getAllCommonSubjectComponentsViewModelBySubjectID(int subjectId) {
+		List<CommonSubjectComponentViewModel> result = new ArrayList<CommonSubjectComponentViewModel>();
 
 		try {
 			java.sql.Connection con = getConnection();
 
-			String selectQuery = generator.getSelectByIDQuery(DbCertificate.CommonSubjectComponentTable.TABLE_NAME,
-					DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_TEMPLATE_ID, 1);
+			String selectQuery = "SELECT * FROM " + DbCertificate.CommonSubjectComponentTable.TABLE_NAME
+					+ " INNER JOIN " + DbCertificate.SubjectComponentTypeTable.TABLE_NAME + " ON "
+					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_TYPE_ID + " = "
+					+ DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_ID;
 
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
 			st.executeQuery(generator.getUseDatabaseQuery());
@@ -264,7 +191,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 			setValues(Arrays.asList(String.valueOf(subjectId)), st);
 			ResultSet rs = st.executeQuery();
 
-			result = getCommonSubjectTemplateList(rs);
+			result = getCommonSubjectComponentViewModelList(rs);
 
 			con.close();
 		} catch (SQLException e) {
@@ -274,15 +201,20 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		return result;
 	}
 
-	private List<CommonSubjectTemplate> getCommonSubjectTemplateList(ResultSet rs) throws SQLException {
-		List<CommonSubjectTemplate> result = new ArrayList<CommonSubjectTemplate>();
+	private List<CommonSubjectComponentViewModel> getCommonSubjectComponentViewModelList(ResultSet rs)
+			throws SQLException {
+		List<CommonSubjectComponentViewModel> result = new ArrayList<CommonSubjectComponentViewModel>();
 
 		while (rs.next()) {
 			int id = rs.getInt(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_ID);
-			int sctId = rs.getInt(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_COMPONENT_TEMPLATE_ID);
-			int stId = rs.getInt(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_TEMPLATE_ID);
+			int typeId = rs.getInt(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_TYPE_ID);
+			String typeName = rs.getString(DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_NAME);
+			double markPercentage = rs.getDouble(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_MARKPERCENTAGE);
+			int number = rs.getInt(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_NUMBER);
+			int subjectId = rs.getInt(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_ID);
 
-			CommonSubjectTemplate temp = new CommonSubjectTemplate(id, sctId, stId);
+			CommonSubjectComponentViewModel temp = new CommonSubjectComponentViewModel(id, subjectId, markPercentage,
+					number, new SubjectComponentType(typeId, typeName));
 			result.add(temp);
 		}
 
@@ -345,19 +277,19 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	}
 
 	@Override
-	public void AddCommonSubjectTemplate(CommonSubjectTemplate cst) {
+	public void AddCommonSubjectComponent(CommonSubjectComponent csc) {
 		try {
 			java.sql.Connection con = getConnection();
 			String insertQuery = generator.getInsertQuery(commonSubjectTemplateColumnNames,
 					DbCertificate.CommonSubjectComponentTable.TABLE_NAME);
 			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 
-			setValues(getCommonSubjectTemplateValues(cst), st);
+			setValues(getCommonSubjectComponentValues(csc), st);
 
 			st.executeUpdate();
 			try (ResultSet generatedKeys = st.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
-					cst.setId(generatedKeys.getInt(1));
+					csc.setId(generatedKeys.getInt(1));
 				} else {
 					throw new SQLException();
 				}
@@ -369,9 +301,9 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		}
 	}
 
-	private List<String> getCommonSubjectTemplateValues(CommonSubjectTemplate cst) {
-		return Arrays.asList(String.valueOf(cst.getSubjectComponentTemplateID()),
-				String.valueOf(cst.getSubjectTemplateID()));
+	private List<String> getCommonSubjectComponentValues(CommonSubjectComponent csc) {
+		return Arrays.asList(String.valueOf(csc.getTypeId()), String.valueOf(csc.getMarkPercentage()),
+				String.valueOf(csc.getNumber()), String.valueOf(csc.getSubjectId()));
 	}
 
 	@Override
@@ -394,18 +326,36 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	}
 
 	@Override
-	public void DeleteCommonSubjectTemplateByIDFields(int subjectId, int subjectComponentId) {
+	public void DeleteCommonSubjectComponentByID(int id) {
 		try {
 			java.sql.Connection con = getConnection();
-			String deleteStatement = "DELETE FROM " + DbCertificate.CommonSubjectComponentTable.TABLE_NAME + " WHERE "
-					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_COMPONENT_TEMPLATE_ID + " = "
-					+ subjectComponentId + " and "
-					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_TEMPLATE_ID + " = " + subjectId;
+			String deleteStatement = generator.getDeleteByIdQuery(id,
+					DbCertificate.CommonSubjectComponentTable.TABLE_NAME);
 
-			java.sql.Statement st = con.createStatement();
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
 			st.execute(generator.getUseDatabaseQuery());
 
-			st.execute(deleteStatement);
+			setValues(Arrays.asList(String.valueOf(id)), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void UpdateCommonSubjectComponent(CommonSubjectComponent csc) {
+		try {
+			java.sql.Connection con = getConnection();
+			String updateStatement = generator.getUpdateByIdQuery(commonSubjectTemplateColumnNames,
+					DbCertificate.CommonSubjectComponentTable.TABLE_NAME, csc.getId());
+
+			java.sql.PreparedStatement st = con.prepareStatement(updateStatement);
+
+			setValues(Arrays.asList(String.valueOf(csc.getTypeId()), String.valueOf(csc.getMarkPercentage()),
+					String.valueOf(csc.getNumber()), String.valueOf(csc.getSubjectId())), st);
+			st.executeUpdate();
 
 			con.close();
 		} catch (SQLException e) {
@@ -505,56 +455,5 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 
 	private List<String> getUserSubjectValues(UserSubject us) {
 		return Arrays.asList(Integer.toString(us.getUserId()), Integer.toString(us.getSubjectId()));
-	}
-
-	@Override
-	public SubjectComponentTemplates getSubjectComponentTemplateByName(SubjectComponentTemplates sct) {
-		SubjectComponentTemplates result = null;
-		try {
-			java.sql.Connection con = getConnection();
-			String selectQuery = "SELECT * FROM " + DbCertificate.SubjectComponentTemplateTable.TABLE_NAME + " WHERE "
-					+ DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_NAME + " = " + "?";
-
-			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
-			setValues(Arrays.asList(sct.getName()), st);
-
-			st.executeQuery(generator.getUseDatabaseQuery());
-			ResultSet rs = st.executeQuery();
-
-			List<SubjectComponentTemplates> get = getSubjectComponentTemplatesList(rs);
-			result = get.size() == 0 ? result : get.get(0);
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return result;
-	}
-
-	@Override
-	public SubjectComponentTemplates getSubjectComponentTemplatesByAllFields(SubjectComponentTemplates sct) {
-		SubjectComponentTemplates result = null;
-		try {
-			java.sql.Connection con = getConnection();
-			String selectQuery = "SELECT * FROM " + DbCertificate.SubjectComponentTemplateTable.TABLE_NAME + 
-					" WHERE "
-					+ DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_NAME + " = " + "?"
-					+ " AND " + DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_NUMBER + " = " + "?"
-					+ " AND " + DbCertificate.SubjectComponentTemplateTable.COLUMN_NAME_MARKPERCENTAGE + " = " + "?";
-
-			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
-			setValues(Arrays.asList(sct.getName(),Integer.toString(sct.getNumber()),Double.toString(sct.getMarkPercentage())), st);
-			
-			st.executeQuery(generator.getUseDatabaseQuery());
-			ResultSet rs = st.executeQuery();
-
-			List<SubjectComponentTemplates> get = getSubjectComponentTemplatesList(rs);
-			result = get.size() == 0 ? result : get.get(0);
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return result;
 	}
 }

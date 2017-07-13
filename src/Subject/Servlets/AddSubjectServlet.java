@@ -16,9 +16,9 @@ import Common.AppCode.CommonConstants;
 import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
-import Subject.Models.DbModels.CommonSubjectTemplate;
+import Subject.Models.DbModels.CommonSubjectComponent;
 import Subject.Models.DbModels.Subject;
-import Subject.Models.DbModels.SubjectComponentTemplates;
+import Subject.Models.DbModels.SubjectComponentType;
 import Subject.Models.DbModels.SubjectInfo;
 
 /**

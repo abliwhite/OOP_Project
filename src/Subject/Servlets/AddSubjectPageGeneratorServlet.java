@@ -18,9 +18,9 @@ import Common.AppCode.CommonConstants;
 import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
-import Subject.Models.DbModels.SubjectComponentTemplates;
+import Subject.Models.DbModels.SubjectComponentType;
 import Subject.Models.DbModels.SubjectTerm;
-import Subject.Models.ViewModels.SubjectComponentTemplatesViewModel;
+import Subject.Models.ViewModels.CommonSubjectComponentViewModel;
 import Subject.Models.ViewModels.SubjectTemplateListsViewModel;
 
 /**
@@ -48,9 +48,8 @@ public class AddSubjectPageGeneratorServlet extends SubjectServletParent {
 		super.doGet(request, response);
 
 		List<SubjectTerm> subjectTerms = manager.GetAllSubjectTerms();
-		List<SubjectComponentTemplates> templates = manager.getAllSubjectComponentTemplates();
 
-		List<String> names = templates.stream().map(x -> x.getName()).distinct().collect(Collectors.toList());
+		List<SubjectComponentType> names = manager.getAllSubjectComponentTypes();
 
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
 				new ResponseModel<Object, SubjectTemplateListsViewModel>(

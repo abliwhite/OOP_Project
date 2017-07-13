@@ -26,26 +26,26 @@ CREATE TABLE `subject` (
    CONSTRAINT `FK_Subject_To_Term` FOREIGN KEY (`TermID`) REFERENCES `subject_terms` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
-CREATE TABLE `subject_component_templates` (
+CREATE TABLE `subject_component_types` (
    `ID` int(11) NOT NULL AUTO_INCREMENT,
-   `Name` varchar(45) NOT NULL,
-   `MarkPercentage` decimal(11,1) NOT NULL,
-   `Number` int(11) NOT NULL,
+   `Name` varchar(100) NOT NULL,
    PRIMARY KEY (`ID`),
    UNIQUE KEY `ID_UNIQUE` (`ID`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
 CREATE TABLE `common_subject_components` (
    `ID` int(11) NOT NULL AUTO_INCREMENT,
-   `SubjectComponentTemplateID` int(11) NOT NULL,
+   `TypeID` int(11) NOT NULL,
+   `MarkPercentage` decimal(11,1) NOT NULL,
+   `Number` int(11) NOT NULL,
    `SubjectID` int(11) NOT NULL,
    PRIMARY KEY (`ID`),
    UNIQUE KEY `ID_UNIQUE` (`ID`),
-   KEY `FK_Component_To_Template_idx` (`SubjectComponentTemplateID`),
    KEY `FK_Component_To_SubjectTemplate_idx` (`SubjectID`),
-   CONSTRAINT `FK_Component_To_Subject` FOREIGN KEY (`SubjectID`) REFERENCES `subject` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-   CONSTRAINT `FK_Component_To_Template` FOREIGN KEY (`SubjectComponentTemplateID`) REFERENCES `subject_component_templates` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
- ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+   KEY `FK_Component_To_Component_Types_idx` (`TypeID`),
+   CONSTRAINT `FK_Component_To_Component_Type` FOREIGN KEY (`TypeID`) REFERENCES `subject_component_types` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+   CONSTRAINT `FK_Component_To_Subject` FOREIGN KEY (`SubjectID`) REFERENCES `subject` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
  
  

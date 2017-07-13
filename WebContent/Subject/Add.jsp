@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="UTF-8"%>
 <%@page import="Database.DbCertificate"%>
-<%@ page import="Subject.Models.DbModels.SubjectTerm"%>
+<%@ page import="Subject.Models.DbModels.*"%>
 <%@ page import="Subject.Models.ViewModels.*"%>
 <%@ page import="Common.Models.*"%>
 <%@ page import="java.util.List"%>  
@@ -32,8 +32,7 @@
 	ResponseModel<Object, SubjectTemplateListsViewModel> responseModel = (ResponseModel)request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
     
 	List<SubjectTerm> subjectTermsList = responseModel.getResultObject().getsTerms();
-    
-	List<String> scNames = responseModel.getResultObject().getScNames();
+	List<SubjectComponentType> scNames = responseModel.getResultObject().getScNames();
 %>
 </head>
 <body>
@@ -83,12 +82,12 @@
 			<%
 				for(int i=0; i < scNames.size(); i++)
 				{
-					out.print("<option>" + scNames.get(i) + "</option>");
+					
+					out.print("<option value='"+scNames.get(i).getId()+"'>" + scNames.get(i).getName() + "</option>");
 				}
 			%>
 				<option>Other</option>
 			</select>
-			<input type="name" name="subjectComponentTemplateName" class="form-control" placeholder="Name"  id="subjectComponentNameInput_id" style="display: none;">
 			<input type="number" name="subjectComponentTemplatePercentage" class="form-control" placeholder="Percent"  id="subjectComponentTemplatePercentageInput_id">
 			<input type ="number" name ="subjectComponentTemplateNumber" class="form-control" placeholder="Number" id="subjectComponentTemplateNumberInput_id">
 			<input onclick="addTemplate(); return false;" type='button' class='btn btn-primary' value='Save'>
