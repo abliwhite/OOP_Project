@@ -5,7 +5,9 @@
 <%@ page import="Account.Models.*"%>
 <%@ page import="Account.AppCode.*"%>
 <%@ page import="Subject.Models.DbModels.*"%>
-<%@ page import="java.util.List"%>  
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.Set"%>
+<%@ page import="java.util.HashSet"%>       
 <%@ page import="java.util.ArrayList"%> 
 <html>
 
@@ -23,6 +25,7 @@
 	UserProfile profile = user.getProfile();
 	List<SubjectTerm> subjectTermsList = (ArrayList<SubjectTerm>) request.getAttribute("SubjectTerms");
 	List<Subject> userSubjects = (ArrayList<Subject>)request.getAttribute("UserSubjects");
+	List<Subject> allSubjects = (ArrayList<Subject>)request.getAttribute("AllSubjects");
 %>
 
 <head>
@@ -39,8 +42,24 @@
 	<div class="container">
 		<input type="hidden" id="hidden_user_id" value="<%=user.getId()%>">
 		<h3>Add Subject:</h3>
-		Subject: <input type='text' name='name' class="form-control" placeholder="Enter Subject" id='name_id'> 
-		Year: <input type='text' name='name' class="form-control" placeholder="Enter Year" id='year_id'>
+		Subject: <select class="form-control" name="Subjects" id="subjects_id">
+		<%
+			Set<Integer> years = new HashSet<Integer>();
+			for (Subject sub : allSubjects) {
+				years.add(sub.getYear());
+				out.print("<option value = '" + sub.getName() + "'>" + sub.getName() + "</option>");
+			}
+		%>
+		</select>
+			
+		Year: <select class="form-control" name="SubjectYears" id="year_id">
+		<%
+			for (int year : years) {
+				out.print("<option value = '" + year + "'>" + year + "</option>");
+			}
+		%>
+		</select>
+		
 		Term: <select class="form-control" name="SubjectTerm" id="term_id">
 		<%
 			for (int i = 0; i < subjectTermsList.size(); i++) {
@@ -60,7 +79,7 @@
 		<h2>Your Subjects:</h2>
 		<%
 			for (Subject subject : userSubjects) {
-				out.print("<h3> <a href= ''>" + subject.getName() + "</a> </h3>");
+				out.print("<h3> <a href= ''>" + subject.getName() + " " + subject.getYear() + "</a> </h3>");
 			}
 		%>
 	</div>

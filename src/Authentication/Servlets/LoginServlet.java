@@ -66,12 +66,11 @@ public class LoginServlet extends AuthenticationServletParent {
 			request.setAttribute(ViewTextContainer.RESULT, "Success");
 			
 			//addUserInSession(request, user);
+			List<Subject> allSubjects = manager.getAllSubjects();
 			
+			request.setAttribute("AllSubjects", allSubjects);
 			if (user.getUsername().equals(DbCertificate.UserTable.ADMIN_USERNAME)
 					&& user.getPassword().equals(DbCertificate.UserTable.ADMIN_PASSWORD)) {
-				List<Subject> allSubjects = manager.getAllSubjects();
-				
-				request.setAttribute("AllSubjects", allSubjects);
 				request.getRequestDispatcher("/Profiles/AdminProfile.jsp").forward(request, response);
 			} else {
 				if (user.getProfile() == null) {
