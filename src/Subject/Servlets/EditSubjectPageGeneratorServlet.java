@@ -18,13 +18,14 @@ import Subject.AppCode.SubjectManagerInterface;
 import Subject.Models.DbModels.CommonSubjectComponent;
 import Subject.Models.DbModels.Subject;
 import Subject.Models.DbModels.SubjectComponentType;
+import Subject.Models.DbModels.SubjectTerm;
 import Subject.Models.ViewModels.CommonSubjectComponentViewModel;
+import Subject.Models.ViewModels.SubjectTemplateListsViewModel;
 import Subject.Models.ViewModels.SubjectViewModel;
 
 /**
  * Servlet implementation class EditSubjectServlet
  */
-@WebServlet("/EditSubjectPageGeneratorServlet")
 public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 
@@ -48,16 +49,22 @@ public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 		if (fullNumericStringValidation(subjectId)) {
 			int id = Integer.parseInt(subjectId);
 
-			Subject subject = manager.getSubjectById(id);
-			if (subject == null) {
+			SubjectViewModel svm = manager.getSubjectViewModelById(id);
+			if (svm == null) {
 				// page not found
 				return;
 			}
+
 			List<CommonSubjectComponentViewModel> commonSubjectComponentViewModels = manager
 					.getAllCommonSubjectComponentsViewModelBySubjectID(id);
 
-			SubjectViewModel svm = new SubjectViewModel(subject, commonSubjectComponentViewModels);
+			List<SubjectTerm> subjectTerms = manager.GetAllSubjectTerms();
+			List<SubjectComponentType> typeNames = manager.getAllSubjectComponentTypes();
+			SubjectTemplateListsViewModel stv = new SubjectTemplateListsViewModel(typeNames, subjectTerms);
 
+			svm.setCommonSubjectComponentViewModels(commonSubjectComponentViewModels);
+			svm.setSubjectTemplateListsViewModel(stv);
+			svm.setCommonSubjectComponentViewModels(commonSubjectComponentViewModels);
 
 			ResponseModel resp = new ResponseModel<Object, SubjectViewModel>(svm, true,
 					CommonConstants.SUCCESSFUL_MESSAGE);

@@ -8,6 +8,11 @@ function fadeAlertMessage(id) {
 	});
 }
 
+function showAddSubjectTemplate(){
+	$("#subjectComponentTemplateRow_id").show();
+	$("#show_Add_Subject_Template_id").hide();
+}
+
 function buildNewComponentTemplateTable(arg) {
 	var templatesDiv = $("#subjectComponents_id");
 
@@ -94,8 +99,7 @@ function addTemplate() {
 	componentNumber = $("#subjectComponentTemplateNumberInput_id").val();
 	subjectId = $("#hidden_subject_id").val();
 
-	if (componentName == "" || componentPercentage == ""
-			|| componentNumber == "") {
+	if (componentPercentage == "" || componentNumber == "") {
 		$("#subject_component_alert_div_id").removeClass("alert alert-success");
 		$("#subject_component_alert_div_id").addClass("alert alert-danger");
 		$("#subject_component_alert_div_id").html("Fill All Fields!");
@@ -159,6 +163,10 @@ function deleteComponentTemplate(id) {
 		success : function(response) {
 			// buildNewComponentTemplateTable(response);
 			$("#" + id).remove();
+			if($("#subjectComponents_id").children().children().length == 1){
+				var templatesDiv = $("#subjectComponents_id");
+				templatesDiv.empty();
+			}
 		}
 	});
 }

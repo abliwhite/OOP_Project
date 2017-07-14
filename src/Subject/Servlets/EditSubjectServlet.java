@@ -10,14 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import Common.AppCode.CommonConstants;
+import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
 import Subject.Models.DbModels.Subject;
+import Subject.Models.DbModels.SubjectInfo;
 
 /**
  * Servlet implementation class EditSubjectServlet
  */
-@WebServlet("/EditSubjectServlet")
 public class EditSubjectServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 
@@ -35,33 +37,59 @@ public class EditSubjectServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		super.doGet(request, response);
+		ResponseModel res = (ResponseModel) request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
+
+		String json = new Gson().toJson(res);
+
+		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
+		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
+
+		response.getWriter().write(json);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		initialManager();
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		super.doPost(request, response);
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
 		String name = data.get("name").getAsString();
+		String year = data.get("year").getAsString();
+		String termId = data.get("termId").getAsString();
+
+		String subjectInfoId = data.get("subjectInfoId").getAsString();
 		String language = data.get("language").getAsString();
 		String ects = data.get("ects").getAsString();
 		String lecturerName = data.get("lecturerName").getAsString();
 		String subjectId = data.get("subjectId").getAsString();
 
-		
-		/*
-		Subject subject = new Subject(Integer.parseInt(subjectId), name, language, Integer.parseInt(ects), lecturerName,
-				null);
-		*/
-		
-		//manager.UpdateSubject(subject);
+		if (!(fullNumericStringValidation(termId) && fullNumericStringValidation(subjectId)
+				&& fullNumericStringValidation(subjectInfoId))) {
 
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+					new ResponseModel("Please enter numeric!", false));
+			doGet(request, response);
+			return;
+		}
+
+		SubjectInfo subjectInfo = new SubjectInfo(Integer.parseInt(subjectInfoId), lecturerName, null,
+				Integer.parseInt(ects), language);
+		manager.UpdateSubjectInfo(subjectInfo);
+
+		Subject subject = new Subject(Integer.parseInt(subjectId),name, Integer.parseInt(termId), Integer.parseInt(year), subjectInfo.getId());
+		manager.UpdateSubject(subject);
+
+		/*
+		 * Subject subject = new Subject(Integer.parseInt(subjectId), name,
+		 * language, Integer.parseInt(ects), lecturerName, null);
+		 */
+
+		// manager.UpdateSubject(subject);
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+				new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE, true));
 		doGet(request, response);
 	}
 

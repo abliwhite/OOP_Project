@@ -21,6 +21,7 @@ import Subject.Models.DbModels.SubjectInfo;
 import Subject.Models.DbModels.SubjectTerm;
 import Subject.Models.DbModels.UserSubject;
 import Subject.Models.ViewModels.CommonSubjectComponentViewModel;
+import Subject.Models.ViewModels.SubjectViewModel;
 
 public class SubjectManager extends DaoController implements SubjectManagerInterface {
 
@@ -171,7 +172,6 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		return result;
 	}
 
-
 	// todo gasatestia
 	@Override
 	public List<CommonSubjectComponentViewModel> getAllCommonSubjectComponentsViewModelBySubjectID(int subjectId) {
@@ -180,13 +180,21 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		try {
 			java.sql.Connection con = getConnection();
 
-			String selectQuery = "SELECT * FROM " + DbCertificate.CommonSubjectComponentTable.TABLE_NAME
-					+ " INNER JOIN " + DbCertificate.SubjectComponentTypeTable.TABLE_NAME + " ON "
+			String selectQuery = "SELECT " + DbCertificate.CommonSubjectComponentTable.TABLE_NAME + "."
+					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_ID + ","
+					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_TYPE_ID + ","
+					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_MARKPERCENTAGE + ","
+					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_NUMBER + ","
+					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_ID + ","
+					+ DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_NAME + " FROM "
+					+ DbCertificate.CommonSubjectComponentTable.TABLE_NAME + " INNER JOIN "
+					+ DbCertificate.SubjectComponentTypeTable.TABLE_NAME + " ON "
 					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_TYPE_ID + " = "
-					+ DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_ID;
+					+ DbCertificate.SubjectComponentTypeTable.UNIQUE_COLUMN_NAME_ID + " WHERE "
+					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_ID + " = ?";
 
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
-			st.executeQuery(generator.getUseDatabaseQuery());
+			con.createStatement().executeQuery(generator.getUseDatabaseQuery());
 
 			setValues(Arrays.asList(String.valueOf(subjectId)), st);
 			ResultSet rs = st.executeQuery();
@@ -222,26 +230,68 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	}
 
 	@Override
-	public Subject getSubjectById(int subjectId) {
-		Subject result = null;
+	public SubjectViewModel getSubjectViewModelById(int subjectId) {
+		SubjectViewModel result = null;
 		try {
 			java.sql.Connection con = getConnection();
 
-			String selectQuery = generator.getSelectByIDQuery(DbCertificate.SubjectTable.TABLE_NAME,
-					DbCertificate.SubjectTable.COLUMN_NAME_ID, 1);
+			String selectQuery = "SELECT " + DbCertificate.SubjectTable.UNIQUE_COLUMN_NAME_ID + ","
+					+ DbCertificate.SubjectTable.UNIQUE_NAME_NAME + "," + DbCertificate.SubjectTable.COLUMN_NAME_YEAR
+					+ "," + DbCertificate.SubjectInfoTable.COLUMN_NAME_ECTS + ","
+					+ DbCertificate.SubjectInfoTable.COLUMN_NAME_LANGUAGE + ","
+					+ DbCertificate.SubjectInfoTable.COLUMN_NAME_LECTURER_NAME + ","
+					+ DbCertificate.SubjectInfoTable.UNIQUE_COLUMN_NAME_ID + " as "
+					+ DbCertificate.SubjectInfoTable.ALTERNATIVE_COLUMN_NAME_ID + ","
+					+ DbCertificate.SubjectTermTable.UNIQUE_COLUMN_NAME_ID + " as "
+					+ DbCertificate.SubjectTermTable.ALTERNATIVE_COLUMN_NAME_ID + ","
+					+ DbCertificate.SubjectTermTable.UNIQUE_COLUMN_NAME_NAME + " as "
+					+ DbCertificate.SubjectTermTable.ALTERNATIVE_COLUMN_NAME_NAME + " FROM "
+					+ DbCertificate.SubjectTable.TABLE_NAME + " INNER JOIN " + DbCertificate.SubjectInfoTable.TABLE_NAME
+					+ " ON " + DbCertificate.SubjectTable.COLUMN_NAME_SUBJECT_INFO_ID + " = "
+					+ DbCertificate.SubjectInfoTable.UNIQUE_COLUMN_NAME_ID + " INNER JOIN "
+					+ DbCertificate.SubjectTermTable.TABLE_NAME + " ON "
+					+ DbCertificate.SubjectTermTable.UNIQUE_COLUMN_NAME_ID + " = "
+					+ DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID + " WHERE "
+					+ DbCertificate.SubjectTable.UNIQUE_COLUMN_NAME_ID + " = ?";
 
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
 			st.executeQuery(generator.getUseDatabaseQuery());
 
 			setValues(Arrays.asList(String.valueOf(subjectId)), st);
 			ResultSet rs = st.executeQuery();
-			List<Subject> temp = getSubjectsList(rs);
+			List<SubjectViewModel> temp = getSubjectViewModelList(rs);
 
 			result = temp.size() == 0 ? result : temp.get(0);
 
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	private List<SubjectViewModel> getSubjectViewModelList(ResultSet rs) throws SQLException {
+		List<SubjectViewModel> result = new ArrayList<SubjectViewModel>();
+
+		while (rs.next()) {
+			int id = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_ID);
+			String name = rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_NAME);
+			int year = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_YEAR);
+
+			int termId = rs.getInt(DbCertificate.SubjectTermTable.ALTERNATIVE_COLUMN_NAME_ID);
+			String termName = rs.getString(DbCertificate.SubjectTermTable.ALTERNATIVE_COLUMN_NAME_NAME);
+
+			int subjectInfoID = rs.getInt(DbCertificate.SubjectInfoTable.ALTERNATIVE_COLUMN_NAME_ID);
+			int ects = rs.getInt(DbCertificate.SubjectInfoTable.COLUMN_NAME_ECTS);
+			String lecturerName = rs.getString(DbCertificate.SubjectInfoTable.COLUMN_NAME_LECTURER_NAME);
+			String language = rs.getString(DbCertificate.SubjectInfoTable.COLUMN_NAME_LANGUAGE);
+
+			Subject subject = new Subject(id, name, termId, year, subjectInfoID);
+			SubjectInfo subjectInfo = new SubjectInfo(subjectInfoID, lecturerName, null, ects, language);
+			SubjectTerm subjectTerm = new SubjectTerm(termName, termId);
+
+			result.add(new SubjectViewModel(subject, subjectTerm, subjectInfo));
 		}
 
 		return result;
@@ -329,8 +379,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	public void DeleteCommonSubjectComponentByID(int id) {
 		try {
 			java.sql.Connection con = getConnection();
-			String deleteStatement = generator.getDeleteByIdQuery(id,
-					DbCertificate.CommonSubjectComponentTable.TABLE_NAME);
+			String deleteStatement = generator.getDeleteByIdQuery(DbCertificate.CommonSubjectComponentTable.TABLE_NAME);
 
 			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
 			st.execute(generator.getUseDatabaseQuery());
@@ -455,5 +504,121 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 
 	private List<String> getUserSubjectValues(UserSubject us) {
 		return Arrays.asList(Integer.toString(us.getUserId()), Integer.toString(us.getSubjectId()));
+	}
+
+	@Override
+	public void UpdateSubjectInfo(SubjectInfo subjectInfo) {
+		try {
+			java.sql.Connection con = getConnection();
+			String updateStatement = generator.getUpdateByIdQuery(subjectInfoColumnNames,
+					DbCertificate.SubjectInfoTable.TABLE_NAME, subjectInfo.getId());
+
+			java.sql.PreparedStatement st = con.prepareStatement(updateStatement);
+
+			setValues(getSubjectInfoValues(subjectInfo), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public List<Subject> getAllSubjects() {
+		List<Subject> subjects = null;
+
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = generator.getSelectAllQuery(DbCertificate.SubjectTable.TABLE_NAME);
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			ResultSet rs = st.executeQuery();
+			subjects = getSubjectsList(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return subjects;
+	}
+
+	@Override
+	public List<SubjectViewModel> getAllSubjectViewModels() {
+		List<SubjectViewModel> result = null;
+		try {
+			java.sql.Connection con = getConnection();
+
+			String selectQuery = "SELECT " + DbCertificate.SubjectTable.UNIQUE_COLUMN_NAME_ID + ","
+					+ DbCertificate.SubjectTable.UNIQUE_NAME_NAME + "," + DbCertificate.SubjectTable.COLUMN_NAME_YEAR
+					+ "," + DbCertificate.SubjectInfoTable.COLUMN_NAME_ECTS + ","
+					+ DbCertificate.SubjectInfoTable.COLUMN_NAME_LANGUAGE + ","
+					+ DbCertificate.SubjectInfoTable.COLUMN_NAME_LECTURER_NAME + ","
+					+ DbCertificate.SubjectInfoTable.UNIQUE_COLUMN_NAME_ID + " as "
+					+ DbCertificate.SubjectInfoTable.ALTERNATIVE_COLUMN_NAME_ID + ","
+					+ DbCertificate.SubjectTermTable.UNIQUE_COLUMN_NAME_ID + " as "
+					+ DbCertificate.SubjectTermTable.ALTERNATIVE_COLUMN_NAME_ID + ","
+					+ DbCertificate.SubjectTermTable.UNIQUE_COLUMN_NAME_NAME + " as "
+					+ DbCertificate.SubjectTermTable.ALTERNATIVE_COLUMN_NAME_NAME + " FROM "
+					+ DbCertificate.SubjectTable.TABLE_NAME + " INNER JOIN " + DbCertificate.SubjectInfoTable.TABLE_NAME
+					+ " ON " + DbCertificate.SubjectTable.COLUMN_NAME_SUBJECT_INFO_ID + " = "
+					+ DbCertificate.SubjectInfoTable.UNIQUE_COLUMN_NAME_ID + " INNER JOIN "
+					+ DbCertificate.SubjectTermTable.TABLE_NAME + " ON "
+					+ DbCertificate.SubjectTermTable.UNIQUE_COLUMN_NAME_ID + " = "
+					+ DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID;
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			ResultSet rs = st.executeQuery();
+			result = getSubjectViewModelList(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	@Override
+	public void deleteSubjectById(int id) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByIdQuery(DbCertificate.SubjectTable.TABLE_NAME);
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(id)), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteCommonSubjectComponentBySubjectId(int subjectId) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByAnyIDQuery(
+					DbCertificate.CommonSubjectComponentTable.TABLE_NAME,
+					DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_ID);
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(subjectId)), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

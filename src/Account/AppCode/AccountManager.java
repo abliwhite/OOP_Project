@@ -325,26 +325,5 @@ public class AccountManager extends DaoController implements AccountManagerInter
 		return result;
 	}
 
-	@Override
-	public List<Subject> getAllSubjects() {
-		List<Subject> subjects = null;
-		
-		try {
-			java.sql.Connection con = getConnection();
-			String selectQuery = "SELECT * FROM " + DbCertificate.UserSubjectTable.TABLE_NAME;
-					
-			
-			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
-			st.executeQuery(generator.getUseDatabaseQuery());
-			
-			ResultSet rs = st.executeQuery();
-			subjects = getSubjects(rs);
-			
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return subjects;
-	}
+	
 }

@@ -22,7 +22,6 @@ import Subject.Models.DbModels.SubjectComponentType;
 /**
  * Servlet implementation class EditComponentTemplateServlet
  */
-@WebServlet("/EditComponentTemplateServlet")
 public class EditComponentTemplateServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 

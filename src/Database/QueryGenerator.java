@@ -70,12 +70,16 @@ public class QueryGenerator {
 				+ DB_WHERE_ID_CONDITION + id;
 	}
 
-	public String getDeleteByIdQuery(int id, String tableName) {
-		return DB_DELETE + " " + tableName + " " + DB_WHERE_ID_CONDITION + id;
+	public String getDeleteByIdQuery(String tableName) {
+		return DB_DELETE + " " + tableName + " " + DB_WHERE_ID_CONDITION + "?";
 	}
 
 	public String getUseDatabaseQuery() {
 		return "USE " + MyDBInfo.MYSQL_DATABASE_NAME;
+	}
+
+	public String getDeleteByAnyIDQuery(String tableName, String idName) {
+		return DB_DELETE + " " + tableName + " WHERE " + idName + "= ?";
 	}
 
 	public String getSelectByIDQuery(String tableName, String idName, int numInClauseArguments) {

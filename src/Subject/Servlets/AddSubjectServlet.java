@@ -25,7 +25,6 @@ import Subject.Models.DbModels.SubjectInfo;
  * Servlet implementation class AddSubjectServlet
  */
 @SuppressWarnings("WeakerAccess")
-@WebServlet("/AddSubjectServlet")
 public class AddSubjectServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 
