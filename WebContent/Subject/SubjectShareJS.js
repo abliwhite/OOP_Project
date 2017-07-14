@@ -8,6 +8,11 @@ function fadeAlertMessage(id) {
 	});
 }
 
+function showAddSubjectTemplate(){
+	$("#subjectComponentTemplateRow_id").show();
+	$("#show_Add_Subject_Template_id").hide();
+}
+
 function buildNewComponentTemplateTable(arg) {
 	var templatesDiv = $("#subjectComponents_id");
 

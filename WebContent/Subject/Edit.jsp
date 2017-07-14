@@ -50,7 +50,7 @@
 		    <label id="term_label_id" class="col-sm-2 col-form-label"><%=subjectTerm.getName() %></label>
 		</div>
 	</form>
-	<input id='show_edit_Subject_id' type='button' onclick="showEditSubject();" class='btn btn-primary' value="Edit Subject">
+	<input id='show_edit_Subject_id' type='button' onclick="showEditSubject();" class='btn btn-primary' value="Edit Subject Info">
 	<div class="container">
 		<div id = "subject_required_info" style="display:none">
 			Name: <input value='<%=subject.getName() %>' type='text' name='name' class="form-control" placeholder="Name" id='name_id'>
@@ -98,9 +98,10 @@
 						</th>
 					</tr>
 				</thead>
-			<%
+				<% 
 				List<CommonSubjectComponentViewModel> temp = viewModel.getCommonSubjectComponentViewModels();
-				for(int i = 0;i < temp.size();i++){
+				for(int i = 0;i < temp.size();i++)
+				{
 					int componentId = temp.get(i).getId();
 					String componentName = temp.get(i).getSubjectComponentType().getName();
 					int componentNumber = temp.get(i).getNumber();
@@ -122,10 +123,10 @@
 					out.println("</td>");
 					out.println("</tr>");
 				}
-			%>
+				%>
 			</table>
 		</div>
-		<input id='show_Add_Subject_Template_id' type='button' onclick="showAddSubjectTemplate();" class='btn btn-primary' value="Add Component" style="display: none;">
+		<input id='show_Add_Subject_Template_id' type='button' onclick="showAddSubjectTemplate();" class='btn btn-primary' value="Add Component" >
 		<div id="subjectComponentTemplateRow_id" style="display: none;">
 			Add Subject Component: 
 			<select class="form-control" name="SubjectTerm" id="subjectComponentNameSelect_id">

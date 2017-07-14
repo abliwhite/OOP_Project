@@ -189,7 +189,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 					+ DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_NAME + " FROM "
 					+ DbCertificate.CommonSubjectComponentTable.TABLE_NAME + " INNER JOIN "
 					+ DbCertificate.SubjectComponentTypeTable.TABLE_NAME + " ON "
-					+ DbCertificate.SubjectComponentTypeTable.UNIQUE_COLUMN_NAME_ID + " = "
+					+ DbCertificate.CommonSubjectComponentTable.UNIQUE_COLUMN_NAME_ID + " = "
 					+ DbCertificate.SubjectComponentTypeTable.UNIQUE_COLUMN_NAME_ID + " WHERE "
 					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_ID + " = ?";
 
