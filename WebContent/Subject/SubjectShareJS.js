@@ -94,8 +94,7 @@ function addTemplate() {
 	componentNumber = $("#subjectComponentTemplateNumberInput_id").val();
 	subjectId = $("#hidden_subject_id").val();
 
-	if (componentName == "" || componentPercentage == ""
-			|| componentNumber == "") {
+	if (componentPercentage == "" || componentNumber == "") {
 		$("#subject_component_alert_div_id").removeClass("alert alert-success");
 		$("#subject_component_alert_div_id").addClass("alert alert-danger");
 		$("#subject_component_alert_div_id").html("Fill All Fields!");

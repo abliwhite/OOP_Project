@@ -23,7 +23,7 @@ import Subject.Models.ViewModels.CommonSubjectComponentViewModel;
 /**
  * Servlet implementation class AddComponentTemplateServlet
  */
-@WebServlet("/AddComponentTemplateServlet")
+@WebServlet("/AddCommonSubjectComponentServlet")
 public class AddCommonSubjectComponentServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 

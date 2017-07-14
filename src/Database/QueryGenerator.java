@@ -70,8 +70,8 @@ public class QueryGenerator {
 				+ DB_WHERE_ID_CONDITION + id;
 	}
 
-	public String getDeleteByIdQuery(int id, String tableName) {
-		return DB_DELETE + " " + tableName + " " + DB_WHERE_ID_CONDITION + id;
+	public String getDeleteByIdQuery(String tableName) {
+		return DB_DELETE + " " + tableName + " " + DB_WHERE_ID_CONDITION + "?";
 	}
 
 	public String getUseDatabaseQuery() {

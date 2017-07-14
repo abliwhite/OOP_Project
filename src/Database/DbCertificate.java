@@ -55,14 +55,23 @@ public final class DbCertificate {
 		public final static String TABLE_NAME = "subject_terms";
 
 		public final static String COLUMN_NAME_ID = "ID";
+		public final static String UNIQUE_COLUMN_NAME_ID = TABLE_NAME + "." + COLUMN_NAME_ID;
+		public final static String ALTERNATIVE_COLUMN_NAME_ID = "subjectTermID";
+
 		public final static String COLUMN_NAME_NAME = "Name";
+		public final static String UNIQUE_COLUMN_NAME_NAME = TABLE_NAME + "." + COLUMN_NAME_NAME;
+		public final static String ALTERNATIVE_COLUMN_NAME_NAME = "subjectTermName";
 	}
 
 	public static class SubjectTable {
 		public final static String TABLE_NAME = "subject";
 
 		public final static String COLUMN_NAME_ID = "ID";
+		public final static String UNIQUE_COLUMN_NAME_ID = TABLE_NAME + "." + COLUMN_NAME_ID;
+
 		public final static String COLUMN_NAME_NAME = "Name";
+		public final static String UNIQUE_NAME_NAME = TABLE_NAME + "." + COLUMN_NAME_NAME;
+
 		public final static String COLUMN_NAME_TERM_ID = "TermID";
 		public final static String COLUMN_NAME_YEAR = "Year";
 		public final static String COLUMN_NAME_SUBJECT_INFO_ID = "SubjectInfoID";
@@ -73,6 +82,9 @@ public final class DbCertificate {
 		public final static String TABLE_NAME = "subject_info";
 
 		public final static String COLUMN_NAME_ID = "ID";
+		public final static String UNIQUE_COLUMN_NAME_ID = TABLE_NAME + "." + COLUMN_NAME_ID;
+		public final static String ALTERNATIVE_COLUMN_NAME_ID = "subjectInfoId";
+
 		public final static String COLUMN_NAME_LECTURER_NAME = "LecturerName";
 		public final static String COLUMN_NAME_SYLLABUS_PATH = "SyllabusPath";
 		public final static String COLUMN_NAME_ECTS = "Ects";
@@ -83,6 +95,8 @@ public final class DbCertificate {
 		public final static String TABLE_NAME = "subject_component_types";
 
 		public final static String COLUMN_NAME_ID = "ID";
+		public final static String UNIQUE_COLUMN_NAME_ID = TABLE_NAME + "." + COLUMN_NAME_ID;
+
 		public final static String COLUMN_NAME_NAME = "Name";
 
 	}
@@ -91,6 +105,8 @@ public final class DbCertificate {
 		public final static String TABLE_NAME = "common_subject_components";
 
 		public final static String COLUMN_NAME_ID = "ID";
+		public final static String UNIQUE_COLUMN_NAME_ID = TABLE_NAME + "." + COLUMN_NAME_ID;
+
 		public final static String COLUMN_NAME_TYPE_ID = "TypeID";
 		public final static String COLUMN_NAME_MARKPERCENTAGE = "MarkPercentage";
 		public final static String COLUMN_NAME_NUMBER = "Number";

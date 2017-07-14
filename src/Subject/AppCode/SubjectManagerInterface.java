@@ -9,10 +9,13 @@ import Subject.Models.DbModels.SubjectInfo;
 import Subject.Models.DbModels.SubjectTerm;
 import Subject.Models.DbModels.UserSubject;
 import Subject.Models.ViewModels.CommonSubjectComponentViewModel;
+import Subject.Models.ViewModels.SubjectViewModel;
 
 public interface SubjectManagerInterface {
 
 	public void AddSubjectInfo(SubjectInfo subjectInfo);
+	
+	public void UpdateSubjectInfo(SubjectInfo subjectInfo);
 	
 	public List<SubjectTerm> GetAllSubjectTerms();
 	
@@ -32,7 +35,7 @@ public interface SubjectManagerInterface {
 
 	public List<CommonSubjectComponentViewModel> getAllCommonSubjectComponentsViewModelBySubjectID(int subjectId);
 
-	public Subject getSubjectById(int subjectId);
+	public SubjectViewModel getSubjectViewModelById(int subjectId);
 	
 	public Subject getSubjectByFilter(String subjectName, int year, int termId);
 	

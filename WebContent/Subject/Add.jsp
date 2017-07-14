@@ -47,7 +47,7 @@
 		<div id = "subject_required_info">
 			Name: <input type='text' name='name' class="form-control" placeholder="Name" id='name_id'>
 			Year: <input type='number' name='language' class="form-control" placeholder="Year" id='year_id'>
-			<select class="form-control" name="SubjectTerm" id="term_id">
+			Term: <select class="form-control" name="SubjectTerm" id="term_id">
 			<%
 				for(int i=0; i < subjectTermsList.size(); i++)
 				{
@@ -78,7 +78,7 @@
 		<input id='show_Add_Subject_Template_id' type='button' onclick="showAddSubjectTemplate();" class='btn btn-primary' value="Add Component" style="display: none;">
 		<div id="subjectComponentTemplateRow_id" style="display: none;">
 			Add Subject Component: 
-			<select onchange='scNameSelectOnchange()' class="form-control" name="SubjectTerm" id="subjectComponentNameSelect_id">
+			<select class="form-control" name="SubjectTerm" id="subjectComponentNameSelect_id">
 			<%
 				for(int i=0; i < scNames.size(); i++)
 				{
@@ -86,7 +86,6 @@
 					out.print("<option value='"+scNames.get(i).getId()+"'>" + scNames.get(i).getName() + "</option>");
 				}
 			%>
-				<option>Other</option>
 			</select>
 			<input type="number" name="subjectComponentTemplatePercentage" class="form-control" placeholder="Percent"  id="subjectComponentTemplatePercentageInput_id">
 			<input type ="number" name ="subjectComponentTemplateNumber" class="form-control" placeholder="Number" id="subjectComponentTemplateNumberInput_id">

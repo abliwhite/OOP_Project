@@ -20,7 +20,7 @@ import Subject.AppCode.SubjectManagerInterface;
 /**
  * Servlet implementation class ComponentTemplateDeleteServlet
  */
-@WebServlet("/DeleteComponentTemplateServlet")
+@WebServlet("/DeleteCommonSubjectComponentServlet")
 public class DeleteCommonSubjectComponentServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 
