@@ -82,6 +82,9 @@
 	</div>
 	<div style="display:none" class="alert alert-success" id="subject_alert_div_id" role="alert">
 	</div>
+	<div style="display:none">
+		<input type="hidden" value='<%=subject.getId() %>' id='hidden_subject_id'>
+	</div>
 	<div>
 		<div class="table-responsive" id="subjectComponents_id">
 			<table class='table'>
@@ -143,7 +146,8 @@
 			<input onclick="addTemplate(); return false;" type='button' class='btn btn-primary' value='Save'>
 		</div>
 	</div>	
-		
+	<div style="display:none" class="alert alert-success" id="subject_component_alert_div_id" role="alert">
+	</div>
 
 </body>
 

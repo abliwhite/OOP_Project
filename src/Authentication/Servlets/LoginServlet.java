@@ -20,6 +20,7 @@ import Account.Models.User;
 import Account.Models.UserProfile;
 import Common.AppCode.DaoController;
 import Common.AppCode.ViewTextContainer;
+import Common.Models.ResponseModel;
 import Database.DbCertificate;
 import Subject.Models.DbModels.Subject;
 import Subject.Models.DbModels.SubjectTerm;
@@ -54,31 +55,30 @@ public class LoginServlet extends AuthenticationServletParent {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doPost(request, response);
-		
+
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
 
-		User user = manager.checkLoginValidation(new AuthModel(name, password));
+		User user = accountManager.checkLoginValidation(new AuthModel(name, password));
 		if (user != null) {
 			request.setAttribute(ViewTextContainer.RESULT, "Success");
-			
-			//addUserInSession(request, user);
-			List<Subject> allSubjects = manager.getAllSubjects();
-			
+
+			// addUserInSession(request, user);
+			List<Subject> allSubjects = subjectManager.getAllSubjects();
+
 			request.setAttribute("AllSubjects", allSubjects);
 			if (user.getUsername().equals(DbCertificate.UserTable.ADMIN_USERNAME)
 					&& user.getPassword().equals(DbCertificate.UserTable.ADMIN_PASSWORD)) {
-				request.getRequestDispatcher("/Profiles/AdminProfile.jsp").forward(request, response);
+				redirectToAdminPage(request, response);
 			} else {
 				if (user.getProfile() == null) {
-					UserProfile profile = manager.getProfile(user);
+					UserProfile profile = accountManager.getProfile(user);
 					user.setUserProfile(profile);
 				}
-				List<Subject> userSubjects = manager.getUserSubjects(user);
-				
+				List<Subject> userSubjects = accountManager.getUserSubjects(user);
+
 				request.setAttribute("UserSubjects", userSubjects);
 				request.setAttribute("user", user);
 				request.getRequestDispatcher("/ProfilePageGeneratorServlet").forward(request, response);
@@ -87,5 +87,17 @@ public class LoginServlet extends AuthenticationServletParent {
 			request.setAttribute(ViewTextContainer.RESULT, new ViewTextContainer());
 			request.getRequestDispatcher("/Login/IncorrectDetails.jsp").forward(request, response);
 		}
+	}
+
+	private void redirectToAdminPage(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		List<Subject> allSubjects = subjectManager.getAllSubjects();
+
+		ResponseModel<Subject, Object> responseModel = new ResponseModel<Subject, Object>(allSubjects, true,
+				CommonConstants.SUCCESSFUL_MESSAGE);
+
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
+		request.getRequestDispatcher("/Profiles/AdminProfile.jsp").forward(request, response);
 	}
 }

@@ -163,6 +163,10 @@ function deleteComponentTemplate(id) {
 		success : function(response) {
 			// buildNewComponentTemplateTable(response);
 			$("#" + id).remove();
+			if($("#subjectComponents_id").children().children().length == 1){
+				var templatesDiv = $("#subjectComponents_id");
+				templatesDiv.empty();
+			}
 		}
 	});
 }
