@@ -20,7 +20,6 @@ import Subject.Models.DbModels.SubjectInfo;
 /**
  * Servlet implementation class EditSubjectServlet
  */
-@WebServlet("/EditSubjectServlet")
 public class EditSubjectServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 

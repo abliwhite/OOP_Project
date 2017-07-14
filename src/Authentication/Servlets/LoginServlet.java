@@ -28,7 +28,6 @@ import Common.AppCode.*;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/LoginServlet")
 public class LoginServlet extends AuthenticationServletParent {
 	private static final long serialVersionUID = 1L;
 

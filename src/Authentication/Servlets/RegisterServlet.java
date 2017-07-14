@@ -33,7 +33,6 @@ import Database.DbCertificate;
 /**
  * Servlet implementation class RegisterServlet
  */
-@WebServlet("/RegisterServlet")
 public class RegisterServlet extends AuthenticationServletParent {
 	private static final long serialVersionUID = 1L;
 

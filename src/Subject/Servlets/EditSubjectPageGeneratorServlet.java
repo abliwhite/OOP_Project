@@ -26,7 +26,6 @@ import Subject.Models.ViewModels.SubjectViewModel;
 /**
  * Servlet implementation class EditSubjectServlet
  */
-@WebServlet("/EditSubjectPageGeneratorServlet")
 public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 
