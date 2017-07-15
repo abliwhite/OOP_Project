@@ -12,6 +12,13 @@ CREATE TABLE `subject_info` (
    UNIQUE KEY `ID_UNIQUE` (`ID`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
+CREATE TABLE `subject_terms` (
+   `ID` int(11) NOT NULL AUTO_INCREMENT,
+   `Name` varchar(200) NOT NULL,
+   PRIMARY KEY (`ID`),
+   UNIQUE KEY `ID_UNIQUE` (`ID`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ 
 CREATE TABLE `subject` (
    `ID` int(11) NOT NULL AUTO_INCREMENT,
    `Name` varchar(100) NOT NULL,
@@ -112,11 +119,47 @@ CREATE TABLE `common_subject_components` (
    CONSTRAINT `FK_UserSubjects_To_User` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
- CREATE TABLE `subject_terms` (
+ CREATE TABLE `active_status` (
    `ID` int(11) NOT NULL AUTO_INCREMENT,
    `Name` varchar(200) NOT NULL,
    PRIMARY KEY (`ID`),
    UNIQUE KEY `ID_UNIQUE` (`ID`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ 
+ CREATE TABLE `privacy_status` (
+   `ID` int(11) NOT NULL AUTO_INCREMENT,
+   `Name` varchar(200) NOT NULL,
+   PRIMARY KEY (`ID`),
+   UNIQUE KEY `ID_UNIQUE` (`ID`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ 
+ CREATE TABLE `lobby` (
+   `ID` int(11) NOT NULL AUTO_INCREMENT,
+   `SubjectComponentID` int(11) NOT NULL,
+   PRIMARY KEY (`ID`),
+   UNIQUE KEY `ID_UNIQUE` (`ID`),
+   KEY `FK_Lobby_To_Component_idx` (`SubjectComponentID`),
+   CONSTRAINT `FK_Lobby_To_Component` FOREIGN KEY (`SubjectComponentID`) REFERENCES `common_subject_components` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ 
+ CREATE TABLE `group_chat` (
+   `ID` int(11) NOT NULL AUTO_INCREMENT,
+   `LobbyID` int(11) NOT NULL,
+   `CreatorID` int(11) NOT NULL,
+   `CreateDate` datetime NOT NULL,
+   `Name` varchar(200) NOT NULL,
+   `PrivacyStatusID` int(11) NOT NULL,
+   `ActiveStatusID` int(11) NOT NULL,
+   PRIMARY KEY (`ID`),
+   UNIQUE KEY `ID_UNIQUE` (`ID`),
+   KEY `FK_Group_To_Lobby_idx` (`LobbyID`),
+   KEY `FK_Group_To_User_idx` (`CreatorID`),
+   KEY `FK_Group_To_PrivacyStatus_idx` (`PrivacyStatusID`),
+   KEY `FK_Group_To_ActiveStatus_idx` (`ActiveStatusID`),
+   CONSTRAINT `FK_Group_To_ActiveStatus` FOREIGN KEY (`ActiveStatusID`) REFERENCES `active_status` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+   CONSTRAINT `FK_Group_To_Lobby` FOREIGN KEY (`LobbyID`) REFERENCES `lobby` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+   CONSTRAINT `FK_Group_To_PrivacyStatus` FOREIGN KEY (`PrivacyStatusID`) REFERENCES `privacy_status` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+   CONSTRAINT `FK_Group_To_User` FOREIGN KEY (`CreatorID`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
 INSERT INTO subject_terms (name)
@@ -140,4 +183,21 @@ VALUES("Final exam");
 INSERT INTO subject_component_types (name)
 VALUES("Presentation");
 
+INSERT INTO active_status (name)
+VALUES("Active");
+
+INSERT INTO active_status (name)
+VALUES("Passive");
+
+INSERT INTO active_status (name)
+VALUES("Archived");
+
+INSERT INTO privacy_status (name)
+VALUES("Public");
+
+INSERT INTO privacy_status (name)
+VALUES("Private");
+
+INSERT INTO privacy_status (name)
+VALUES("Secret");
  
