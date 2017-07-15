@@ -72,7 +72,7 @@ public class AddSubjectServlet extends SubjectServletParent {
 
 		if (!(fullNumericStringValidation(year) && fullNumericStringValidation(ects)
 				&& fullNumericStringValidation(termId))) {
-			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Please enter numeric!", false));
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel(false,"Please enter numeric!"));
 			
 			doGet(request, response);
 			return;
@@ -81,7 +81,7 @@ public class AddSubjectServlet extends SubjectServletParent {
 		Subject existedSubject = manager.getSubjectByFilter(name, Integer.parseInt(year), Integer.parseInt(termId));
 
 		if (existedSubject != null) {
-			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Subject already exists!", false));
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel(false,"Subject already exists!"));
 			
 			doGet(request, response);
 			return;

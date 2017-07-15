@@ -55,7 +55,7 @@ public class DeleteSubjectServlet extends SubjectServletParent {
 
 		if (!fullNumericStringValidation(subjectId)) {
 
-			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Error", false));
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel(false,"Error"));
 			doGet(request, response);
 			return;
 		}
@@ -74,7 +74,7 @@ public class DeleteSubjectServlet extends SubjectServletParent {
 		manager.deleteSubjectById(id);
 
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-				new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE, false));
+				new ResponseModel(false,CommonConstants.SUCCESSFUL_MESSAGE));
 		doGet(request, response);
 	}
 
