@@ -4,58 +4,58 @@
   <servlet>
     <description>
   	</description>
-  	<display-name>AddSubjectPageGeneratorServlet</display-name>
-  	<servlet-name>AddSubjectPageGeneratorServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.AddSubjectPageGeneratorServlet</servlet-class> 	
+    <display-name>AddSubjectPageGeneratorServlet</display-name>
+    <servlet-name>AddSubjectPageGeneratorServlet</servlet-name>
+    <servlet-class>Subject.Servlets.AddSubjectPageGeneratorServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>AddCommonSubjectComponentServlet</display-name>
-  	<servlet-name>AddCommonSubjectComponentServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.AddCommonSubjectComponentServlet</servlet-class>
+    <display-name>AddCommonSubjectComponentServlet</display-name>
+    <servlet-name>AddCommonSubjectComponentServlet</servlet-name>
+    <servlet-class>Subject.Servlets.AddCommonSubjectComponentServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>AddSubjectServlet</display-name>
-  	<servlet-name>AddSubjectServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.AddSubjectServlet</servlet-class>
+    <display-name>AddSubjectServlet</display-name>
+    <servlet-name>AddSubjectServlet</servlet-name>
+    <servlet-class>Subject.Servlets.AddSubjectServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>DeleteCommonSubjectComponentServlet</display-name>
-  	<servlet-name>DeleteCommonSubjectComponentServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.DeleteCommonSubjectComponentServlet</servlet-class>
+    <display-name>DeleteCommonSubjectComponentServlet</display-name>
+    <servlet-name>DeleteCommonSubjectComponentServlet</servlet-name>
+    <servlet-class>Subject.Servlets.DeleteCommonSubjectComponentServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>EditComponentTemplateServlet</display-name>
-  	<servlet-name>EditComponentTemplateServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.EditComponentTemplateServlet</servlet-class>
+    <display-name>EditComponentTemplateServlet</display-name>
+    <servlet-name>EditComponentTemplateServlet</servlet-name>
+    <servlet-class>Subject.Servlets.EditComponentTemplateServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>EditSubjectPageGeneratorServlet</display-name>
-  	<servlet-name>EditSubjectPageGeneratorServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.EditSubjectPageGeneratorServlet</servlet-class>
+    <display-name>EditSubjectPageGeneratorServlet</display-name>
+    <servlet-name>EditSubjectPageGeneratorServlet</servlet-name>
+    <servlet-class>Subject.Servlets.EditSubjectPageGeneratorServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>EditSubjectServlet</display-name>
-  	<servlet-name>EditSubjectServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.EditSubjectServlet</servlet-class>
+    <display-name>EditSubjectServlet</display-name>
+    <servlet-name>EditSubjectServlet</servlet-name>
+    <servlet-class>Subject.Servlets.EditSubjectServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>AddUserSubjectServlet</display-name>
-  	<servlet-name>AddUserSubjectServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.AddUserSubjectServlet</servlet-class>
+    <display-name>AddUserSubjectServlet</display-name>
+    <servlet-name>AddUserSubjectServlet</servlet-name>
+    <servlet-class>Subject.Servlets.AddUserSubjectServlet</servlet-class>
   </servlet>
   <servlet>
     <description>
@@ -65,96 +65,63 @@
     <servlet-class>Profiles.Servlets.ProfilePageGeneratorServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>LoginServlet</display-name>
-  	<servlet-name>LoginServlet</servlet-name>
-  	<servlet-class>Authentication.Servlets.LoginServlet</servlet-class>
+    <display-name>LoginServlet</display-name>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>Authentication.Servlets.LoginServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-<<<<<<< HEAD
-<<<<<<< HEAD
-  	<display-name>SubjectPageServlet</display-name>
-  	<servlet-name>SubjectPageServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.SubjectPageServlet</servlet-class>
+    <display-name>RegisterServlet</display-name>
+    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-class>Authentication.Servlets.RegisterServlet</servlet-class>
   </servlet>
-=======
-=======
->>>>>>> e76dd49c99cfc4931b5a5736a2b2c5c6f8f53c00
-  	<display-name>RegisterServlet</display-name>
-  	<servlet-name>RegisterServlet</servlet-name>
-  	<servlet-class>Authentication.Servlets.RegisterServlet</servlet-class>
-  </servlet>
-  
-  
-<<<<<<< HEAD
->>>>>>> e76dd49c99cfc4931b5a5736a2b2c5c6f8f53c00
-=======
->>>>>>> e76dd49c99cfc4931b5a5736a2b2c5c6f8f53c00
   <servlet-mapping>
-  	<servlet-name>RegisterServlet</servlet-name>
-  	<url-pattern>/RegisterServlet</url-pattern>
-  </servlet-mapping> 
-  <servlet-mapping>
-  	<servlet-name>LoginServlet</servlet-name>
-  	<url-pattern>/LoginServlet</url-pattern>
-  </servlet-mapping> 
-  <servlet-mapping>
-  	<servlet-name>AddSubjectServlet</servlet-name>
-  	<url-pattern>/AddSubjectServlet</url-pattern>
-  </servlet-mapping>  
-  <servlet-mapping>
-  	<servlet-name>AddCommonSubjectComponentServlet</servlet-name>
-  	<url-pattern>/AddCommonSubjectComponentServlet</url-pattern>
-  </servlet-mapping>  
-  <servlet-mapping>
-  	<servlet-name>DeleteCommonSubjectComponentServlet</servlet-name>
-  	<url-pattern>/DeleteCommonSubjectComponentServlet</url-pattern>
-  </servlet-mapping>  
-  <servlet-mapping>
-  	<servlet-name>EditSubjectPageGeneratorServlet</servlet-name>
-  	<url-pattern>/EditSubjectPageGeneratorServlet</url-pattern>
-  </servlet-mapping>    
-  <servlet-mapping>
-  	<servlet-name>EditComponentTemplateServlet</servlet-name>
-  	<url-pattern>/EditComponentTemplateServlet</url-pattern>
+    <servlet-name>RegisterServlet</servlet-name>
+    <url-pattern>/RegisterServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>EditSubjectServlet</servlet-name>
-  	<url-pattern>/EditSubjectServlet</url-pattern>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>AddSubjectPageGeneratorServlet</servlet-name>
-  	<url-pattern>/AddSubjectPageGeneratorServlet</url-pattern>
+    <servlet-name>AddSubjectServlet</servlet-name>
+    <url-pattern>/AddSubjectServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AddCommonSubjectComponentServlet</servlet-name>
+    <url-pattern>/AddCommonSubjectComponentServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DeleteCommonSubjectComponentServlet</servlet-name>
+    <url-pattern>/DeleteCommonSubjectComponentServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>EditSubjectPageGeneratorServlet</servlet-name>
+    <url-pattern>/EditSubjectPageGeneratorServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>EditComponentTemplateServlet</servlet-name>
+    <url-pattern>/EditComponentTemplateServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>EditSubjectServlet</servlet-name>
+    <url-pattern>/EditSubjectServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AddSubjectPageGeneratorServlet</servlet-name>
+    <url-pattern>/AddSubjectPageGeneratorServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>AddUserSubjectServlet</servlet-name>
     <url-pattern>/AddUserSubjectServlet</url-pattern>
-<<<<<<< HEAD
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ProfilePageGeneratorServlet</servlet-name>
     <url-pattern>/ProfilePageGeneratorServlet</url-pattern>
-=======
->>>>>>> e76dd49c99cfc4931b5a5736a2b2c5c6f8f53c00
   </servlet-mapping>
-<<<<<<< HEAD
-  <servlet-mapping>
-<<<<<<< HEAD
-  	<servlet-name>SubjectPageServlet</servlet-name>
-  	<url-pattern>/SubjectPageServlet</url-pattern>
-  </servlet-mapping>
-=======
-  
->>>>>>> e76dd49c99cfc4931b5a5736a2b2c5c6f8f53c00
-=======
-    <servlet-name>ProfilePageGeneratorServlet</servlet-name>
-    <url-pattern>/ProfilePageGeneratorServlet</url-pattern>
-  </servlet-mapping>
-  
->>>>>>> e76dd49c99cfc4931b5a5736a2b2c5c6f8f53c00
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
