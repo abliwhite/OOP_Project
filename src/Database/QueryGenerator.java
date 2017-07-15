@@ -79,7 +79,7 @@ public class QueryGenerator {
 	}
 
 	public String getDeleteByAnyIDQuery(String tableName, String idName) {
-		return DB_DELETE + " " + tableName + " WHERE " + idName + "= ?";
+		return DB_DELETE + " " + tableName + " WHERE " + idName + "= ?;";
 	}
 
 	public String getSelectByIDQuery(String tableName, String idName, int numInClauseArguments) {
@@ -89,6 +89,15 @@ public class QueryGenerator {
 
 	public String getSelectAllQuery(String tableName) {
 		return DB_SELECT_ALL + " " + tableName;
+	}
+
+	public String getDeleteByIdListQuery(String tableName,String idName, int numIds) {
+		String result = "";
+		for (int i = 0; i < numIds; i++) {
+			result = result + getDeleteByAnyIDQuery(tableName,idName);
+		}
+		
+		return result;
 	}
 
 }

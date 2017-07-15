@@ -71,7 +71,7 @@
 					for (Subject subject : subjects) {
 						out.println("<tr id = 'subject_tr_"+subject.getId()+"' >");
 						out.println("<td>");
-						out.println("<label id='"+subject.getId()+"' >" + subject.getName() + "</label>");
+						out.println("<label subject_name_label_id='"+subject.getId()+"' >" + subject.getName() + "</label>");
 						out.println("</td>");
 						out.println("<td>");
 						out.print("<input value='Edit' class='btn btn-primary' type='button' onclick='EditSubject("+subject.getId()+");'>");
@@ -115,10 +115,6 @@ function DeleteSubject(subjectId){
 
 $(document).ready(function() {
 	
-	$("#subject_search").bind("enterKey", function() {
-		
-	});
-	
 	$("#subject_search").on("change paste keyup", function() {
 
 		searchValue = $("#subject_search").val();
@@ -133,7 +129,7 @@ $(document).ready(function() {
 			contentType : "application/json",
 			data : JSON.stringify(data),
 			success : function(response) {
-				searchResults = response.resultList;
+				searchResults = response.resultObject.searchResultList;
 				console.log(searchResults);
 				if(searchResults.length == 0){
 					searchResults=["No result"];
@@ -141,10 +137,78 @@ $(document).ready(function() {
 				$("#subject_search").autocomplete({
 				      source: searchResults
 				    });
+				$('#subject_search').on('keypress', function (e) {
+			        if(e.which === 13){
+						console.log("enterze daechira");
+						console.log(response.resultList);
+						generateSubjectTable(response.resultList)
+			        }
+				});
 			 }
 		});
 	});
 });
+
+function generateSubjectTable(list){
+		var templatesDiv = $("#search_subject_list_id");
+
+		templatesDiv.empty();
+
+		var templates = document.createElement('table');
+
+		templates.setAttribute("class", "table");
+		var thead = document.createElement('thead');
+		// thead.setAttribute("class","thead-inverse");
+		var tr1 = document.createElement('tr');
+		var th1 = document.createElement('th');
+		th1.innerText = "Name";
+
+		tr1.append(th1);
+
+		thead.append(tr1);
+
+		templates.append(thead);
+
+		list.forEach(function createComponentTemplateTableRow(args) {
+			console.log(args.subject.name)
+			var tr = document.createElement('tr');
+			tr.setAttribute("id", "subject_tr_"+args.subject.id);
+			tr.setAttribute("class", "info");
+
+			var nameTd = document.createElement('td');
+			var name = document.createElement("label");
+			name.setAttribute("id", "subject_name_label_id" + args.subject.id);
+			name.innerHTML = args.subject.name;
+			nameTd.append(name);
+
+			var removeEditTd = document.createElement('td');
+			
+			var remove = document.createElement("INPUT");
+			remove.setAttribute("type", "button");
+			remove.setAttribute("value", "Delete");
+			remove.setAttribute("onclick", "DeleteSubject(" + args.subject.id
+					+ "); return false;");
+			remove.setAttribute("class", "btn btn-danger");
+			
+			var edit = document.createElement("INPUT");
+			edit.setAttribute("type", "button");
+			edit.setAttribute("value", "Edit");
+			edit.setAttribute("onclick", "EditSubject(" + args.subject.id
+					+ "); return false;");
+			edit.setAttribute("class", "btn btn-primary");
+			
+			removeEditTd.append(edit);
+			removeEditTd.append(remove);	
+			
+			tr.append(nameTd);
+			tr.append(removeEditTd);
+
+			templates.append(tr);
+		});
+
+		templatesDiv.append(templates);
+}
+
 
 </script>
 

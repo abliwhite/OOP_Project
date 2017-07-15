@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 
@@ -614,6 +615,68 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 			st.execute(generator.getUseDatabaseQuery());
 
 			setValues(Arrays.asList(String.valueOf(subjectId)), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteCommonSubjectComponentMaterialsByCscIdList(List<Integer> cscIds) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByIdListQuery(
+					DbCertificate.SubjectComponentMaterialTable.TABLE_NAME,
+					DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_SUBJECT_COMPONENT_ID, cscIds.size());
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			List<String> values = cscIds.stream().map(x -> String.valueOf(x.intValue())).collect(Collectors.toList());
+			setValues(values, st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteUserSubjectComponentsByCscIdList(List<Integer> cscIds) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByIdListQuery(
+					DbCertificate.UserSubjectComponentTable.TABLE_NAME,
+					DbCertificate.UserSubjectComponentTable.COLUMN_NAME_COMMON_SUBJECT_COMPONENT_ID, cscIds.size());
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			List<String> values = cscIds.stream().map(x -> String.valueOf(x.intValue())).collect(Collectors.toList());
+			setValues(values, st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteUserSubjectBySubjectId(int id) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByAnyIDQuery(
+					DbCertificate.UserSubjectTable.TABLE_NAME,
+					DbCertificate.UserSubjectTable.COLUMN_NAME_SUBJECT_ID);
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(id)), st);
 			st.executeUpdate();
 
 			con.close();

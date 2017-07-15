@@ -28,6 +28,13 @@ public class ResponseModel<T,S> {
 		this.resultList = resultList;
 		this.isSuccess = isSuccess;
 	}
+	
+	public ResponseModel(List<T> resultList,S resultObject,boolean isSuccess,String resultMessage){
+		this.resultMessage= resultMessage;
+		this.resultList = resultList;
+		this.resultObject = resultObject;
+		this.isSuccess = isSuccess;
+	}
 
 	public String getResultMessage() {
 		return resultMessage;
