@@ -37,8 +37,8 @@ public class DeleteSubjectServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		super.doGet(request, response);
+		returnDefaultJsonToView(request, response);
 	}
 
 	/**
@@ -64,6 +64,7 @@ public class DeleteSubjectServlet extends SubjectServletParent {
 		List<Integer> cscIds = manager.getAllCommonSubjectComponentsViewModelBySubjectID(id).stream().map(x -> x.getId())
 				.collect(Collectors.toList());
 		
+		//TODO check if works
 		if(!cscIds.isEmpty()){
 			manager.deleteUserSubjectComponentsByCscIdList(cscIds);
 			manager.deleteCommonSubjectComponentMaterialsByCscIdList(cscIds);

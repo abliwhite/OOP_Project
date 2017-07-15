@@ -6,6 +6,7 @@
 	type="text/javascript"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.js"
 	type="text/javascript"></script>
+	<script type="text/javascript" src="../shareJS.js" ></script>
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
@@ -33,6 +34,9 @@
 
 <body>
 	<h1 class="text-center">Welcome</h1>
+	
+	<div class="form-group col-lg-3 container alert alert-danger" style="display:none" id="login_alert_div_id" role="alert">
+	</div>
 	<div class="form-group col-lg-3 container">
 
 		<br>Username:<br> <input type="text"
@@ -74,10 +78,21 @@
 			contentType : "application/json",
 			data : JSON.stringify(data),
 			success : function(response) {
-				var result = $.trim(response);
-				if (result === "Success!") {
-					$(location).attr('href', "/index.jsp");
+				
+				if(!response.isSuccess){
+					$("#login_alert_div_id").html(response.resultMessage);
+					$("#login_alert_div_id").show();
+					fadeAlertMessage("login_alert_div_id");
+					return;
 				}
+				
+				if(response.resultMessage == "Admin"){
+					$(location).attr('href', "/AdminProfilePageGeneratorServlet");
+				}else{
+					$(location).attr('href', "/StudentProfilePageGeneratorServlet?id="+response.resultObject);
+					
+				}
+				
 			}
 		});
 	}

@@ -40,15 +40,7 @@ public class EditComponentTemplateServlet extends SubjectServletParent {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		super.doGet(request, response);
-
-		ResponseModel res = (ResponseModel) request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
-
-		String json = new Gson().toJson(res);
-
-		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
-		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
-
-		response.getWriter().write(json);
+		returnDefaultJsonToView(request,response);
 	}
 
 	/**
