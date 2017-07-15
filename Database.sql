@@ -162,6 +162,39 @@ CREATE TABLE `common_subject_components` (
    CONSTRAINT `FK_Group_To_User` FOREIGN KEY (`CreatorID`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
+ 
+ CREATE TABLE `internal_group_messages` (
+   `ID` int(11) NOT NULL AUTO_INCREMENT,
+   `Message` varchar(2000) NOT NULL,
+   `DateSent` datetime NOT NULL,
+   `SenderID` int(11) NOT NULL,
+   `GroupID` int(11) NOT NULL,
+   PRIMARY KEY (`ID`),
+   UNIQUE KEY `ID_UNIQUE` (`ID`),
+   KEY `FK_InternalMessage_To_User_idx` (`SenderID`),
+   KEY `FK_InternalMessage_To_GroupChat_idx` (`GroupID`),
+   CONSTRAINT `FK_InternalMessage_To_GroupChat` FOREIGN KEY (`GroupID`) REFERENCES `group_chat` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+   CONSTRAINT `FK_InternalMessage_To_User` FOREIGN KEY (`SenderID`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ 
+ 
+ CREATE TABLE `external_group_messages` (
+   `ID` int(11) NOT NULL AUTO_INCREMENT,
+   `Message` varchar(2000) NOT NULL,
+   `DateSent` datetime NOT NULL,
+   `SenderID` int(11) NOT NULL,
+   `SenderGroupID` int(11) NOT NULL,
+   `ReceiverGroupID` int(11) NOT NULL,
+   PRIMARY KEY (`ID`),
+   UNIQUE KEY `ID_UNIQUE` (`ID`),
+   KEY `FK_ExternalMessage_To_User_idx` (`SenderID`),
+   KEY `FK_ExternalMessage_To_SenderGroup_idx` (`SenderGroupID`),
+   KEY `FK_ExternalMessage_To_ReceiverGroup_idx` (`ReceiverGroupID`),
+   CONSTRAINT `FK_ExternalMessage_To_ReceiverGroup` FOREIGN KEY (`ReceiverGroupID`) REFERENCES `group_chat` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+   CONSTRAINT `FK_ExternalMessage_To_SenderGroup` FOREIGN KEY (`SenderGroupID`) REFERENCES `group_chat` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+   CONSTRAINT `FK_ExternalMessage_To_User` FOREIGN KEY (`SenderID`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ 
 INSERT INTO subject_terms (name)
 VALUES("Fall");
 
