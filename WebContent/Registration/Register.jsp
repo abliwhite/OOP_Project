@@ -32,14 +32,14 @@
 </head>
 <body>
 
-	<h1><%=ViewTextContainer.REGISTER_PAGE_WELCOME_WARNING_MESSAGE %></h1>
+	<h1 class="text-center"><%=ViewTextContainer.REGISTER_PAGE_WELCOME_WARNING_MESSAGE %></h1>
 
 	<div id="alert"></div>
 
 	<form action="RegisterServlet" method="post">
-	<div class="container">
-		Username: <input type="text" class="form-control" placeholder="Username" name="username" id="username_id" >
-		Password: <input type="password" class="form-control" placeholder="Ects" name="Password" id="password_id" >
+	<div class="container col-lg-3">
+		Username: <input type="text" class="form-control " placeholder="Username" name="username" id="username_id" >
+		Password: <input type="password" class="form-control" placeholder="Password" name="Password" id="password_id" >
 		Repeat Password: <input type="password" class="form-control" placeholder="Repeat Password" name="repeatPassword" id="repeatPassword_id">
 		Email: <input type="email" class="form-control" placeholder="Email" name="email" id="email_id" > 
 		Name: <input type="text" class="form-control" placeholder="Name" name="name" id="name_id" > 
@@ -54,7 +54,9 @@
 		%>
 		</select>
 		<br />
-		<input onclick="register(); return false;" type='button' class='btn .btn-success' value='Sign Up'>
+		<div class="text-center">
+		<input onclick="register(); return false;" type='button' class='btn btn-success' value='Sign Up'>
+		</div>
 		</div>
 	</form>
 	
@@ -100,9 +102,11 @@
 		    data: JSON.stringify(data),
 		    success: function(response) {
 		    	console.log(response);
-		    	document.getElementById("alert").innerHTML = response;  
-		    	if(response == "Success!"){
-		    		window.location.href = "index.jsp";	
+		    	document.getElementById("alert").innerHTML = response; 
+		        var result = $.trim(response);
+
+		    	if(result === "Success!"){
+		    		$(location).attr('href',"/index.jsp");
 		    	}
 		    }
 		});
