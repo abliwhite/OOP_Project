@@ -37,6 +37,8 @@
 	<div id="alert"></div>
 
 	<form action="RegisterServlet" method="post">
+	<div class="container">
+		Username: <input type="text" class="form-control" placeholder="Username" name="username" id="username_id" >
 	<div class="container col-lg-3">
 		Username: <input type="text" class="form-control " placeholder="Username" name="username" id="username_id" >
 		Password: <input type="password" class="form-control" placeholder="Password" name="Password" id="password_id" >
