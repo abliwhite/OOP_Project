@@ -39,7 +39,7 @@
 	<form action="RegisterServlet" method="post">
 	<div class="container">
 		Username: <input type="text" class="form-control" placeholder="Username" name="username" id="username_id" >
-		Password: <input type="password" class="form-control" placeholder="Ects" name="Password" id="password_id" >
+		Password: <input type="password" class="form-control" placeholder="Password" name="Password" id="password_id" >
 		Repeat Password: <input type="password" class="form-control" placeholder="Repeat Password" name="repeatPassword" id="repeatPassword_id">
 		Email: <input type="email" class="form-control" placeholder="Email" name="email" id="email_id" > 
 		Name: <input type="text" class="form-control" placeholder="Name" name="name" id="name_id" > 
