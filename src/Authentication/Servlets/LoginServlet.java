@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DataBindingException;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mysql.jdbc.Constants;
 
 import Account.AppCode.AccountManager;
@@ -56,11 +58,12 @@ public class LoginServlet extends AuthenticationServletParent {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doPost(request, response);
+		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
-		String name = request.getParameter("name");
-		String password = request.getParameter("password");
-
-		User user = accountManager.checkLoginValidation(new AuthModel(name, password));
+		String username = data.get("username").getAsString();
+		String password = data.get("password").getAsString();
+		
+		User user = accountManager.checkLoginValidation(new AuthModel(username, password));
 		if (user != null) {
 			request.setAttribute(ViewTextContainer.RESULT, "Success");
 

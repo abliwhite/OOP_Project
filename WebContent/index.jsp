@@ -2,8 +2,10 @@
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-	<script src="http://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
-	<script src="http://code.jquery.com/jquery-3.2.1.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"
+	type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-3.2.1.js"
+	type="text/javascript"></script>
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
@@ -31,29 +33,52 @@
 
 <body>
 	<h1 class="text-center">Welcome</h1>
-	<form action="LoginServlet" method="post">
-		<div class="form-group col-lg-3 container">
+	<div class="form-group col-lg-3 container">
 
-			<br>Username:<br> <input type="text"
-				class="form-control input-sm" placeholder="Username" name="username"
-				id="username_id">
-		</div>
-		<div class="form-group col-lg-3 container">
+		<br>Username:<br> <input type="text"
+			class="form-control input-sm" placeholder="Username" name="username"
+			id="username_id">
+	</div>
+	<div class="form-group col-lg-3 container">
 
-			Password:<input type="password" class="form-control input-sm"
-				placeholder="Password" name="Password" id="password_id">
-		</div>
-		<div class="text-center">
-			<input type="button" onc value="Login" class="btn btn-success">
-			<input type="button" onclick="redirect()" value="Register" class="btn btn-primary">
-		</div>
+		Password:<input type="password" class="form-control input-sm"
+			placeholder="Password" name="Password" id="password_id">
+	</div>
+	<div class="text-center">
+		<input type="button" onclick="login()" value="Login"
+			class="btn btn-success"> <input type="button"
+			onclick="redirect()" value="Register" class="btn btn-primary">
+	</div>
 
 
-	</form>
+
 </body>
 </html>
 <script>
-function redirect(){
-	$(location).attr('href',"/Registration/Register.jsp");
-}
+	function redirect() {
+		$(location).attr('href', "/Registration/Register.jsp");
+	}
+
+	function login() {
+		var username = $('#username_id').val();
+		var password = $('#password_id').val();
+
+		var data = {
+			username : username,
+			password : password
+		};
+
+		$.ajax({
+			type : "POST",
+			url : "/LoginServlet",
+			contentType : "application/json",
+			data : JSON.stringify(data),
+			success : function(response) {
+				var result = $.trim(response);
+				if (result === "Success!") {
+					$(location).attr('href', "/index.jsp");
+				}
+			}
+		});
+	}
 </script>
