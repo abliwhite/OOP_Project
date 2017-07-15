@@ -9,7 +9,11 @@ package Database;
 public class MyDBInfo {
 	
 	public static final String MYSQL_USERNAME = "root";
+<<<<<<< HEAD
 	public static final String MYSQL_PASSWORD = "12345678";
+=======
+	public static final String MYSQL_PASSWORD = "protogio1";
+>>>>>>> e76dd49c99cfc4931b5a5736a2b2c5c6f8f53c00
 	public static final String MYSQL_DATABASE_SERVER = "localhost";
 	public static final String MYSQL_DATABASE_NAME = "myDatabase";
 }

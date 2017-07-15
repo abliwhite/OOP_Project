@@ -82,6 +82,9 @@
 	</div>
 	<div style="display:none" class="alert alert-success" id="subject_alert_div_id" role="alert">
 	</div>
+	<div style="display:none">
+		<input type="hidden" value='<%=subject.getId() %>' id='hidden_subject_id'>
+	</div>
 	<div>
 		<div class="table-responsive" id="subjectComponents_id">
 			<table class='table'>
@@ -143,7 +146,8 @@
 			<input onclick="addTemplate(); return false;" type='button' class='btn btn-primary' value='Save'>
 		</div>
 	</div>	
-		
+	<div style="display:none" class="alert alert-success" id="subject_component_alert_div_id" role="alert">
+	</div>
 
 </body>
 
@@ -205,6 +209,19 @@
 		    		fadeAlertMessage("subject_alert_div_id");
 		    		return;
 		    	}
+		    	$('#subject_required_info').hide();
+				$('#subject_optional_info').hide();
+				$('#subject_edit_Button_id').hide();
+				
+				$("#name_label_id").html(name);
+				$("#year_label_id").html(year);
+				$("#term_label_id").html(term);
+				
+				$('#display_subject_required_info').show();
+				$('#show_edit_Subject_id').show();
+				
+				
+				
 		    	$("#subject_alert_div_id").removeClass("alert alert-danger");
 		    	$("#subject_alert_div_id").addClass("alert alert-success");
 		    	$("#subject_alert_div_id").html(response.resultMessage);

@@ -78,6 +78,10 @@ public class QueryGenerator {
 		return "USE " + MyDBInfo.MYSQL_DATABASE_NAME;
 	}
 
+	public String getDeleteByAnyIDQuery(String tableName, String idName) {
+		return DB_DELETE + " " + tableName + " WHERE " + idName + "= ?;";
+	}
+
 	public String getSelectByIDQuery(String tableName, String idName, int numInClauseArguments) {
 		return DB_SELECT_ALL + " " + tableName + " WHERE " + idName + " IN "
 				+ getInsertNonInjectiveQuery(numInClauseArguments);
@@ -85,6 +89,15 @@ public class QueryGenerator {
 
 	public String getSelectAllQuery(String tableName) {
 		return DB_SELECT_ALL + " " + tableName;
+	}
+
+	public String getDeleteByIdListQuery(String tableName,String idName, int numIds) {
+		String result = "";
+		for (int i = 0; i < numIds; i++) {
+			result = result + getDeleteByAnyIDQuery(tableName,idName);
+		}
+		
+		return result;
 	}
 
 }

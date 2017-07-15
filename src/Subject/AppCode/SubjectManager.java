@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 
@@ -189,7 +190,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 					+ DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_NAME + " FROM "
 					+ DbCertificate.CommonSubjectComponentTable.TABLE_NAME + " INNER JOIN "
 					+ DbCertificate.SubjectComponentTypeTable.TABLE_NAME + " ON "
-					+ DbCertificate.CommonSubjectComponentTable.UNIQUE_COLUMN_NAME_ID + " = "
+					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_TYPE_ID + " = "
 					+ DbCertificate.SubjectComponentTypeTable.UNIQUE_COLUMN_NAME_ID + " WHERE "
 					+ DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_ID + " = ?";
 
@@ -516,6 +517,166 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 			java.sql.PreparedStatement st = con.prepareStatement(updateStatement);
 
 			setValues(getSubjectInfoValues(subjectInfo), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public List<Subject> getAllSubjects() {
+		List<Subject> subjects = null;
+
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = generator.getSelectAllQuery(DbCertificate.SubjectTable.TABLE_NAME);
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			ResultSet rs = st.executeQuery();
+			subjects = getSubjectsList(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return subjects;
+	}
+
+	@Override
+	public List<SubjectViewModel> getAllSubjectViewModels() {
+		List<SubjectViewModel> result = null;
+		try {
+			java.sql.Connection con = getConnection();
+
+			String selectQuery = "SELECT " + DbCertificate.SubjectTable.UNIQUE_COLUMN_NAME_ID + ","
+					+ DbCertificate.SubjectTable.UNIQUE_NAME_NAME + "," + DbCertificate.SubjectTable.COLUMN_NAME_YEAR
+					+ "," + DbCertificate.SubjectInfoTable.COLUMN_NAME_ECTS + ","
+					+ DbCertificate.SubjectInfoTable.COLUMN_NAME_LANGUAGE + ","
+					+ DbCertificate.SubjectInfoTable.COLUMN_NAME_LECTURER_NAME + ","
+					+ DbCertificate.SubjectInfoTable.UNIQUE_COLUMN_NAME_ID + " as "
+					+ DbCertificate.SubjectInfoTable.ALTERNATIVE_COLUMN_NAME_ID + ","
+					+ DbCertificate.SubjectTermTable.UNIQUE_COLUMN_NAME_ID + " as "
+					+ DbCertificate.SubjectTermTable.ALTERNATIVE_COLUMN_NAME_ID + ","
+					+ DbCertificate.SubjectTermTable.UNIQUE_COLUMN_NAME_NAME + " as "
+					+ DbCertificate.SubjectTermTable.ALTERNATIVE_COLUMN_NAME_NAME + " FROM "
+					+ DbCertificate.SubjectTable.TABLE_NAME + " INNER JOIN " + DbCertificate.SubjectInfoTable.TABLE_NAME
+					+ " ON " + DbCertificate.SubjectTable.COLUMN_NAME_SUBJECT_INFO_ID + " = "
+					+ DbCertificate.SubjectInfoTable.UNIQUE_COLUMN_NAME_ID + " INNER JOIN "
+					+ DbCertificate.SubjectTermTable.TABLE_NAME + " ON "
+					+ DbCertificate.SubjectTermTable.UNIQUE_COLUMN_NAME_ID + " = "
+					+ DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID;
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			ResultSet rs = st.executeQuery();
+			result = getSubjectViewModelList(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	@Override
+	public void deleteSubjectById(int id) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByIdQuery(DbCertificate.SubjectTable.TABLE_NAME);
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(id)), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteCommonSubjectComponentBySubjectId(int subjectId) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByAnyIDQuery(
+					DbCertificate.CommonSubjectComponentTable.TABLE_NAME,
+					DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_SUBJECT_ID);
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(subjectId)), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteCommonSubjectComponentMaterialsByCscIdList(List<Integer> cscIds) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByIdListQuery(
+					DbCertificate.SubjectComponentMaterialTable.TABLE_NAME,
+					DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_SUBJECT_COMPONENT_ID, cscIds.size());
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			List<String> values = cscIds.stream().map(x -> String.valueOf(x.intValue())).collect(Collectors.toList());
+			setValues(values, st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteUserSubjectComponentsByCscIdList(List<Integer> cscIds) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByIdListQuery(
+					DbCertificate.UserSubjectComponentTable.TABLE_NAME,
+					DbCertificate.UserSubjectComponentTable.COLUMN_NAME_COMMON_SUBJECT_COMPONENT_ID, cscIds.size());
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			List<String> values = cscIds.stream().map(x -> String.valueOf(x.intValue())).collect(Collectors.toList());
+			setValues(values, st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteUserSubjectBySubjectId(int id) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByAnyIDQuery(
+					DbCertificate.UserSubjectTable.TABLE_NAME,
+					DbCertificate.UserSubjectTable.COLUMN_NAME_SUBJECT_ID);
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(id)), st);
 			st.executeUpdate();
 
 			con.close();

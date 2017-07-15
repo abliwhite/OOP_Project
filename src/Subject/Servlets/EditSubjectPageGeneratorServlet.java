@@ -26,7 +26,6 @@ import Subject.Models.ViewModels.SubjectViewModel;
 /**
  * Servlet implementation class EditSubjectServlet
  */
-@WebServlet("/EditSubjectPageGeneratorServlet")
 public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 
@@ -56,8 +55,6 @@ public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 				return;
 			}
 
-			List<CommonSubjectComponentViewModel> cscvm = manager.getAllCommonSubjectComponentsViewModelBySubjectID(id);
-
 			List<CommonSubjectComponentViewModel> commonSubjectComponentViewModels = manager
 					.getAllCommonSubjectComponentsViewModelBySubjectID(id);
 
@@ -67,7 +64,7 @@ public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 
 			svm.setCommonSubjectComponentViewModels(commonSubjectComponentViewModels);
 			svm.setSubjectTemplateListsViewModel(stv);
-			svm.setCommonSubjectComponentViewModels(cscvm);
+			svm.setCommonSubjectComponentViewModels(commonSubjectComponentViewModels);
 
 			ResponseModel resp = new ResponseModel<Object, SubjectViewModel>(svm, true,
 					CommonConstants.SUCCESSFUL_MESSAGE);

@@ -8,12 +8,17 @@ import Subject.AppCode.SubjectManagerInterface;
 
 public abstract class AuthenticationServletParent extends CommonServlet {
 
-	public AccountManagerInterface manager;
+	public AccountManagerInterface accountManager;
+	public SubjectManagerInterface subjectManager;
 
 	@Override
 	public void initialManager() {
-		manager = manager == null
+		accountManager = accountManager == null
 				? (AccountManagerInterface) getServletContext().getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE)
-				: manager;
+				: accountManager;
+
+		subjectManager = subjectManager == null
+				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
+				: subjectManager;
 	}
 }

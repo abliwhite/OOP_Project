@@ -112,4 +112,21 @@ public final class DbCertificate {
 		public final static String COLUMN_NAME_NUMBER = "Number";
 		public final static String COLUMN_NAME_SUBJECT_ID = "SubjectID";
 	}
+
+	public static class SubjectComponentMaterialTable {
+		public final static String TABLE_NAME = "subject_component_materials";
+
+		public final static String COLUMN_NAME_ID = "ID";
+		public final static String COLUMN_NAME_MATERIAL_PATH = "MaterialPath";
+		public final static String COLUMN_NAME_UPLOAD_DATE = "UploadDate";
+		public final static String COLUMN_NAME_SUBJECT_COMPONENT_ID = "SubjectComponentID";
+	}
+	public static class UserSubjectComponentTable{
+		public final static String TABLE_NAME = "user_subject_components";
+
+		public final static String COLUMN_NAME_ID = "ID";
+		public final static String COLUMN_NAME_USER_ID = "UserID";
+		public final static String COLUMN_NAME_COMMON_SUBJECT_COMPONENT_ID = "CommonSubjectComponentID";
+		public final static String COLUMN_NAME_DEAD_LINE_DATE = "DeadLineDate";
+	}
 }

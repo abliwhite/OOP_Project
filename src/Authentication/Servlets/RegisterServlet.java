@@ -33,7 +33,6 @@ import Database.DbCertificate;
 /**
  * Servlet implementation class RegisterServlet
  */
-@WebServlet("/RegisterServlet")
 public class RegisterServlet extends AuthenticationServletParent {
 	private static final long serialVersionUID = 1L;
 
@@ -80,16 +79,16 @@ public class RegisterServlet extends AuthenticationServletParent {
 			String surname = data.getString("surname");
 			String gender = data.getString("gender");
 
-			ResponseModel resp = manager.checkRegistrationValidity(new RegisterModel(username, email));
+			ResponseModel resp = accountManager.checkRegistrationValidity(new RegisterModel(username, email));
 			if (resp.isSuccess()) {
 
 				UserProfile profile = new UserProfile(name, gender, CommonConstants.getDatetime(),
 						surname);
-				manager.addProfile(profile);
+				accountManager.addProfile(profile);
 
 				User user = new User(username, password, email, DbCertificate.UserTable.STUDENT_ROLE,
 						null, null, profile.getId(), profile);
-				manager.addUser(user);
+				accountManager.addUser(user);
 
 				request.getSession().setAttribute(CommonConstants.ONLINE_USER_ATTRIBUTE_NAME, user);
 				response.getWriter().println(resp.getResultMessage());

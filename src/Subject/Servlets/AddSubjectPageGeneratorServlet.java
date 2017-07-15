@@ -26,7 +26,6 @@ import Subject.Models.ViewModels.SubjectTemplateListsViewModel;
 /**
  * Servlet implementation class AddSubjectPageGeneratorServlet
  */
-@WebServlet("/AddSubjectPageGeneratorServlet")
 public class AddSubjectPageGeneratorServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 

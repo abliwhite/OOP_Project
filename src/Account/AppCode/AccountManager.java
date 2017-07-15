@@ -189,9 +189,9 @@ public class AccountManager extends DaoController implements AccountManagerInter
 			con.close();
 
 			if (rs.next()) {
-				queryResult = new ResponseModel(CommonConstants.UNSUCCESSFUL_REGISTRATION, false);
+				queryResult = new ResponseModel(false,CommonConstants.UNSUCCESSFUL_REGISTRATION);
 			} else {
-				queryResult = new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE, true);
+				queryResult = new ResponseModel(true,CommonConstants.SUCCESSFUL_MESSAGE);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -325,26 +325,5 @@ public class AccountManager extends DaoController implements AccountManagerInter
 		return result;
 	}
 
-	@Override
-	public List<Subject> getAllSubjects() {
-		List<Subject> subjects = null;
-		
-		try {
-			java.sql.Connection con = getConnection();
-			String selectQuery = "SELECT * FROM " + DbCertificate.UserSubjectTable.TABLE_NAME;
-					
-			
-			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
-			st.executeQuery(generator.getUseDatabaseQuery());
-			
-			ResultSet rs = st.executeQuery();
-			subjects = getSubjects(rs);
-			
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return subjects;
-	}
+	
 }

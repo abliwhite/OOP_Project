@@ -1,32 +1,32 @@
 package Subject.Servlets;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.servlet4preview.RequestDispatcher;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import Common.AppCode.CommonConstants;
 import Common.Models.ResponseModel;
-import Subject.AppCode.SubjectManager;
-import Subject.AppCode.SubjectManagerInterface;
 
 /**
- * Servlet implementation class ComponentTemplateDeleteServlet
+ * Servlet implementation class DeleteSubjectServlet
  */
-public class DeleteCommonSubjectComponentServlet extends SubjectServletParent {
+@WebServlet("/DeleteSubjectServlet")
+public class DeleteSubjectServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public DeleteCommonSubjectComponentServlet() {
+	public DeleteSubjectServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -37,36 +37,41 @@ public class DeleteCommonSubjectComponentServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		ResponseModel res = (ResponseModel) request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
-
-		String json = new Gson().toJson(res);
-
-		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
-		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
-
-		response.getWriter().write(json);
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		super.doPost(request, response);
+
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
-		String id = data.get("id").getAsString();
+		String subjectId = data.get("subjectId").getAsString();
 
-		if (!fullNumericStringValidation(id)) {
+		if (!fullNumericStringValidation(subjectId)) {
 
 			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel(false,"Error"));
 			doGet(request, response);
 			return;
 		}
+		int id = Integer.parseInt(subjectId);
 
-		manager.DeleteCommonSubjectComponentByID(Integer.parseInt(id));
-		//manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
+		List<Integer> cscIds = manager.getAllCommonSubjectComponentsViewModelBySubjectID(id).stream().map(x -> x.getId())
+				.collect(Collectors.toList());
+		
+		if(!cscIds.isEmpty()){
+			manager.deleteUserSubjectComponentsByCscIdList(cscIds);
+			manager.deleteCommonSubjectComponentMaterialsByCscIdList(cscIds);
+		}
+				
+		manager.deleteCommonSubjectComponentBySubjectId(id);
+		manager.deleteUserSubjectBySubjectId(id);
+		manager.deleteSubjectById(id);
 
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
 				new ResponseModel(false,CommonConstants.SUCCESSFUL_MESSAGE));

@@ -20,7 +20,6 @@ import Subject.Models.DbModels.SubjectInfo;
 /**
  * Servlet implementation class EditSubjectServlet
  */
-@WebServlet("/EditSubjectServlet")
 public class EditSubjectServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
 
@@ -71,7 +70,7 @@ public class EditSubjectServlet extends SubjectServletParent {
 				&& fullNumericStringValidation(subjectInfoId))) {
 
 			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-					new ResponseModel("Please enter numeric!", false));
+					new ResponseModel(false,"Please enter numeric!"));
 			doGet(request, response);
 			return;
 		}
@@ -90,7 +89,7 @@ public class EditSubjectServlet extends SubjectServletParent {
 
 		// manager.UpdateSubject(subject);
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-				new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE, true));
+				new ResponseModel(true,CommonConstants.SUCCESSFUL_MESSAGE));
 		doGet(request, response);
 	}
 
