@@ -79,7 +79,7 @@
 		<h2>Your Subjects:</h2>
 		<%
 			for (Subject subject : userSubjects) {
-				out.print("<h3> <a href= ''>" + subject.getName() + " " + subject.getYear() + "</a> </h3>");
+				out.print("<h3> <a href= 'SubjectPageServlet?subject=" + subject +"'>" + subject.getName() + " " + subject.getYear() + "</a> </h3>");
 			}
 		%>
 	</div>
