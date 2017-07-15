@@ -8,6 +8,7 @@
     <servlet-name>AddSubjectPageGeneratorServlet</servlet-name>
     <servlet-class>Subject.Servlets.AddSubjectPageGeneratorServlet</servlet-class>
   </servlet>
+  
   <servlet>
     <description>
   	</description>
@@ -43,6 +44,7 @@
     <servlet-name>EditSubjectPageGeneratorServlet</servlet-name>
     <servlet-class>Subject.Servlets.EditSubjectPageGeneratorServlet</servlet-class>
   </servlet>
+  
   <servlet>
     <description>
   	</description>
@@ -77,6 +79,13 @@
     <display-name>RegisterServlet</display-name>
     <servlet-name>RegisterServlet</servlet-name>
     <servlet-class>Authentication.Servlets.RegisterServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>SubjectPageGeneratorServlet</display-name>
+  	<servlet-name>SubjectPageGeneratorServlet</servlet-name>
+  	<servlet-class>Subject.Servlets.UserSubjectPageGeneratorServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>RegisterServlet</servlet-name>
@@ -121,6 +130,10 @@
   <servlet-mapping>
     <servlet-name>StudentProfilePageGeneratorServlet</servlet-name>
     <url-pattern>/StudentProfilePageGeneratorServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>SubjectPageGeneratorServlet</servlet-name>
+  	<url-pattern>/SubjectPageGeneratorServlet</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

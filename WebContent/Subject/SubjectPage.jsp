@@ -9,13 +9,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <%
-	Subject subject = (Subject)request.getAttribute("subject");
+Subject subject = (Subject)request.getAttribute("subject");
 %>
 
-<title></title>
+<title><%=subject.getName()%>  <%=subject.getYear()%></title>
 </head>
 <body>
-<h1><%=subject == null%></h1>
+<h1><%=subject.getName()%> <%=subject.getYear()%></h1>
+<h2></h2>
 
 </body>
 </html>
