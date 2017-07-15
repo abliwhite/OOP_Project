@@ -79,7 +79,7 @@ public class AddCommonSubjectComponentServlet extends SubjectServletParent {
 				&& fullNumericStringValidation(subjectId) && fullNumericStringValidation(typeId))) {
 
 			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-					new ResponseModel("Please enter numeric!", false));
+					new ResponseModel(false,"Please enter numeric!"));
 			doGet(request, response);
 			return;
 		}

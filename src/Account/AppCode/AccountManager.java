@@ -189,9 +189,9 @@ public class AccountManager extends DaoController implements AccountManagerInter
 			con.close();
 
 			if (rs.next()) {
-				queryResult = new ResponseModel(CommonConstants.UNSUCCESSFUL_REGISTRATION, false);
+				queryResult = new ResponseModel(false,CommonConstants.UNSUCCESSFUL_REGISTRATION);
 			} else {
-				queryResult = new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE, true);
+				queryResult = new ResponseModel(true,CommonConstants.SUCCESSFUL_MESSAGE);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
