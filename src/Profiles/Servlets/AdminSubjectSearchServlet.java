@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import Common.AppCode.CommonConstants;
 import Common.Models.ResponseModel;
 import Subject.Models.DbModels.Subject;
+import Subject.Models.ViewModels.SearchResultViewModel;
 import Subject.Models.ViewModels.SubjectViewModel;
 import Subject.Servlets.SubjectServletParent;
 
@@ -59,20 +60,22 @@ public class AdminSubjectSearchServlet extends SubjectServletParent {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		super.doPost(request, response);
-		subjectViewModels = subjectViewModels == null ? manager.getAllSubjectViewModels() : subjectViewModels;
+		subjectViewModels = manager.getAllSubjectViewModels();
 
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 		String searchResult = data.get("searchValue").getAsString();
 
-		List<String> searchResults = subjectViewModels.stream()
+		List<SubjectViewModel> svm = subjectViewModels.stream()
 				.filter(x -> (x.getSubject().getName() + " " + x.getTerm().getName()
-						+ String.valueOf(x.getSubject().getYear())).contains(searchResult))
-				.map(xx -> xx.getSubject().getName() + " " + xx.getTerm().getName()
+						+ String.valueOf(x.getSubject().getYear())).contains(searchResult)).distinct().collect(Collectors.toList());
+				
+				
+		List<String> searchResults = svm.stream().map(xx -> xx.getSubject().getName() + " " + xx.getTerm().getName()
 						+ String.valueOf(xx.getSubject().getYear()))
-				.distinct().collect(Collectors.toList());
+				.collect(Collectors.toList());
 
-		ResponseModel<String, Object> responseModel = new ResponseModel<>(searchResults, true,
-				CommonConstants.SUCCESSFUL_MESSAGE);
+		ResponseModel<SubjectViewModel, SearchResultViewModel> responseModel = new ResponseModel<SubjectViewModel, SearchResultViewModel>(
+				svm, new SearchResultViewModel(searchResults), true, CommonConstants.SUCCESSFUL_MESSAGE);
 
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
 

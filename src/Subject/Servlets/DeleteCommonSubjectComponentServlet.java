@@ -60,7 +60,7 @@ public class DeleteCommonSubjectComponentServlet extends SubjectServletParent {
 
 		if (!fullNumericStringValidation(id)) {
 
-			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel("Error", false));
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, new ResponseModel(false,"Error"));
 			doGet(request, response);
 			return;
 		}
@@ -69,7 +69,7 @@ public class DeleteCommonSubjectComponentServlet extends SubjectServletParent {
 		//manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
 
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-				new ResponseModel(CommonConstants.SUCCESSFUL_MESSAGE, false));
+				new ResponseModel(false,CommonConstants.SUCCESSFUL_MESSAGE));
 		doGet(request, response);
 	}
 

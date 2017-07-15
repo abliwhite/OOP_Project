@@ -48,6 +48,12 @@ public interface SubjectManagerInterface {
 	public List<Subject> getAllSubjects();
 	
 	public void deleteSubjectById(int id);
+
+	public void deleteCommonSubjectComponentMaterialsByCscIdList(List<Integer> cscIds);
+
+	public void deleteUserSubjectComponentsByCscIdList(List<Integer> cscIds);
+
+	public void deleteUserSubjectBySubjectId(int id);
 	
 }
 
