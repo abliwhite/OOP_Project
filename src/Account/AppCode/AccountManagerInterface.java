@@ -26,5 +26,7 @@ public interface AccountManagerInterface {
 	public UserProfile getProfile(User user);
 
 	public List<Subject> getUserSubjects(User user);
+
+	public User getUserById(int id);
 	
 }

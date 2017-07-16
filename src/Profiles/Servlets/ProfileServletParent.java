@@ -1,25 +1,24 @@
-package Authentication.Servlets;
+package Profiles.Servlets;
 
 import Account.AppCode.AccountManager;
 import Account.AppCode.AccountManagerInterface;
+import Common.AppCode.CommonConstants;
 import Common.AppCode.CommonServlet;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
 
-public abstract class AuthenticationServletParent extends CommonServlet {
-
+public class ProfileServletParent extends CommonServlet {
+	public SubjectManagerInterface subjectManager;
 	public AccountManagerInterface accountManager;
 
 	@Override
 	public void initialManager() {
-		accountManager = accountManager == null
-				? (AccountManagerInterface) getServletContext().getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE)
-				: accountManager;
-
-				/*
 		subjectManager = subjectManager == null
 				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
 				: subjectManager;
-				*/
+
+		accountManager = accountManager == null
+				? (AccountManagerInterface) getServletContext().getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE)
+				: accountManager;
 	}
 }

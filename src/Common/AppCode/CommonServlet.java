@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import Account.Models.User;
+import Common.Models.ResponseModel;
 
 public abstract class CommonServlet extends HttpServlet {
 
@@ -26,17 +27,37 @@ public abstract class CommonServlet extends HttpServlet {
 		session.setAttribute(userIpAddress, user);
 	}
 
+	private boolean numericStringValidation(String input) {
+		char[] chars = input.toCharArray();
+
+		for (char ch : chars) {
+			if (!Character.isDigit(ch))
+				return false;
+		}
+		return true;
+	}
+
+	public boolean fullNumericStringValidation(String input) {
+		if (input == null)
+			return false;
+
+		if (numericStringValidation(input)) {
+			return Integer.parseInt(input) > 0;
+		}
+		return false;
+	}
+
 	public void removeUserFromSession(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if (session != null)
 			session.invalidate();
 	}
-	
-	public User getUserFromSession(HttpServletRequest request){
+
+	public User getUserFromSession(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if (session != null)
 			return (User) session.getAttribute(getRequestIp(request));
-		
+
 		return null;
 	}
 
@@ -45,9 +66,9 @@ public abstract class CommonServlet extends HttpServlet {
 
 		return session.getAttribute(getRequestIp(request)) != null;
 	}
-	
-	private void redirectToLoginIfNotLogged(HttpServletRequest request,HttpServletResponse response){
-		if(!checkRequestPermission(request)){
+
+	private void redirectToLoginIfNotLogged(HttpServletRequest request, HttpServletResponse response) {
+		if (!checkRequestPermission(request)) {
 			try {
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} catch (ServletException | IOException e) {
@@ -56,19 +77,32 @@ public abstract class CommonServlet extends HttpServlet {
 			}
 		}
 	}
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		initialManager();
-		//redirectToLoginIfNotLogged(request, response);
+
+	public void returnDefaultJsonToView(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		ResponseModel res = (ResponseModel) request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
+
+		String json = new Gson().toJson(res);
+
+		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
+		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
+
+		response.getWriter().write(json);
 	}
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		initialManager();
+		// redirectToLoginIfNotLogged(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		initialManager();
 	}
-	
+
 	public abstract void initialManager();
-	
-	public CommonServlet(){
+
+	public CommonServlet() {
 		super();
 	}
 

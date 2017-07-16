@@ -29,6 +29,7 @@
 %>
 
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Welcome</title>
 </head>
@@ -79,7 +80,8 @@
 		<h2>Your Subjects:</h2>
 		<%
 			for (Subject subject : userSubjects) {
-				out.print("<h3> <a href= ''>" + subject.getName() + " " + subject.getYear() + "</a> </h3>");
+				out.print("<h3> <a href= 'SubjectPageGeneratorServlet?subject=" + subject.getName() + "&year=" + subject.getYear() + "&term="  + subject.getTermId()+ "'>" + subject.getName() + " " + subject.getYear() + "</a>");
+				out.print(" <input onclick='deleteUserSubject(); return false;' id='subject_delete_Button_id' type='button' class='btn btn-primary' value='Delete'> </h3>");
 			}
 		%>
 	</div>

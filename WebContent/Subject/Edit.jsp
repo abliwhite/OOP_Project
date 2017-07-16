@@ -17,6 +17,7 @@
 	<script src="http://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
 	<script src="http://code.jquery.com/jquery-3.2.1.js" type="text/javascript"></script>
 	<script type="text/javascript" src="../Subject/SubjectShareJS.js" ></script>
+	<script type="text/javascript" src="../shareJS.js" ></script>
 	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
 	 		integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">

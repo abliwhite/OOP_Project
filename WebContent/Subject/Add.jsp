@@ -13,6 +13,7 @@
 	<script src="http://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
 	<script src="http://code.jquery.com/jquery-3.2.1.js" type="text/javascript"></script>
 	<script type="text/javascript" src="../Subject/SubjectShareJS.js" ></script>
+	<script type="text/javascript" src="../shareJS.js" ></script>
 	
 	<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 	
@@ -142,6 +143,7 @@ function AddSubject(){
 	    		$("#subject_alert_div_id").removeClass("alert alert-success");
 	    		$("#subject_alert_div_id").addClass("alert alert-danger");
 	    		$("#subject_alert_div_id").html(response.resultMessage);
+	    		$("#subject_alert_div_id").show();
 	    		
 	    		fadeAlertMessage("subject_alert_div_id");
 	    		return;

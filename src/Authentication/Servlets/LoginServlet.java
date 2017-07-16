@@ -48,8 +48,8 @@ public class LoginServlet extends AuthenticationServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		super.doGet(request, response);
+		returnDefaultJsonToView(request, response);
 	}
 
 	/**
@@ -62,44 +62,40 @@ public class LoginServlet extends AuthenticationServletParent {
 
 		String username = data.get("username").getAsString();
 		String password = data.get("password").getAsString();
-		
+
 		User user = accountManager.checkLoginValidation(new AuthModel(username, password));
+		ResponseModel responseModel = null;
+
 		if (user != null) {
 			request.setAttribute(ViewTextContainer.RESULT, "Success");
 
 			// addUserInSession(request, user);
-			List<Subject> allSubjects = subjectManager.getAllSubjects();
 
-			request.setAttribute("AllSubjects", allSubjects);
 			if (user.getUsername().equals(DbCertificate.UserTable.ADMIN_USERNAME)
 					&& user.getPassword().equals(DbCertificate.UserTable.ADMIN_PASSWORD)) {
-				redirectToAdminPage(request, response);
-			} else {
-				if (user.getProfile() == null) {
-					UserProfile profile = accountManager.getProfile(user);
-					user.setUserProfile(profile);
-				}
-				List<Subject> userSubjects = accountManager.getUserSubjects(user);
 
-				request.setAttribute("UserSubjects", userSubjects);
-				request.setAttribute("user", user);
-				request.getRequestDispatcher("/ProfilePageGeneratorServlet").forward(request, response);
+				responseModel = new ResponseModel<>(true, DbCertificate.UserTable.ADMIN_ROLE);
+			} else {
+
+				responseModel = new ResponseModel<Object, Integer>(user.getId(), true, DbCertificate.UserTable.STUDENT_ROLE);
+
+				/*
+				 * if (user.getProfile() == null) { UserProfile profile =
+				 * accountManager.getProfile(user);
+				 * user.setUserProfile(profile); } List<Subject> userSubjects =
+				 * accountManager.getUserSubjects(user);
+				 * 
+				 * request.setAttribute("UserSubjects", userSubjects);
+				 * request.setAttribute("user", user);
+				 * request.getRequestDispatcher("/ProfilePageGeneratorServlet").
+				 * forward(request, response);
+				 */
 			}
 		} else {
-			request.setAttribute(ViewTextContainer.RESULT, new ViewTextContainer());
-			request.getRequestDispatcher("/Login/IncorrectDetails.jsp").forward(request, response);
+			responseModel = new ResponseModel<Object, Object>(false, "Incorrect username or password!");
 		}
-	}
-
-	private void redirectToAdminPage(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		List<Subject> allSubjects = subjectManager.getAllSubjects();
-
-		ResponseModel<Subject, Object> responseModel = new ResponseModel<Subject, Object>(allSubjects, true,
-				CommonConstants.SUCCESSFUL_MESSAGE);
 
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
-		request.getRequestDispatcher("/Profiles/AdminProfile.jsp").forward(request, response);
+		doGet(request, response);
 	}
 }

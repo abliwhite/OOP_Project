@@ -38,14 +38,13 @@ public class AccountManager extends DaoController implements AccountManagerInter
 		userColumnNames = getColumnsNames(DbCertificate.UserTable.TABLE_NAME);
 		profileColumnNames = getColumnsNames(DbCertificate.ProfileTable.TABLE_NAME);
 	}
-	
+
 	public UserProfile getProfile(User user) {
 		UserProfile profile = null;
 		try {
 			java.sql.Connection con = getConnection();
 
-			String selectQuery = "SELECT * FROM " + DbCertificate.ProfileTable.TABLE_NAME 
-					+ " WHERE "
+			String selectQuery = "SELECT * FROM " + DbCertificate.ProfileTable.TABLE_NAME + " WHERE "
 					+ DbCertificate.ProfileTable.COLUMN_NAME_ID + " = " + user.getProfileID();
 
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
@@ -54,9 +53,9 @@ public class AccountManager extends DaoController implements AccountManagerInter
 			ResultSet rs = st.executeQuery();
 
 			profile = getProfileFromResultSet(rs);
-			
+
 			con.close();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -85,7 +84,7 @@ public class AccountManager extends DaoController implements AccountManagerInter
 
 			String insertQuery = generator.getInsertQuery(profileColumnNames, DbCertificate.ProfileTable.TABLE_NAME);
 			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
-			
+
 			setValues(getProfileValues(profile), st);
 			st.executeUpdate();
 
@@ -125,10 +124,8 @@ public class AccountManager extends DaoController implements AccountManagerInter
 		try {
 			java.sql.Connection con = getConnection();
 
-			String selectQuery = "SELECT * FROM " + DbCertificate.UserTable.TABLE_NAME 
-					+ " WHERE "
-					+ DbCertificate.UserTable.COLUMN_NAME_USERNAME + " = ?"+
-					" AND "
+			String selectQuery = "SELECT * FROM " + DbCertificate.UserTable.TABLE_NAME + " WHERE "
+					+ DbCertificate.UserTable.COLUMN_NAME_USERNAME + " = ?" + " AND "
 					+ DbCertificate.UserTable.COLUMN_NAME_PASSWORD + " = ?";
 
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
@@ -139,9 +136,9 @@ public class AccountManager extends DaoController implements AccountManagerInter
 			ResultSet rs = st.executeQuery();
 
 			user = getUser(rs);
-			
+
 			con.close();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -166,17 +163,14 @@ public class AccountManager extends DaoController implements AccountManagerInter
 		}
 		return null;
 	}
-	
 
 	public ResponseModel checkRegistrationValidity(RegisterModel register) {
 		ResponseModel queryResult = null;
 		try {
 			java.sql.Connection con = getConnection();
 
-			String selectQuery = "SELECT * FROM " + DbCertificate.UserTable.TABLE_NAME 
-					+ " WHERE "
-					+ DbCertificate.UserTable.COLUMN_NAME_USERNAME + " = ?"+
-					" or "
+			String selectQuery = "SELECT * FROM " + DbCertificate.UserTable.TABLE_NAME + " WHERE "
+					+ DbCertificate.UserTable.COLUMN_NAME_USERNAME + " = ?" + " or "
 					+ DbCertificate.UserTable.COLUMN_NAME_EMAIL + " = ?";
 
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
@@ -189,9 +183,9 @@ public class AccountManager extends DaoController implements AccountManagerInter
 			con.close();
 
 			if (rs.next()) {
-				queryResult = new ResponseModel(false,CommonConstants.UNSUCCESSFUL_REGISTRATION);
+				queryResult = new ResponseModel(false, CommonConstants.UNSUCCESSFUL_REGISTRATION);
 			} else {
-				queryResult = new ResponseModel(true,CommonConstants.SUCCESSFUL_MESSAGE);
+				queryResult = new ResponseModel(true, CommonConstants.SUCCESSFUL_MESSAGE);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -207,7 +201,7 @@ public class AccountManager extends DaoController implements AccountManagerInter
 
 			java.sql.PreparedStatement st = con.prepareStatement(updateStatement);
 			st.executeQuery();
-			
+
 			setValues(getUserModelValues(user), st);
 			st.executeUpdate();
 
@@ -246,31 +240,29 @@ public class AccountManager extends DaoController implements AccountManagerInter
 	@Override
 	public List<Subject> getUserSubjects(User user) {
 		List<Subject> subjects = null;
-		
+
 		try {
 			java.sql.Connection con = getConnection();
-			String selectQuery = "SELECT * FROM " + DbCertificate.UserSubjectTable.TABLE_NAME 
-					+ " WHERE "
+			String selectQuery = "SELECT * FROM " + DbCertificate.UserSubjectTable.TABLE_NAME + " WHERE "
 					+ DbCertificate.UserSubjectTable.COLUMN_NAME_USER_ID + " = " + user.getId();
-					
-			
+
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
 			st.executeQuery(generator.getUseDatabaseQuery());
-			
+
 			ResultSet rs = st.executeQuery();
 			subjects = getSubjects(rs);
-			
+
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return subjects;
 	}
 
 	private List<Subject> getSubjects(ResultSet rs) {
 		List<Subject> result = new ArrayList<>();
-		
+
 		try {
 			while (rs.next()) {
 				int subjectId = rs.getInt(DbCertificate.UserSubjectTable.COLUMN_NAME_SUBJECT_ID);
@@ -279,7 +271,7 @@ public class AccountManager extends DaoController implements AccountManagerInter
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
 
@@ -317,7 +309,7 @@ public class AccountManager extends DaoController implements AccountManagerInter
 			int termId = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID);
 			int year = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_YEAR);
 			int subjectInfoID = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_SUBJECT_INFO_ID);
-			
+
 			Subject temp = new Subject(id, name, termId, year, subjectInfoID);
 			result.add(temp);
 		}
@@ -325,5 +317,27 @@ public class AccountManager extends DaoController implements AccountManagerInter
 		return result;
 	}
 
-	
+	@Override
+	public User getUserById(int id) {
+		User result = null;
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getSelectByIDQuery(DbCertificate.UserTable.TABLE_NAME,
+					DbCertificate.UserTable.COLUMN_NAME_ID, 1);
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(id)), st);
+			ResultSet rs = st.executeQuery();
+			result = getUser(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
 }
