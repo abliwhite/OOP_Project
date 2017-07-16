@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import Account.Models.User;
 import Chat.AppCode.ChatCore.ChatEndpoint;
+import Chat.Models.DbModels.GroupChat;
 
 public class LobbyManager {
 
@@ -31,12 +32,20 @@ public class LobbyManager {
 	public void addUser(String sessionId, User user) {
 		onlineLobbyUsers.put(sessionId, user);
 	}
+	
+	public void removeUser(String sessionId){
+		onlineLobbyUsers.remove(sessionId);
+	}
 
 	public User getUser(String sessionId) {
 		return onlineLobbyUsers.get(sessionId);
 	}
 
-	public LobbyController getLobbyController(int subjectComponentID) {
+	public List<GroupChat> getActiveGroupChats(int subjectComponentID){
+		return getLobbyController(subjectComponentID).getActiveGroupChats();
+	}
+	
+	private LobbyController getLobbyController(int subjectComponentID) {
 		return lobbyControllers.stream().filter(x -> x.getLobby().getSubjectComponentID() == subjectComponentID)
 				.collect(Collectors.toList()).get(0);
 	}
