@@ -18,12 +18,15 @@ import Database.QueryGenerator;
 
 public abstract class DaoController {
 
+	public List<String> userColumnNames;
+	
 	public QueryGenerator generator;
 	private DataSource pool;
 
 	public DaoController(DataSource pool) {
 		this.pool = pool;
 		generator = new QueryGenerator();
+		userColumnNames = getColumnsNames(DbCertificate.UserTable.TABLE_NAME);
 	}
 
 	public java.sql.Connection getConnection() throws SQLException {

@@ -11,6 +11,7 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import com.mysql.jdbc.Statement;
 
 import Chat.Models.DbModels.GroupChat;
+import Chat.Models.DbModels.Lobby;
 import Common.AppCode.DaoController;
 import Database.DbCertificate;
 import Subject.Models.DbModels.SubjectComponentType;
@@ -98,6 +99,73 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		return Arrays.asList(String.valueOf(groupChat.getId()), String.valueOf(groupChat.getLobbyID()),
 				String.valueOf(groupChat.getCreatorID()), groupChat.getCreateDate(), groupChat.getName(),
 				String.valueOf(groupChat.getPrivacyStatusID()), String.valueOf(groupChat.getActiveStatusID()));
+	}
+
+	@Override
+	public List<GroupChat> getGroupChatByUserId(int userId) {
+		List<GroupChat> result = new ArrayList<GroupChat>();
+
+		try {
+			java.sql.Connection con = getConnection();
+
+			String selectQuery = "SELECT " + DbCertificate.GroupChatTable.COLUMN_NAME_ID + ","
+					+ DbCertificate.GroupChatTable.COLUMN_NAME_ACTIVE_STATUS_ID + ","
+					+ DbCertificate.GroupChatTable.COLUMN_NAME_PRIVACY_STATUS_ID + ","
+					+ DbCertificate.GroupChatTable.COLUMN_NAME_CREATOR_ID + ","
+					+ DbCertificate.GroupChatTable.COLUMN_NAME_LOBBY_ID + ","
+					+ DbCertificate.GroupChatTable.COLUMN_NAME_NAME + ","
+					+ DbCertificate.GroupChatTable.COLUMN_NAME_CREATE_DATE + " FROM "
+					+ DbCertificate.UserGroupChatTable.TABLE_NAME + " INNER JOIN "
+					+ DbCertificate.GroupChatTable.TABLE_NAME + " ON "
+					+ DbCertificate.UserGroupChatTable.COLUMN_NAME_GROUP_CHAT_ID + " = "
+					+ DbCertificate.GroupChatTable.COLUMN_NAME_ID + " WHERE "
+					+ DbCertificate.UserGroupChatTable.COLUMN_NAME_USER_ID + " ?";
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(userId)), st);
+			ResultSet rs = st.executeQuery(selectQuery);
+
+			result = getGroupChatList(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public Lobby getLobbyByComponentId(int componentId) {
+		Lobby result = null;
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = generator.getSelectByIDQuery(DbCertificate.LobbyTable.TABLE_NAME,
+					DbCertificate.LobbyTable.COLUMN_NAME_SUBJECT_COMPONENT_ID, 1);
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(componentId)), st);
+
+			ResultSet rs = st.executeQuery(selectQuery);
+
+			result = getLobby(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	private Lobby getLobby(ResultSet rs) throws SQLException {
+		rs.next();
+		Lobby lobby = new Lobby(rs.getInt(DbCertificate.LobbyTable.COLUMN_NAME_ID),
+				rs.getInt(DbCertificate.LobbyTable.COLUMN_NAME_SUBJECT_COMPONENT_ID));
+		
+		return lobby;
 	}
 
 }

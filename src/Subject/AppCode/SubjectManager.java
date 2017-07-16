@@ -721,37 +721,41 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	}
 
 	private CommonSubjectComponentViewModel getCommonSubjectComponentViewModel(ResultSet rs) throws SQLException {
-		CommonSubjectComponentViewModel result=null;
-		while(rs.next()){
-		int subjectId = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_ID);
-		String subjectName = rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_NAME);
-		int subjectYear = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_YEAR);
-		int termId = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID);
-		int subjectInfoID = rs.getInt(DbCertificate.SubjectInfoTable.ALTERNATIVE_COLUMN_NAME_ID);
+		CommonSubjectComponentViewModel result = null;
+		while (rs.next()) {
+			int subjectId = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_ID);
+			String subjectName = rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_NAME);
+			int subjectYear = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_YEAR);
+			int termId = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID);
+			int subjectInfoID = rs.getInt(DbCertificate.SubjectInfoTable.ALTERNATIVE_COLUMN_NAME_ID);
 
-		int id=rs.getInt(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_ID);
-		double markPercentage=rs.getDouble(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_MARKPERCENTAGE);
-		int number=rs.getInt(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_NUMBER);
-		
-		int typeId=rs.getInt(DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_ID);
-		String typeName=rs.getString(DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_NAME);
-		
-		SubjectComponentType subjectComponentType= new SubjectComponentType(typeId,typeName);
-		Subject subject = new Subject(subjectId, subjectName, termId, subjectYear, subjectInfoID);
-		result = new CommonSubjectComponentViewModel(id,subjectId,markPercentage,number,subjectComponentType,subject);
+			int id = rs.getInt(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_ID);
+			double markPercentage = rs.getDouble(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_MARKPERCENTAGE);
+			int number = rs.getInt(DbCertificate.CommonSubjectComponentTable.COLUMN_NAME_NUMBER);
+
+			int typeId = rs.getInt(DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_ID);
+			String typeName = rs.getString(DbCertificate.SubjectComponentTypeTable.COLUMN_NAME_NAME);
+
+			SubjectComponentType subjectComponentType = new SubjectComponentType(typeId, typeName);
+			Subject subject = new Subject(subjectId, subjectName, termId, subjectYear, subjectInfoID);
+			result = new CommonSubjectComponentViewModel(id, subjectId, markPercentage, number, subjectComponentType,
+					subject);
 		}
 		return result;
 	}
-	public List<SubjectComponentMaterial> getSubjectComponentMaterialsByComponentId(int componentId){
+
+	public List<SubjectComponentMaterial> getSubjectComponentMaterialsByComponentId(int componentId) {
 		List<SubjectComponentMaterial> result = new ArrayList<SubjectComponentMaterial>();
 		try {
 			java.sql.Connection con = getConnection();
-		
-		String selectStatement=generator.getSelectAllQuery(DbCertificate.SubjectComponentMaterialTable.TABLE_NAME)+" WHERE "+DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_SUBJECT_COMPONENT_ID + " = "+componentId;
-		java.sql.PreparedStatement st = con.prepareStatement(selectStatement);
-		st.executeQuery(generator.getUseDatabaseQuery());
-		ResultSet rs = st.executeQuery(selectStatement);
-		result = getMaterialsList(rs);
+
+			String selectStatement = generator.getSelectAllQuery(DbCertificate.SubjectComponentMaterialTable.TABLE_NAME)
+					+ " WHERE " + DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_SUBJECT_COMPONENT_ID + " = "
+					+ componentId;
+			java.sql.PreparedStatement st = con.prepareStatement(selectStatement);
+			st.executeQuery(generator.getUseDatabaseQuery());
+			ResultSet rs = st.executeQuery(selectStatement);
+			result = getMaterialsList(rs);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -759,17 +763,17 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		return result;
 	}
 
-	
 	private List<SubjectComponentMaterial> getMaterialsList(ResultSet rs) throws SQLException {
-		List<SubjectComponentMaterial> result=new ArrayList<SubjectComponentMaterial>();
-		while(rs.next()){
-		 int id=rs.getInt(DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_ID);
-		 String path=rs.getString(DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_MATERIAL_PATH);
-		 String componentId=rs.getString(DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_SUBJECT_COMPONENT_ID);
-		 String uploadDate=rs.getString(DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_UPLOAD_DATE);
-		 
-		 SubjectComponentMaterial temp = new SubjectComponentMaterial(id,path,uploadDate,componentId);
-		 result.add(new SubjectComponentMaterial(id,path,uploadDate,componentId));
+		List<SubjectComponentMaterial> result = new ArrayList<SubjectComponentMaterial>();
+		while (rs.next()) {
+			int id = rs.getInt(DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_ID);
+			String path = rs.getString(DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_MATERIAL_PATH);
+			String componentId = rs
+					.getString(DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_SUBJECT_COMPONENT_ID);
+			String uploadDate = rs.getString(DbCertificate.SubjectComponentMaterialTable.COLUMN_NAME_UPLOAD_DATE);
+
+			SubjectComponentMaterial temp = new SubjectComponentMaterial(id, path, uploadDate, componentId);
+			result.add(new SubjectComponentMaterial(id, path, uploadDate, componentId));
 		}
 		return result;
 	}
