@@ -55,6 +55,15 @@ public class LobbyManager {
 		return null;
 	}
 	
+	public Set<User> getUsersByGroupId(int lobbyId, int groupId){
+		LobbyController lobbyController = getLobbyControllerByLobby(lobbyId);
+		GroupChatController gcc = lobbyController.getGroupChatControllerById(groupId);
+		if(gcc!=null){
+			return gcc.getUsers();
+		}
+		return null;
+	}
+	
 	private LobbyController getLobbyControllerByComponent(int subjectComponentID) {
 		return lobbyControllers.stream().filter(x -> x.getLobby().getSubjectComponentID() == subjectComponentID)
 				.collect(Collectors.toList()).get(0);
@@ -64,4 +73,6 @@ public class LobbyManager {
 		return lobbyControllers.stream().filter(x -> x.getLobby().getId() == lobbyID)
 				.collect(Collectors.toList()).get(0);
 	}
+	
+	
 }
