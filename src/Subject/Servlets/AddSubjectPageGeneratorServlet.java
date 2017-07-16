@@ -45,7 +45,8 @@ public class AddSubjectPageGeneratorServlet extends SubjectServletParent {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		super.doGet(request, response);
-
+		redirectToLoginIfNotLogged(request, response);
+		
 		List<SubjectTerm> subjectTerms = manager.GetAllSubjectTerms();
 
 		List<SubjectComponentType> names = manager.getAllSubjectComponentTypes();

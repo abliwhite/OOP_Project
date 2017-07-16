@@ -78,8 +78,9 @@
 			contentType : "application/json",
 			data : JSON.stringify(data),
 			success : function(response) {
-				
+				console.log(response.resultMessage);
 				if(!response.isSuccess){
+					console.log(response.resultMessage);
 					$("#login_alert_div_id").html(response.resultMessage);
 					$("#login_alert_div_id").show();
 					fadeAlertMessage("login_alert_div_id");

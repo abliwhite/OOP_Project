@@ -28,6 +28,8 @@ public class UserSubjectPageGeneratorServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		redirectToLoginIfNotLogged(request, response);
+		
 		String subject = request.getParameter("subject");
 		String year = request.getParameter("year");
 		String termId = request.getParameter("term");

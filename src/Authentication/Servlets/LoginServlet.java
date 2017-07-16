@@ -20,8 +20,6 @@ import Account.AppCode.AccountManagerInterface;
 import Account.Models.AuthModel;
 import Account.Models.User;
 import Account.Models.UserProfile;
-import Common.AppCode.DaoController;
-import Common.AppCode.ViewTextContainer;
 import Common.Models.ResponseModel;
 import Database.DbCertificate;
 import Subject.Models.DbModels.Subject;
@@ -50,6 +48,8 @@ public class LoginServlet extends AuthenticationServletParent {
 			throws ServletException, IOException {
 		super.doGet(request, response);
 		returnDefaultJsonToView(request, response);
+		
+		
 	}
 
 	/**

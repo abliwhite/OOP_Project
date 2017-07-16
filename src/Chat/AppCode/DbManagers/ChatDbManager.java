@@ -198,7 +198,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 	}
 
 	private List<String> getlobbyValues(Lobby lobby) {
-		return Arrays.asList(String.valueOf(lobby.getId()), String.valueOf(lobby.getSubjectComponentID()));
+		return Arrays.asList(String.valueOf(lobby.getSubjectComponentID()));
 	}
 
 }
