@@ -50,7 +50,7 @@
 				out.print("<div class='card-card-block'>");
 				out.print("<h4 class='card-title'>Users</h4>");
 				
-				List<User> users = activeChats.get(i).getUser();
+				List<User> users = activeChats.get(i).getUsers();
 				String u = "";
 				
 				for(int j=0; j < users.size()-1;j++){

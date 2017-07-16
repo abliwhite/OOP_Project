@@ -92,7 +92,7 @@ public abstract class CommonServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		initialManager();
-		// redirectToLoginIfNotLogged(request, response);
+		redirectToLoginIfNotLogged(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

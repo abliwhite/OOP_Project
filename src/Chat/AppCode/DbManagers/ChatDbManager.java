@@ -21,10 +21,12 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 	public static final String CHAT_DB_MANAGER_ATTRIBUTE = "Chat Db Manager Attribute";
 
 	private List<String> groupChatColumnNames;
+	private List<String> lobbyColumnNames;
 
 	public ChatDbManager(DataSource pool) {
 		super(pool);
 		groupChatColumnNames = getColumnsNames(DbCertificate.GroupChatTable.TABLE_NAME);
+		lobbyColumnNames = getColumnsNames(DbCertificate.LobbyTable.TABLE_NAME);
 	}
 
 	@Override
@@ -164,8 +166,39 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		rs.next();
 		Lobby lobby = new Lobby(rs.getInt(DbCertificate.LobbyTable.COLUMN_NAME_ID),
 				rs.getInt(DbCertificate.LobbyTable.COLUMN_NAME_SUBJECT_COMPONENT_ID));
-		
+
 		return lobby;
+	}
+
+	@Override
+	public void addLobby(Lobby lobby) {
+		try {
+			java.sql.Connection con = getConnection();
+			String insertQuery = generator.getInsertQuery(lobbyColumnNames, DbCertificate.LobbyTable.TABLE_NAME);
+
+			con.createStatement().executeQuery(generator.getUseDatabaseQuery());
+			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+			setValues(getlobbyValues(lobby), st);
+			st.executeUpdate();
+
+			try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					lobby.setId(generatedKeys.getInt(1));
+				} else {
+					throw new SQLException();
+				}
+			}
+
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private List<String> getlobbyValues(Lobby lobby) {
+		return Arrays.asList(String.valueOf(lobby.getId()), String.valueOf(lobby.getSubjectComponentID()));
 	}
 
 }
