@@ -195,6 +195,18 @@ CREATE TABLE `common_subject_components` (
    CONSTRAINT `FK_ExternalMessage_To_User` FOREIGN KEY (`SenderID`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
+ CREATE TABLE `user_group_chats` (
+   `ID` int(11) NOT NULL AUTO_INCREMENT,
+   `UserID` int(11) NOT NULL,
+   `GroupChatID` int(11) NOT NULL,
+   PRIMARY KEY (`ID`),
+   UNIQUE KEY `ID_UNIQUE` (`ID`),
+   KEY `FK_UserGroupChat_To_User_idx` (`UserID`),
+   KEY `FK_UserGroupChat_To_GroupChat_idx` (`GroupChatID`),
+   CONSTRAINT `FK_UserGroupChat_To_GroupChat` FOREIGN KEY (`GroupChatID`) REFERENCES `group_chat` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+   CONSTRAINT `FK_UserGroupChat_To_User` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ 
 INSERT INTO subject_terms (name)
 VALUES("Fall");
 
