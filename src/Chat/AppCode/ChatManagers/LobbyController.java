@@ -28,6 +28,13 @@ public class LobbyController {
 	public Lobby getLobby() {
 		return lobby;
 	}
+	
+	public GroupChatController getGroupChatControllerById(int groupId){
+		List<GroupChatController> filteredList = groupChatControllers.stream().
+				filter(x -> x.getGroupChat().getId() == groupId).collect(Collectors.toList());
+		if(filteredList.isEmpty()) return null;
+		return filteredList.get(0);
+	}
 
 	public List<GroupChat> getActiveGroupChats() {
 		List<GroupChatController> filteredList = groupChatControllers.stream()

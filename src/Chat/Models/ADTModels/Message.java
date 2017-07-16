@@ -8,36 +8,45 @@ public class Message {
 	
 	private ActionMakerInterface actionMaker;
 
-    private String userFrom;
-    private String groupFrom;
+    private int userId;
+    private int senderGroupId;
     
-    private String groupTo;
+    private int receiverGroupId;
+    private int lobbyId;
     
     private String type;
     private String content;
     
-    public String getGroupFrom(){
-    	return groupFrom;
+    public int getSenderGroupId(){
+    	return senderGroupId;
     }
     
-    public void setGroupFrom(String groupFrom){
-    	this.groupFrom = groupFrom;
+    public void setSenderGroupId(int groupFrom){
+    	this.senderGroupId = groupFrom;
     }
     
-    public void setUserFrom(String userFrom){
-    	this.userFrom = userFrom;
+    public void setUserId(int userFrom){
+    	this.userId = userFrom;
     }
     
-    public String getUserFrom(){
-    	return userFrom;
+    public int getUserId(){
+    	return userId;
     }
     
-    public void setGroupTo(String groupTo){
-    	this.groupTo = groupTo;
+    public void setReceiverGroupId(int groupTo){
+    	this.receiverGroupId = groupTo;
     }
     
-    public String getGroupTo(){
-    	return groupTo;
+    public int getReceiverGroupId(){
+    	return receiverGroupId;
+    }
+    
+    public int getLobbyId(){
+    	return lobbyId;
+    }
+    
+    public void setLobbyId(int lobbyId){
+    	this.lobbyId = lobbyId;
     }
     
     @Override

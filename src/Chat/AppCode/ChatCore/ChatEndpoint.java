@@ -54,29 +54,9 @@ public class ChatEndpoint {
     	
     }
 
-    private static void broadcast(Message message) throws IOException, EncodeException {
-        
+    public Session getSession(){
+    	return session;
     }
-
-    private static void sendMessageToOneUser(Message message) throws IOException, EncodeException {
-        for (ChatEndpoint endpoint : chatEndpoints) {
-            synchronized (endpoint) {
-                if (endpoint.session.getId().equals(getSessionId(message.getGroupTo()))) {
-                    endpoint.session.getBasicRemote().sendObject(message);
-                }
-            }
-        }
-    }
-
-    private static String getSessionId(String to) {
-        if (users.containsValue(to)) {
-            for (String sessionId : users.keySet()) {
-                if (users.get(sessionId).equals(to)) {
-                    return sessionId;
-                }
-            }
-        }
-        return null;
-    }
+    
 
 }

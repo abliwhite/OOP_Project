@@ -3,6 +3,7 @@ package Chat.AppCode.ChatManagers;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -42,11 +43,25 @@ public class LobbyManager {
 	}
 
 	public List<GroupChat> getActiveGroupChats(int subjectComponentID){
-		return getLobbyController(subjectComponentID).getActiveGroupChats();
+		return getLobbyControllerByComponent(subjectComponentID).getActiveGroupChats();
 	}
 	
-	private LobbyController getLobbyController(int subjectComponentID) {
+	public Set<ChatEndpoint> getEndpointsByGroupId(int lobbyId, int receiverGroupId) {
+		LobbyController lobbyController = getLobbyControllerByLobby(lobbyId);
+		GroupChatController gcc = lobbyController.getGroupChatControllerById(receiverGroupId);
+		if(gcc!=null){
+			return gcc.getUserEndpoints();
+		}
+		return null;
+	}
+	
+	private LobbyController getLobbyControllerByComponent(int subjectComponentID) {
 		return lobbyControllers.stream().filter(x -> x.getLobby().getSubjectComponentID() == subjectComponentID)
+				.collect(Collectors.toList()).get(0);
+	}
+	
+	private LobbyController getLobbyControllerByLobby(int lobbyID) {
+		return lobbyControllers.stream().filter(x -> x.getLobby().getId() == lobbyID)
 				.collect(Collectors.toList()).get(0);
 	}
 }
