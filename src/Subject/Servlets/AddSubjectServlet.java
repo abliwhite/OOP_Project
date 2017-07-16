@@ -55,7 +55,7 @@ public class AddSubjectServlet extends SubjectServletParent {
 			throws ServletException, IOException {
 		super.doPost(request, response);
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
-
+		
 		String name = data.get("name").getAsString();
 		String year = data.get("year").getAsString();
 		String termId = data.get("termId").getAsString();

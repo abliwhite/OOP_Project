@@ -70,6 +70,7 @@ public class LoginServlet extends AuthenticationServletParent {
 			request.setAttribute(ViewTextContainer.RESULT, "Success");
 
 			// addUserInSession(request, user);
+			OnlineUsersManager.instance().addUser(request.getSession().getId(), user);
 
 			if (user.getUsername().equals(DbCertificate.UserTable.ADMIN_USERNAME)
 					&& user.getPassword().equals(DbCertificate.UserTable.ADMIN_PASSWORD)) {
