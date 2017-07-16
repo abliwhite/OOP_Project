@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import Account.Models.User;
 import Chat.AppCode.ChatCore.ChatEndpoint;
 import Chat.Models.DbModels.GroupChat;
+import Chat.Models.DbModels.Lobby;
 
 public class LobbyManager {
 
@@ -39,6 +40,10 @@ public class LobbyManager {
 
 	public User getUser(String sessionId) {
 		return onlineLobbyUsers.get(sessionId);
+	}
+	
+	public void createLobby(Lobby lobby, GroupChat groupChat){
+		
 	}
 
 	public List<GroupChat> getActiveGroupChats(int subjectComponentID){
