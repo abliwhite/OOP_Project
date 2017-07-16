@@ -1,15 +1,9 @@
 package Chat.AppCode.ChatCore;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 import javax.websocket.*;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import Account.AppCode.AccountManager;
 import Account.Models.User;
 import Chat.AppCode.ChatManagers.LobbyManager;
 import Chat.Models.ADTModels.Message;

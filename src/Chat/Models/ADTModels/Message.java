@@ -9,6 +9,7 @@ public class Message {
 	private ActionMakerInterface actionMaker;
 
     private int userId;
+    private String username;
     private int senderGroupId;
     
     private int receiverGroupId;
@@ -16,6 +17,14 @@ public class Message {
     
     private String type;
     private String content;
+    
+    public String getUsername(){
+    	return username;
+    }
+    
+    public void setUsername(String username){
+    	this.username = username;
+    }
     
     public int getSenderGroupId(){
     	return senderGroupId;
