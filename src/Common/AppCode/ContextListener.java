@@ -11,6 +11,8 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 import Account.AppCode.AccountManager;
+import Chat.AppCode.DbManagers.ChatDbManager;
+import Chat.AppCode.DbManagers.ChatDbManagerInterface;
 import Database.MyDBInfo;
 import Subject.AppCode.SubjectManager;
 
@@ -44,6 +46,7 @@ public class ContextListener implements ServletContextListener {
     	
     	context.setAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE, new AccountManager(pool));
     	context.setAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE, new SubjectManager(pool));
+    	context.setAttribute(ChatDbManager.CHAT_DB_MANAGER_ATTRIBUTE, new ChatDbManager(pool));
     }
     
     //Todo gasatania sadme 

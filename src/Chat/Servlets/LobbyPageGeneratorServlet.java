@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class LobbyServlet
  */
-public class LobbyServlet extends HttpServlet {
+public class LobbyPageGeneratorServlet extends ChatServletParent {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LobbyServlet() {
+    public LobbyPageGeneratorServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -24,9 +24,16 @@ public class LobbyServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		super.doGet(request, response);
+		String componentId = request.getParameter("id");
+		if(!fullNumericStringValidation(componentId)){
+			
+			return;
+		}
+		
+		
 	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
