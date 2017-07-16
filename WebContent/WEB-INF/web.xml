@@ -113,6 +113,18 @@
   	<servlet-name>AddGroupChatServlet</servlet-name>
   	<servlet-class>Chat.Servlets.AddGroupChatServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>LobbyPageGeneratorServlet</display-name>
+  	<servlet-name>LobbyPageGeneratorServlet</servlet-name>
+  	<servlet-class>Chat.Servlets.LobbyPageGeneratorServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>LobbyPageGeneratorServlet</servlet-name>
+    <url-pattern>/LobbyPageGeneratorServlet</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>RegisterServlet</servlet-name>
     <url-pattern>/RegisterServlet</url-pattern>
