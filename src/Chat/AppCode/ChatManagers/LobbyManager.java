@@ -1,11 +1,10 @@
 package Chat.AppCode.ChatManagers;
 
-import java.util.Collections;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import Account.Models.User;
@@ -55,7 +54,7 @@ public class LobbyManager {
 		return null;
 	}
 	
-	public Set<User> getUsersByGroupId(int lobbyId, int groupId){
+	public List<User> getUsersByGroupId(int lobbyId, int groupId){
 		LobbyController lobbyController = getLobbyControllerByLobby(lobbyId);
 		GroupChatController gcc = lobbyController.getGroupChatControllerById(groupId);
 		if(gcc!=null){

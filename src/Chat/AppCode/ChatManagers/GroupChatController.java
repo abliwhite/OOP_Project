@@ -1,10 +1,11 @@
 package Chat.AppCode.ChatManagers;
 
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 import Account.Models.User;
@@ -14,12 +15,12 @@ import Chat.Models.DbModels.GroupChat;
 public class GroupChatController {
 
 	private Map<Integer, ChatEndpoint> userEndpoints;
-	private Set<User> users;
+	private List<User> users;
 	private GroupChat groupChat;
 
 	public GroupChatController(GroupChat groupChat) {
 		userEndpoints = new ConcurrentHashMap<Integer, ChatEndpoint>();
-		users = new CopyOnWriteArraySet<User>();
+		users = new CopyOnWriteArrayList<User>();
 		this.groupChat = groupChat;
 	}
 
@@ -31,7 +32,7 @@ public class GroupChatController {
 		return userEndpoints.keySet().stream().map(x -> userEndpoints.get(x)).collect(Collectors.toSet());
 	}
 	
-	public Set<User> getUsers(){
+	public List<User> getUsers(){
 		return users;
 	}
 	
