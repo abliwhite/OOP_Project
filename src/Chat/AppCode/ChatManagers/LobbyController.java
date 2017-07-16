@@ -13,7 +13,7 @@ public class LobbyController {
 	private Lobby lobby;
 
 	public LobbyController(Lobby lobby) {
-		setGroupChatControllers(new ArrayList<GroupChatController>());
+		groupChatControllers = new ArrayList<GroupChatController>();
 		this.lobby = lobby;
 	}
 
@@ -27,6 +27,11 @@ public class LobbyController {
 	
 	public Lobby getLobby() {
 		return lobby;
+	}
+	
+	public void addGroupChat(GroupChat groupChat){
+		GroupChatController gcc = new GroupChatController(groupChat);
+		groupChatControllers.add(gcc);
 	}
 	
 	public GroupChatController getGroupChatControllerById(int groupId){

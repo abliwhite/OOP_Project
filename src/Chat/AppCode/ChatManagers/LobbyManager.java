@@ -42,8 +42,14 @@ public class LobbyManager {
 		return onlineLobbyUsers.get(sessionId);
 	}
 	
-	public void createLobby(Lobby lobby, GroupChat groupChat){
-		
+	public void createLobby(Lobby lobby){
+		LobbyController lc = new LobbyController(lobby);
+		lobbyControllers.add(lc);
+	}
+	
+	public void createGroupChat(Lobby lobby, GroupChat groupChat){
+		LobbyController lc = getLobbyControllerByLobby(lobby.getId());
+		lc.addGroupChat(groupChat);
 	}
 
 	public List<GroupChat> getActiveGroupChats(int subjectComponentID){
