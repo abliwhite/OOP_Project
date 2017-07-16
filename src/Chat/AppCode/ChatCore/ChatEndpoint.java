@@ -26,7 +26,6 @@ import Common.AppCode.OnlineUsersManager;
 )
 
 public class ChatEndpoint {
-    private final Logger log = Logger.getLogger(getClass().getName());
 
     private Session session;
     @SuppressWarnings("FieldCanBeLocal")
@@ -36,7 +35,6 @@ public class ChatEndpoint {
 
     @OnOpen
     public void onOpen(Session session) throws IOException, EncodeException {
-        log.info(session.getId() + " connected!");
         String sessionId = session.getId();
         
         User user = OnlineUsersManager.instance().getUser(sessionId);
@@ -49,7 +47,7 @@ public class ChatEndpoint {
         users.put(session.getId(), username);
 
         Message message = new Message();
-        message.setFrom(username);
+        message.setUserFrom(username);
         message.setContent("Connected!");
         broadcast(message);
     }
@@ -60,26 +58,23 @@ public class ChatEndpoint {
     	//message.setUserFrom(userFrom);
     	message.processMessage();
     	
-    	log.info(message.toString());
 
-        message.setFrom(users.get(session.getId()));
+        message.setUserFrom(users.get(session.getId()));
         sendMessageToOneUser(message);
     }
 
     @OnClose
     public void onClose(Session session) throws IOException, EncodeException {
-        log.info(session.getId() + " disconnected!");
-
         chatEndpoints.remove(this);
         Message message = new Message();
-        message.setFrom(users.get(session.getId()));
+        message.setUserFrom(users.get(session.getId()));
         message.setContent("disconnected!");
         broadcast(message);
     }
 
     @OnError
     public void onError(Session session, Throwable throwable) {
-        log.warning(throwable.toString());
+    	
     }
 
     private static void broadcast(Message message) throws IOException, EncodeException {
@@ -93,7 +88,7 @@ public class ChatEndpoint {
     private static void sendMessageToOneUser(Message message) throws IOException, EncodeException {
         for (ChatEndpoint endpoint : chatEndpoints) {
             synchronized (endpoint) {
-                if (endpoint.session.getId().equals(getSessionId(message.getTo()))) {
+                if (endpoint.session.getId().equals(getSessionId(message.getGroupTo()))) {
                     endpoint.session.getBasicRemote().sendObject(message);
                 }
             }
