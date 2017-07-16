@@ -98,6 +98,7 @@ public final class DbCertificate {
 		public final static String UNIQUE_COLUMN_NAME_ID = TABLE_NAME + "." + COLUMN_NAME_ID;
 
 		public final static String COLUMN_NAME_NAME = "Name";
+		public final static String UNIQUE_COLUMN_NAME_NAME = TABLE_NAME + "." + COLUMN_NAME_NAME;
 
 	}
 

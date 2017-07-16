@@ -10,7 +10,8 @@ import Subject.Models.DbModels.SubjectTerm;
 import Subject.Models.DbModels.UserSubject;
 import Subject.Models.ViewModels.CommonSubjectComponentViewModel;
 import Subject.Models.ViewModels.SubjectViewModel;
-
+import Subject.Models.DbModels.*;
+import Subject.Models.DbModels.*;
 public interface SubjectManagerInterface {
 
 	public void AddSubjectInfo(SubjectInfo subjectInfo);
@@ -54,6 +55,10 @@ public interface SubjectManagerInterface {
 	public void deleteUserSubjectComponentsByCscIdList(List<Integer> cscIds);
 
 	public void deleteUserSubjectBySubjectId(int id);
+
+	public CommonSubjectComponentViewModel getCommonSubjectComponentViewmodelById(int componentId);
+
+	public List<SubjectComponentMaterial> getSubjectComponentMaterialsByComponentId(int componentId);
 	
 }
 

@@ -46,10 +46,14 @@
 	</div>
 	
 	<br>
-	<h3>Search Subject: </h3><input id="subject_search" class="form-control" placeholder="Subject" type="text" name="subjectSearchInput">
+	<h3>Search Subject: </h3>
+		<div class="form-group col-lg-3 container">
+	<input id="subject_search" class="form-control" placeholder="Subject" type="text" name="subjectSearchInput">
+	</div>
 	<br>
 
 	<form action="/AddSubjectPageGeneratorServlet" method="get">
+		
 		<input type="submit" class='btn btn-primary' type='button' value="Add Subject">
 	</form>
 

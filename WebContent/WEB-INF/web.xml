@@ -78,6 +78,20 @@
   	<servlet-name>RegisterServlet</servlet-name>
   	<servlet-class>Authentication.Servlets.RegisterServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>ComponentMaterialsPageGeneratorServlet</display-name>
+  	<servlet-name>ComponentMaterialsPageGeneratorServlet</servlet-name>
+  	<servlet-class>Subject.Servlets.ComponentMaterialsPageGeneratorServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>MaterialUploadServlet</display-name>
+  	<servlet-name>MaterialUploadServlet</servlet-name>
+  	<servlet-class>Subject.Servlets.MaterialUploadServlet</servlet-class>
+  </servlet>
   
   
   <servlet-mapping>
@@ -106,7 +120,7 @@
   </servlet-mapping>    
   <servlet-mapping>
   	<servlet-name>EditComponentTemplateServlet</servlet-name>
-  	<url-pattern>/EditComponentTemplateServlet</url-pattern>
+  	<url-pattern>/EditComponentTmplateServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
   	<servlet-name>EditSubjectServlet</servlet-name>
@@ -123,6 +137,14 @@
   <servlet-mapping>
     <servlet-name>ProfilePageGeneratorServlet</servlet-name>
     <url-pattern>/ProfilePageGeneratorServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ComponentMaterialsPageGeneratorServlet</servlet-name>
+  	<url-pattern>/ComponentMaterialsPageGeneratorServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>MaterialUploadServlet</servlet-name>
+  	<url-pattern>/MaterialUploadServlet</url-pattern>
   </servlet-mapping>
   
   <welcome-file-list>

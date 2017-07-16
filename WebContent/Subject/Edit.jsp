@@ -123,6 +123,7 @@
 					out.println("<td>");
 					//out.println("<input type='button' class='btn btn-warning' value='Edit' onclick='EditTemplate("+componentId+");' >");
 					out.println("<input type='button' class='btn btn-danger' value='Delete' onclick='deleteComponentTemplate("+componentId+");' >");
+					out.println("<input type='button' class='btn btn-info' value='materials' onclick='materials("+componentId+");' >");
 					out.println("</td>");
 					out.println("</tr>");
 				}

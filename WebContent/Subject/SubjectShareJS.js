@@ -12,7 +12,10 @@ function showAddSubjectTemplate(){
 	$("#subjectComponentTemplateRow_id").show();
 	$("#show_Add_Subject_Template_id").hide();
 }
-
+function materials(id){
+ var url="/ComponentMaterialsPageGeneratorServlet?id=" +id;
+ window.location=url;
+}
 function buildNewComponentTemplateTable(arg) {
 	var templatesDiv = $("#subjectComponents_id");
 
