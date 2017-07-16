@@ -11,8 +11,8 @@ public class GroupChatViewModel {
 	private List<User> users;
 	
 	public GroupChatViewModel(GroupChat groupChat, List<User> users){
-		this.setGroupChat(groupChat);
-		this.setUser(users);
+		this.groupChat = groupChat;
+		this.users = users;
 	}
 
 	public GroupChat getGroupChat() {
@@ -23,11 +23,11 @@ public class GroupChatViewModel {
 		this.groupChat = groupChat;
 	}
 
-	public List<User> getUser() {
+	public List<User> getUsers() {
 		return users;
 	}
 
-	public void setUser(List<User> users) {
+	public void setUsers(List<User> users) {
 		this.users = users;
 	}
 	
