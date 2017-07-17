@@ -69,6 +69,7 @@
 			}
 		%>
 		</select>
+		<br>
 		<input onclick="addUserSubject(); return false;" id="subject_add_Button_id" type='button' class='btn btn-primary' value='Add'>
 		<br>
 		<div style="display:none" class="alert alert-success" id="alert_div_id" role="alert"></div>
@@ -76,10 +77,10 @@
 
 	<br>
 
-	<div class="w3-container w3-black">
+	<div class="container-fluid">
 		<h2>All Subjects:</h2>
 		<div id="search_subject_list_id">
-			<table class='table'>
+			<table class="table table-condensed">
 				<thead>
 					<tr>
 						<th>

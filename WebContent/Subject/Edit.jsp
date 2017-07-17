@@ -46,12 +46,12 @@
 <body>
 	<form id="display_subject_required_info">
 		<div class="form-group row">
-		    <label id="name_label_id" class="col-sm-2 col-form-label"><%=subject.getName() %></label>
-		    <label id="year_label_id" class="col-sm-2 col-form-label"><%=subject.getYear() %></label>
-		    <label id="term_label_id" class="col-sm-2 col-form-label"><%=subjectTerm.getName() %></label>
+		  <span class="label label-default">  <label id="name_label_id" class="col-sm-2 col-form-label"><%=subject.getName() %></label> </span>
+		   <span class="label label-default">  <label id="year_label_id" class="col-sm-2 col-form-label"><%=subject.getYear() %></label></span>
+		   <span class="label label-default">  <label id="term_label_id" class="col-sm-2 col-form-label"><%=subjectTerm.getName() %></label></span>
+			<input id='show_edit_Subject_id' type='button' onclick="showEditSubject();" class='btn btn-success' value="Edit">
 		</div>
 	</form>
-	<input id='show_edit_Subject_id' type='button' onclick="showEditSubject();" class='btn btn-primary' value="Edit Subject Info">
 	<div class="container">
 		<div id = "subject_required_info" style="display:none">
 			Name: <input value='<%=subject.getName() %>' type='text' name='name' class="form-control" placeholder="Name" id='name_id'>
@@ -78,7 +78,7 @@
 			Language: <input value='<%=subjectInfo.getLanguage() %>' type='text' name='language' class="form-control" placeholder="Language" id='language_id'>
 			Lecturer Name: <input value='<%=subjectInfo.getLecturerName() %>' type='text' name='lecturerName' class="form-control" placeholder="Lecturer Name" id='lecturerName_id'>
 		</div>
-		
+		<br>
 		<input style="display:none" onclick="EditSubject(<%=subject.getId()%>); return false;" id="subject_edit_Button_id" type='button' class='btn btn-primary' value='Save'>
 	</div>
 	<div style="display:none" class="alert alert-success" id="subject_alert_div_id" role="alert">
@@ -143,9 +143,16 @@
 				}
 			%>
 			</select>
+			<div class="form-group">
+			<br>
 			<input type="number" name="subjectComponentTemplatePercentage" class="form-control" placeholder="Percent"  id="subjectComponentTemplatePercentageInput_id">
+			</div>
+			<div class="form-group">
 			<input type ="number" name ="subjectComponentTemplateNumber" class="form-control" placeholder="Number" id="subjectComponentTemplateNumberInput_id">
+			</div>
+			<div class="form-group">
 			<input onclick="addTemplate(); return false;" type='button' class='btn btn-primary' value='Save'>
+			</div>
 		</div>
 	</div>	
 	<div style="display:none" class="alert alert-success" id="subject_component_alert_div_id" role="alert">
