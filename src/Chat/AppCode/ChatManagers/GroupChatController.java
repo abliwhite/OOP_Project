@@ -16,20 +16,20 @@ import Chat.Models.DbModels.InternalMessage;
 
 public class GroupChatController {
 
-	private Map<Integer, ChatEndpoint> userEndpoints;
+	private Map<User, ChatEndpoint> userEndpoints;
 	private Set<User> users;
 	private List<InternalMessage> messages;
 	private GroupChat groupChat;
 
 	public GroupChatController(GroupChat groupChat) {
-		userEndpoints = new ConcurrentHashMap<Integer, ChatEndpoint>();
+		userEndpoints = new ConcurrentHashMap<User, ChatEndpoint>();
 		users = new CopyOnWriteArraySet<User>();
 		messages = new CopyOnWriteArrayList<InternalMessage>();
 		this.groupChat = groupChat;
 	}
 
 	public void addUser(User user, ChatEndpoint chatEndpoint) {
-		userEndpoints.put(user.getId(), chatEndpoint);
+		userEndpoints.put(user, chatEndpoint);
 		users.add(user);
 	}
 
@@ -42,6 +42,10 @@ public class GroupChatController {
 
 	public Set<User> getUsers() {
 		return users;
+	}
+	
+	public List<User> getActiveUsers(){
+		return userEndpoints.keySet().stream().collect(Collectors.toList());
 	}
 
 	public GroupChat getGroupChat() {

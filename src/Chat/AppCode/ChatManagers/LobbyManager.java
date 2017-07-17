@@ -1,6 +1,5 @@
 package Chat.AppCode.ChatManagers;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +12,7 @@ import Account.Models.User;
 import Chat.AppCode.ChatCore.ChatEndpoint;
 import Chat.AppCode.DbManagers.ChatDbManagerInterface;
 import Chat.Models.DbModels.GroupChat;
+import Chat.Models.DbModels.InternalMessage;
 import Chat.Models.DbModels.Lobby;
 
 public class LobbyManager {
@@ -80,14 +80,14 @@ public class LobbyManager {
 			lobbyControllers.remove(filteredList.get(0));
 	}
 
-	public void createGroupChat(Lobby lobby, GroupChat groupChat) {
-		LobbyController lc = getLobbyControllerByLobby(lobby.getId());
+	public void createGroupChat(GroupChat groupChat) {
+		LobbyController lc = getLobbyControllerByLobby(groupChat.getLobbyID());
 		if (lc != null)
 			lc.addGroupChat(groupChat);
 	}
 
-	public void removeGroupChat(Lobby lobby, GroupChat groupChat) {
-		LobbyController lc = getLobbyControllerByLobby(lobby.getId());
+	public void removeGroupChat(GroupChat groupChat) {
+		LobbyController lc = getLobbyControllerByLobby(groupChat.getLobbyID());
 		if (lc != null)
 			lc.addGroupChat(groupChat);
 	}
@@ -116,6 +116,16 @@ public class LobbyManager {
 		}
 		return Collections.emptySet();
 	}
+
+	public List<InternalMessage> getMessagesByGroupId(int lobbyId, int groupId) {
+		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getLobby().getId() == lobbyId)
+				.collect(Collectors.toList());
+		if (!filteredList.isEmpty())
+			return filteredList.get(0).getMessagesByGroup(groupId);
+		return Collections.emptyList();
+	}
+	
+	
 
 	private LobbyController getLobbyControllerByComponent(int subjectComponentID) {
 		List<LobbyController> filteredList = lobbyControllers.stream()
