@@ -6,6 +6,7 @@
 <%@ page import="Chat.Models.ViewModels.*"%>
 <%@ page import="Chat.Models.DbModels.*"%>
 <%@ page import="java.util.List"%> 
+<%@ page import="javax.servlet.http.HttpSession"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -28,6 +29,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Lobby</title>
 	<%
+		HttpSession ses = request.getSession();
+		User us = (User)ses.getAttribute(ses.getId());
+	
 		ResponseModel<Object, LobbyViewModel> responseModel = (ResponseModel)request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
 	    
 		LobbyViewModel lobbyViewModel = responseModel.getResultObject();
@@ -39,80 +43,164 @@
 		
 	%>
 	
-	<style type="text/css">
+<style type="text/css">//nawili nasesxebia 
+		
+		.card-group {
+	  display: -webkit-flex;
+	  display: flex;
+	  flex-wrap: wrap;
+	  /* max-height:475px; <-- remove */
+	  background-color: lightgrey;
+	}
 	
-	.card-group {
-  display: -webkit-flex;
-  display: flex;
-  flex-wrap: wrap;
-  /* max-height:475px; <-- remove */
-  background-color: lightgrey;
-}
-
-.card img {
-  width: 100%;
-}
-
-.card {
-  background-color: cornflowerblue;
-  width: 30%;
-  margin: 0px;
-  flex: 2;
-  border: 1px solid lightgrey;
-  display: flex;           /* new */
-  flex-direction: column;  /* new */
-}
-
-.card-block {
-  padding: 10px;
-  background-color: #fff;
-  flex: 1;                /* new */
-}
-
-.card-title {
-  font-size: 18px;
-  color: grey;
-  font-family: verdana, sans;
-}
-
-.card-footer {
-  padding: 15px;
-  border-top: 1px solid lightgrey;
-  background-color: lightgrey;
-}
+	.card img {
+	  width: 100%;
+	}
 	
+	.card {
+	  background-color: cornflowerblue;
+	  width: 30%;
+	  margin: 0px;
+	  flex: 2;
+	  border: 1px solid lightgrey;
+	  display: flex;           /* new */
+	  flex-direction: column;  /* new */
+	}
 	
-	</style>
+	.card-block {
+	  padding: 10px;
+	  background-color: #fff;
+	  flex: 1;                /* new */
+	}
+	
+	.card-title {
+	  font-size: 18px;
+	  color: grey;
+	  font-family: verdana, sans;
+	}
+	
+	.card-footer {
+	  padding: 15px;
+	  border-top: 1px solid lightgrey;
+	  background-color: lightgrey;
+	}
+	.centerAddPlus {
+		margin: 0;
+	    position: absolute;
+	    top: 40%;
+	    left: 33%;
+	}
+	
+	.centerJoinButton {
+		margin: 0;
+	    position: absolute;
+	    top: 77%;
+	    left: 33%;
+	}
+	
+#container {
+  display: block;
+  min-width: 900px;
+  max-width: 900px;
+  position: relative;
+  border: solid 1px green;
+}
+.groupRow {
+	display: inline-block;
+	position: relative;
+	min-width: 180px;
+	max-width: 180px;
+	min-height: 220px;
+	margin: 3px;
+}
+
+.mid{
+	position: relative;
+}
+
+.addGroupChat{
+	min-width: 143px;
+	max-width: 143px;
+	max-height: 162px;
+	min-height: 162px;
+}	
+	
+</style>
 	
 </head>
 <body>
 	
 	
-	<div class="col-md-8">
-	<div>
-		
-		<div class='card w-25'>	
-			<div class='card-header'> Create Group </div>
-				<a class='btn btn-primary'>
-				<div class='card-card-block' style="height:100px" data-toggle="modal" data-target="#myModal" >
-					<i class="fa fa-plus fa-5x"></i>
-				</div>
-			</a>
-		</div>
-		
-		<div class='card w-25'>	
-			<div class='card-header'> Create Group </div>
-			<div class='card-card-block' style="height:100px">
-				<h4 class='card-title'>Users</h4>
-				<p class='card-text'>"+u+"</p>
-				<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+	<div class="col-md-8 container">
+	
+		<div>
+			
+			<div class='form-group col-lg-3 container'>
+				<h3><span class="badge badge-primary">Active Group Chats</span></h3>
 			</div>
-		</div>
-		
-		
-		
-		
-		
+			
+			<div id="active_group_chats" class='row'>
+				<%
+					for(GroupChatViewModel item : activeChats){
+						out.print("<div id='groupChar_"+ item.getGroupChat().getId()+"' class='card w-25 groupRow'>");
+						out.print("<div class='card-header'>"+ item.getGroupChat().getName()+ "</div>");
+						out.print("<div class='card-card-block' style='height:100px'>");
+						out.print("<h4 class='card-title'>Users</h4>");
+						String users = "";
+						for(User user:item.getUsers()){
+							users = users + user.getUsername();
+						}
+						out.print("<p class='card-text'>"+users+"</p>");
+						out.print("<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >");
+						out.print("</div>");
+						out.print("</div>");
+					}
+				
+				%>
+				<div class='card w-25 groupRow'>	
+					<div class='card-header'> Create Group </div>
+					<div class='card-card-block' style="height:100px">
+						<h4 class='card-title'>Users</h4>
+						<p class='card-text'>"+u+"</p>
+						<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+					</div>
+				</div>
+				<div class='card w-25 groupRow'>	
+					<div class='card-header'> Create Group </div>
+					<div class='card-card-block' style="height:100px">
+						<h4 class='card-title'>Users</h4>
+						<p class='card-text'>"+u+"</p>
+						<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+					</div>
+				</div>
+				<div class='card w-25 groupRow'>	
+					<div class='card-header'> Create Group </div>
+					<div class='card-card-block' style="height:100px">
+						<h4 class='card-title'>Users</h4>
+						<p class='card-text'>"+u+"</p>
+						<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+					</div>
+				</div>
+				<div class='card w-25 groupRow'>	
+					<div class='card-header'> Create Group </div>
+					<div class='card-card-block' style="height:100px">
+						<h4 class='card-title'>Users</h4>
+						<p class='card-text'>"+u+"</p>
+						<input type='button' value='Join' class='btn btn-primary centerJoinButton' onclick='askToJoin()' >
+					</div>
+				</div>
+				
+				<div class='card w-25 groupRow'>	
+					<div class='card-header'> Create Group </div>
+						<a class='btn btn-primary'>
+						<div class='card-card-block addGroupChat' data-toggle="modal" data-target="#myModal" >
+							<i class="fa fa-plus fa-5x centerAddPlus"></i>
+						</div>
+					</a>
+				</div>
+			</div>
+			
+			
 		</div>
 		
 	</div>
@@ -156,6 +244,18 @@
 </body>
 
 <script>
+
+$(document).ready(function() {
+    ws = new WebSocket("ws://" + document.location.host  + "/chat/" + _sI);
+
+    ws.onmessage = function (event) {
+        var log = document.getElementById("log");
+        console.log(event.data);
+        var message = JSON.parse(event.data);
+        log.innerHTML += message.from + " : " + message.content + "\n";
+    };
+});
+
 $('#myModal').on('shown.bs.modal', function () {
 	  $('#myInput').focus()
 	})
@@ -167,7 +267,17 @@ function askToJoin(){
 	
 }
 
+function drawActiveGroups(activeGroups){
+	$("#active_group_chats").clear();
+	activeGroups.forEach(function(entry) {
+	    console.log(entry);
+	});
+	$("#active_group_chats").html();
+}
+
 _lobbyId =<%out.print(lobby.getId());%>
+_userId = <%out.print(us.getId());%>
+_sI = <%out.print(session.getId());%>
 _componentId = <%out.print(lobby.getSubjectComponentID());%>
 function refreshLobbyData(){
 	
@@ -188,7 +298,7 @@ function refreshLobbyData(){
 		  $.each( data.resultObject.activeGroupchats, function(activeChat) {
 			  activeGroups.push(getActiveGroup(activeChat));
 		  });
-		  activeGroups.add(getAddNewChatCard());
+		  activeGroups.push(getAddNewChatCard());
 		  $.each( data.resultObject.userGroupChats, function(passiveChat) {
 			  passiveGroups.push(getPassiveGroup(activeChat));
 		  });

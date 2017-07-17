@@ -13,7 +13,7 @@ public class OnlineUsersManager {
 	private Map<String,User> onlineUsers;
 
 	private OnlineUsersManager() {
-		onlineUsers = new HashMap<String,User>();
+		onlineUsers = new ConcurrentHashMap<String,User>();
 	}
 	
 	public User getUser(String sessionId){

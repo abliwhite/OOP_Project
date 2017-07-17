@@ -13,7 +13,7 @@ import Common.AppCode.OnlineUsersManager;
 
 
 @ServerEndpoint(
-        value = "/chat/{id}",
+        value = "/chat/{sessionId}",
         decoders = MessageDecoder.class,
         encoders = MessageEncoder.class
 )
@@ -23,8 +23,7 @@ public class ChatEndpoint {
     private Session session;
 
     @OnOpen
-    public void onOpen(Session session) throws IOException, EncodeException {
-        String sessionId = session.getId();
+    public void onOpen(Session session,String sessionId) throws IOException, EncodeException {
         
         User user = OnlineUsersManager.instance().getUser(sessionId);
         LobbyManager.instance().addUser(user, this);

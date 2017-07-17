@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import Account.Models.User;
 import Chat.AppCode.ChatManagers.LobbyManager;
 import Chat.Models.DbModels.ActiveStatusEnum;
 import Chat.Models.DbModels.GroupChat;
@@ -58,12 +59,13 @@ public class AddGroupChatServlet extends ChatServletParent {
 			doGet(request, response);
 			return;
 		}
-
+		User user = getUserFromSession(request);
+		
 		GroupChat groupChat = new GroupChat(name, CommonConstants.getDatetime(), Integer.parseInt(lobbyId),
-				getUserFromSession(request).getId(), Integer.parseInt(privacyStatusId),
-				ActiveStatusEnum.ACTIVE.ordinal());
+				user.getId(), Integer.parseInt(privacyStatusId),
+				ActiveStatusEnum.ACTIVE.ordinal() + 1);
 
-		LobbyManager.instance().createGroupChat(groupChat);
+		LobbyManager.instance().createGroupChat(user,groupChat);
 
 		ResponseModel responseModel = new ResponseModel(true, CommonConstants.SUCCESSFUL_MESSAGE);
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
