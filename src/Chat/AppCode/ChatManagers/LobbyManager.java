@@ -1,6 +1,7 @@
 package Chat.AppCode.ChatManagers;
 
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class LobbyManager {
 	private static LobbyManager ins;
 
 	private LobbyManager() {
-		lobbyControllers = getLobbyControllersFromDB();
+		lobbyControllers = new ArrayList<LobbyController>();
 		onlineLobbyUsers = new ConcurrentHashMap<String, User>();
 	}
 
@@ -52,6 +53,7 @@ public class LobbyManager {
 
 	public void initialize(ChatDbManagerInterface db) {
 		this.db = db;
+		this.lobbyControllers = getLobbyControllersFromDB();
 	}
 
 	public void addUser(String sessionId, User user) {
