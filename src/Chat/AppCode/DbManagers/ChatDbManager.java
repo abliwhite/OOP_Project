@@ -10,6 +10,7 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 
 import com.mysql.jdbc.Statement;
 
+import Chat.Models.DbModels.ExternalMessage;
 import Chat.Models.DbModels.GroupChat;
 import Chat.Models.DbModels.InternalMessage;
 import Chat.Models.DbModels.Lobby;
@@ -23,12 +24,18 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 	private List<String> groupChatColumnNames;
 	private List<String> lobbyColumnNames;
+	private List<String> internalMessageColumnNames;
+	private List<String> externalMessageColumnNames;
 
 	public ChatDbManager(DataSource pool) {
 		super(pool);
 		groupChatColumnNames = getColumnsNames(DbCertificate.GroupChatTable.TABLE_NAME);
 		lobbyColumnNames = getColumnsNames(DbCertificate.LobbyTable.TABLE_NAME);
+		internalMessageColumnNames = getColumnsNames(DbCertificate.InternalMessageTable.TABLE_NAME);
+		externalMessageColumnNames = getColumnsNames(DbCertificate.ExternalMessageTable.TABLE_NAME);
 	}
+	
+	
 
 	@Override
 	public List<GroupChat> getAllGroupChat() {
@@ -256,7 +263,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 	@Override
 	public List<GroupChat> getAllGroupChatsByLobbyId(int lobbyId) {
-		
+
 		List<GroupChat> result = new ArrayList<GroupChat>();
 		try {
 			java.sql.Connection con = getConnection();
@@ -268,7 +275,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 			setValues(Arrays.asList(String.valueOf(lobbyId)), st);
 			ResultSet rs = st.executeQuery();
-			
+
 			result = getGroupChatList(rs);
 
 		} catch (SQLException e) {
@@ -318,6 +325,22 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		}
 
 		return internalMessages;
+	}
+
+
+
+	@Override
+	public void addInternalMessage(InternalMessage internalMessage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void addExternalMessage(ExternalMessage externalMessage) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
