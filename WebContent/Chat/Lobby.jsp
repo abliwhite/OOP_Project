@@ -132,7 +132,10 @@
 	
 	
 	<div class="col-md-8 container">
-	
+		<%
+			out.print("<input type='hidden' value='"+session.getId()+"' id='si_id'>");
+		%>
+		
 		<div>
 			
 			<div class='form-group col-lg-3 container'>
@@ -246,6 +249,7 @@
 <script>
 
 $(document).ready(function() {
+	_sI = $("#si_id").val();
     ws = new WebSocket("ws://" + document.location.host  + "/chat/" + _sI);
 
     ws.onmessage = function (event) {
@@ -277,8 +281,7 @@ function drawActiveGroups(activeGroups){
 
 _lobbyId =<%out.print(lobby.getId());%>
 _userId = <%out.print(us.getId());%>
-_sI = <%out.print(session.getId());%>
-_componentId = <%out.print(lobby.getSubjectComponentID());%>
+_componentId = <%out.print(""+lobby.getSubjectComponentID());%>
 function refreshLobbyData(){
 	
 	data = {
