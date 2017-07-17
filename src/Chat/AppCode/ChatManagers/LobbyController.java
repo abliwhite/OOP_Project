@@ -1,6 +1,7 @@
 package Chat.AppCode.ChatManagers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,28 +25,37 @@ public class LobbyController {
 	public void setGroupChatControllers(List<GroupChatController> groupChatControllers) {
 		this.groupChatControllers = groupChatControllers;
 	}
-	
+
 	public Lobby getLobby() {
 		return lobby;
 	}
-	
-	public void addGroupChat(GroupChat groupChat){
+
+	public void addGroupChat(GroupChat groupChat) {
 		GroupChatController gcc = new GroupChatController(groupChat);
 		groupChatControllers.add(gcc);
 	}
-	
-	public GroupChatController getGroupChatControllerById(int groupId){
-		List<GroupChatController> filteredList = groupChatControllers.stream().
-				filter(x -> x.getGroupChat().getId() == groupId).collect(Collectors.toList());
-		if(filteredList.isEmpty()) return null;
+
+	public void removeGroupChat(GroupChat groupChat) {
+		List<GroupChatController> filteredList = groupChatControllers.stream()
+				.filter(x -> x.getGroupChat().equals(groupChat)).collect(Collectors.toList());
+		if (!filteredList.isEmpty())
+			groupChatControllers.remove(filteredList.get(0));
+	}
+
+	public GroupChatController getGroupChatControllerById(int groupId) {
+		List<GroupChatController> filteredList = groupChatControllers.stream()
+				.filter(x -> x.getGroupChat().getId() == groupId).collect(Collectors.toList());
+		if (filteredList.isEmpty())
+			return null;
 		return filteredList.get(0);
 	}
 
 	public List<GroupChat> getActiveGroupChats() {
 		List<GroupChatController> filteredList = groupChatControllers.stream()
 				.filter(x -> x.getUserEndpoints().size() != 0).collect(Collectors.toList());
+		if (filteredList.isEmpty() || filteredList == null)
+			return Collections.emptyList();
 		return filteredList.stream().map(xx -> xx.getGroupChat()).collect(Collectors.toList());
 	}
-
 
 }

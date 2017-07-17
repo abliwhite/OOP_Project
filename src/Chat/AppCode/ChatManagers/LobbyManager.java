@@ -1,6 +1,7 @@
 package Chat.AppCode.ChatManagers;
 
-
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,6 +21,7 @@ public class LobbyManager {
 	private static LobbyManager ins;
 
 	private LobbyManager() {
+		lobbyControllers = new ArrayList<LobbyController>();
 		onlineLobbyUsers = new ConcurrentHashMap<String, User>();
 	}
 
@@ -33,56 +35,64 @@ public class LobbyManager {
 	public void addUser(String sessionId, User user) {
 		onlineLobbyUsers.put(sessionId, user);
 	}
-	
-	public void removeUser(String sessionId){
+
+	public void removeUser(String sessionId) {
 		onlineLobbyUsers.remove(sessionId);
 	}
 
 	public User getUser(String sessionId) {
 		return onlineLobbyUsers.get(sessionId);
 	}
-	
-	public void createLobby(Lobby lobby){
+
+	public void createLobby(Lobby lobby) {
 		LobbyController lc = new LobbyController(lobby);
 		lobbyControllers.add(lc);
 	}
-	
-	public void createGroupChat(Lobby lobby, GroupChat groupChat){
+
+	public void createGroupChat(Lobby lobby, GroupChat groupChat) {
 		LobbyController lc = getLobbyControllerByLobby(lobby.getId());
 		lc.addGroupChat(groupChat);
 	}
 
-	public List<GroupChat> getActiveGroupChats(int subjectComponentID){
-		return getLobbyControllerByComponent(subjectComponentID).getActiveGroupChats();
+	public List<GroupChat> getActiveGroupChats(int subjectComponentID) {
+		LobbyController lc = getLobbyControllerByComponent(subjectComponentID);
+		if (lc == null)
+			return Collections.emptyList();
+		return lc.getActiveGroupChats();
 	}
-	
+
 	public Set<ChatEndpoint> getEndpointsByGroupId(int lobbyId, int receiverGroupId) {
 		LobbyController lobbyController = getLobbyControllerByLobby(lobbyId);
 		GroupChatController gcc = lobbyController.getGroupChatControllerById(receiverGroupId);
-		if(gcc!=null){
+		if (gcc != null) {
 			return gcc.getUserEndpoints();
 		}
-		return null;
+		return Collections.emptySet();
 	}
-	
-	public List<User> getUsersByGroupId(int lobbyId, int groupId){
+
+	public List<User> getUsersByGroupId(int lobbyId, int groupId) {
 		LobbyController lobbyController = getLobbyControllerByLobby(lobbyId);
 		GroupChatController gcc = lobbyController.getGroupChatControllerById(groupId);
-		if(gcc!=null){
+		if (gcc != null) {
 			return gcc.getUsers();
 		}
-		return null;
+		return Collections.emptyList();
 	}
-	
+
 	private LobbyController getLobbyControllerByComponent(int subjectComponentID) {
-		return lobbyControllers.stream().filter(x -> x.getLobby().getSubjectComponentID() == subjectComponentID)
-				.collect(Collectors.toList()).get(0);
+		List<LobbyController> filteredList = lobbyControllers.stream()
+				.filter(x -> x.getLobby().getSubjectComponentID() == subjectComponentID).collect(Collectors.toList());
+		if (filteredList.isEmpty())
+			return null;
+		return filteredList.get(0);
 	}
-	
+
 	private LobbyController getLobbyControllerByLobby(int lobbyID) {
-		return lobbyControllers.stream().filter(x -> x.getLobby().getId() == lobbyID)
-				.collect(Collectors.toList()).get(0);
+		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getLobby().getId() == lobbyID)
+				.collect(Collectors.toList());
+		if (filteredList.isEmpty())
+			return null;
+		return filteredList.get(0);
 	}
-	
-	
+
 }

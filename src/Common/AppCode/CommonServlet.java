@@ -21,8 +21,7 @@ public abstract class CommonServlet extends HttpServlet {
 	}
 
 	public void addUserInSession(HttpServletRequest request, User user) {
-		String userIpAddress = getRequestIp(request);
-
+		
 		HttpSession session = request.getSession(true);
 		session.setAttribute(session.getId(), user);
 	}
@@ -56,7 +55,7 @@ public abstract class CommonServlet extends HttpServlet {
 	public User getUserFromSession(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if (session != null)
-			return (User) session.getAttribute(getRequestIp(request));
+			return (User) session.getAttribute(session.getId());
 
 		return null;
 	}
