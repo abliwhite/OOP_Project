@@ -160,7 +160,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 			ResultSet rs = st.executeQuery();
 			result = getLobby(rs);
-			
+
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -427,6 +427,24 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 			privacyStatuses.add(new PrivacyStatus(id, name));
 		}
 		return null;
+	}
+
+	@Override
+	public void updateGroupChat(GroupChat groupChat) {
+		try {
+			java.sql.Connection con = getConnection();
+			String updateStatement = generator.getUpdateByIdQuery(groupChatColumnNames,
+					DbCertificate.SubjectTable.TABLE_NAME, groupChat.getId());
+
+			java.sql.PreparedStatement st = con.prepareStatement(updateStatement);
+
+			setValues(getGroupChatValues(groupChat), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

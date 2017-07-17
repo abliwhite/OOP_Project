@@ -34,4 +34,6 @@ public interface ChatDbManagerInterface  {
 	
 	public List<PrivacyStatus> getAllPrivacyStatuses();
 	
+	public void updateGroupChat(GroupChat groupChat);
+	
 }
