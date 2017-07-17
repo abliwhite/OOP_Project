@@ -713,6 +713,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 			ResultSet rs = st.executeQuery(selectStatement);
 			result = getCommonSubjectComponentViewModel(rs);
 
+			con.close();
 		} catch (SQLException e) {
 
 			// TODO Auto-generated catch block

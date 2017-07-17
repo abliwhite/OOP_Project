@@ -159,9 +159,9 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 			setValues(Arrays.asList(String.valueOf(componentId)), st);
 
 			ResultSet rs = st.executeQuery();
-
 			result = getLobby(rs);
-
+			
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -241,6 +241,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 			result = getLobbyList(rs);
 
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -277,6 +278,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 			result = getGroupChatList(rs);
 
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -302,6 +304,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 			result = getInternalMessageList(rs);
 
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -9,9 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import Chat.AppCode.ChatManagers.LobbyManager;
 import Chat.Models.DbModels.ActiveStatusEnum;
 import Chat.Models.DbModels.GroupChat;
 import Common.AppCode.CommonConstants;
+import Common.Models.ResponseModel;
 
 /**
  * Servlet implementation class AddGroupChatServlet
@@ -33,8 +35,8 @@ public class AddGroupChatServlet extends ChatServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		super.doGet(request, response);
+		returnDefaultJsonToView(request, response);
 	}
 
 	/**
@@ -51,16 +53,21 @@ public class AddGroupChatServlet extends ChatServletParent {
 		String privacyStatusId = data.get("privacyStatusId").getAsString();
 
 		if (!(fullNumericStringValidation(lobbyId) && fullNumericStringValidation(privacyStatusId))) {
-			// err
+			ResponseModel responseModel = new ResponseModel(false, "Failed!");
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
+			doGet(request, response);
 			return;
 		}
 
 		GroupChat groupChat = new GroupChat(name, CommonConstants.getDatetime(), Integer.parseInt(lobbyId),
 				getUserFromSession(request).getId(), Integer.parseInt(privacyStatusId),
 				ActiveStatusEnum.ACTIVE.ordinal());
-		
-		chatDbManager.addGroupChat(groupChat);
-		
+
+		LobbyManager.instance().createGroupChat(groupChat);
+
+		ResponseModel responseModel = new ResponseModel(true, CommonConstants.SUCCESSFUL_MESSAGE);
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
+		doGet(request, response);
 	}
 
 }
