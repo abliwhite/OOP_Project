@@ -127,6 +127,13 @@
   	<servlet-name>DeleteUserSubjectServlet</servlet-name>
   	<servlet-class>Subject.Servlets.DeleteUserSubjectServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>RefreshLobbyPageServlet</display-name>
+  	<servlet-name>RefreshLobbyPageServlet</servlet-name>
+  	<servlet-class>Chat.Servlets.RefreshLobbyPageServlet</servlet-class>
+  </servlet>
   
   <servlet-mapping>
     <servlet-name>LobbyPageGeneratorServlet</servlet-name>
@@ -199,6 +206,10 @@
   <servlet-mapping>
   	<servlet-name>DeleteUserSubjectServlet</servlet-name>
   	<url-pattern>/DeleteUserSubjectServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>RefreshLobbyPageServlet</servlet-name>
+  	<url-pattern>/RefreshLobbyPageServlet</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
