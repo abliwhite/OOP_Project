@@ -154,7 +154,7 @@ public final class DbCertificate {
 		public final static String COLUMN_NAME_CREATE_DATE = "CreateDate";
 		public final static String COLUMN_NAME_LOBBY_ID = "LobbyID";
 		public final static String COLUMN_NAME_CREATOR_ID = "CreatorID";
-		public final static String COLUMN_NAME_PRIVACY_STATUS_ID = "PrivacyStatysID";
+		public final static String COLUMN_NAME_PRIVACY_STATUS_ID = "PrivacyStatusID";
 		public final static String COLUMN_NAME_ACTIVE_STATUS_ID = "ActiveStatusID";
 	}
 

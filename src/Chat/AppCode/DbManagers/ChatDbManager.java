@@ -256,6 +256,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 	@Override
 	public List<GroupChat> getAllGroupChatsByLobbyId(int lobbyId) {
+		
 		List<GroupChat> result = new ArrayList<GroupChat>();
 		try {
 			java.sql.Connection con = getConnection();
@@ -266,8 +267,8 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 			st.executeQuery(generator.getUseDatabaseQuery());
 
 			setValues(Arrays.asList(String.valueOf(lobbyId)), st);
-			ResultSet rs = st.executeQuery(selectQuery);
-
+			ResultSet rs = st.executeQuery();
+			
 			result = getGroupChatList(rs);
 
 		} catch (SQLException e) {
@@ -291,7 +292,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 			st.executeQuery(generator.getUseDatabaseQuery());
 
 			setValues(Arrays.asList(String.valueOf(groupChatId)), st);
-			ResultSet rs = st.executeQuery(selectQuery);
+			ResultSet rs = st.executeQuery();
 
 			result = getInternalMessages(rs);
 
