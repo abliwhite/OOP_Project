@@ -2,6 +2,7 @@ package Chat.AppCode.ChatCore;
 
 import java.io.IOException;
 import javax.websocket.*;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import Account.Models.User;
@@ -23,7 +24,7 @@ public class ChatEndpoint {
     private Session session;
 
     @OnOpen
-    public void onOpen(Session session,String sessionId) throws IOException, EncodeException {
+    public void onOpen(Session session, @PathParam ("sessionId") String sessionId) throws IOException, EncodeException {
         
         User user = OnlineUsersManager.instance().getUser(sessionId);
         LobbyManager.instance().addUser(user, this);
