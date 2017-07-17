@@ -6,6 +6,7 @@ import javax.swing.text.ComponentView;
 
 import Chat.Models.DbModels.GroupChat;
 import Chat.Models.DbModels.Lobby;
+import Chat.Models.DbModels.PrivacyStatus;
 import Subject.Models.ViewModels.CommonSubjectComponentViewModel;
 
 public class LobbyViewModel {
@@ -13,15 +14,17 @@ public class LobbyViewModel {
 	private Lobby lobby;
 	private List<GroupChat> userGroupChats;
 	private List<GroupChatViewModel> activeGroupchats;
+	private List<PrivacyStatus> privacyStatuses;
 
 	private CommonSubjectComponentViewModel cscViewModel;
 
 	public LobbyViewModel(CommonSubjectComponentViewModel cscViewModel, Lobby lobby, List<GroupChat> userGroupChats,
-			List<GroupChatViewModel> activeGroupChats) {
+			List<GroupChatViewModel> activeGroupChats, List<PrivacyStatus> privacyStatuses) {
 		this.lobby = lobby;
 		this.userGroupChats = userGroupChats;
 		this.activeGroupchats = activeGroupChats;
 		this.cscViewModel = cscViewModel;
+		this.privacyStatuses = privacyStatuses;
 	}
 
 	public List<GroupChat> getArchivedGroupChats() {

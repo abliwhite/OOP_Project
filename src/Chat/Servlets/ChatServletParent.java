@@ -12,6 +12,7 @@ import Chat.AppCode.DbManagers.ChatDbManager;
 import Chat.AppCode.DbManagers.ChatDbManagerInterface;
 import Chat.Models.DbModels.GroupChat;
 import Chat.Models.DbModels.Lobby;
+import Chat.Models.DbModels.PrivacyStatus;
 import Chat.Models.ViewModels.GroupChatViewModel;
 import Chat.Models.ViewModels.LobbyViewModel;
 import Common.AppCode.CommonConstants;
@@ -37,8 +38,8 @@ public abstract class ChatServletParent extends CommonServlet {
 				: subjectManager;
 
 	}
-	
-	public ResponseModel getLobbyViewModel(String componentId,HttpServletRequest request){
+
+	public ResponseModel getLobbyViewModel(String componentId, HttpServletRequest request) {
 		int id = Integer.parseInt(componentId);
 		int userId = getUserFromSession(request).getId();
 
@@ -46,16 +47,20 @@ public abstract class ChatServletParent extends CommonServlet {
 		List<GroupChat> userGroupChats = chatDbManager.getGroupChatByUserId(userId);
 		List<GroupChatViewModel> activeGroupChats = new ArrayList<GroupChatViewModel>();
 		Lobby lobby = chatDbManager.getLobbyByComponentId(id);
-		LobbyManager.instance().getActiveGroupChats(id).forEach(x->{
-			activeGroupChats.add(new GroupChatViewModel(x, LobbyManager.instance().getUsersByGroupId(lobby.getId(), x.getId())));
-		});
-		
 
-		LobbyViewModel lobbyViewModel = new LobbyViewModel(svm, lobby, userGroupChats, activeGroupChats);
+		LobbyManager.instance().getActiveGroupChats(id).forEach(x -> {
+			activeGroupChats.add(
+					new GroupChatViewModel(x, LobbyManager.instance().getUsersByGroupId(lobby.getId(), x.getId())));
+		});
+
+		List<PrivacyStatus> privacyStatuses = chatDbManager.getAllPrivacyStatuses();
+
+		LobbyViewModel lobbyViewModel = new LobbyViewModel(svm, lobby, userGroupChats, activeGroupChats,
+				privacyStatuses);
 
 		ResponseModel responseModel = new ResponseModel<Object, LobbyViewModel>(lobbyViewModel, true,
 				CommonConstants.SUCCESSFUL_MESSAGE);
-		
+
 		return responseModel;
 	}
 

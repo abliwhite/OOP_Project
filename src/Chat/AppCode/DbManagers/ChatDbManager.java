@@ -14,6 +14,7 @@ import Chat.Models.DbModels.ExternalMessage;
 import Chat.Models.DbModels.GroupChat;
 import Chat.Models.DbModels.InternalMessage;
 import Chat.Models.DbModels.Lobby;
+import Chat.Models.DbModels.PrivacyStatus;
 import Common.AppCode.DaoController;
 import Database.DbCertificate;
 import Subject.Models.DbModels.SubjectComponentType;
@@ -299,7 +300,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 			setValues(Arrays.asList(String.valueOf(groupChatId)), st);
 			ResultSet rs = st.executeQuery();
 
-			result = getInternalMessages(rs);
+			result = getInternalMessageList(rs);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -308,7 +309,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		return result;
 	}
 
-	private List<InternalMessage> getInternalMessages(ResultSet rs) throws SQLException {
+	private List<InternalMessage> getInternalMessageList(ResultSet rs) throws SQLException {
 		List<InternalMessage> internalMessages = new ArrayList<InternalMessage>();
 		while (rs.next()) {
 			int id = rs.getInt(DbCertificate.InternalMessageTable.COLUMN_NAME_ID);
@@ -390,6 +391,39 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		return Arrays.asList(externalMessage.getMessage(), externalMessage.getDateSent(),
 				String.valueOf(externalMessage.getSenderID()), String.valueOf(externalMessage.getSenderGroupID()),
 				String.valueOf(externalMessage.getReceiverGroupID()));
+	}
+
+	@Override
+	public List<PrivacyStatus> getAllPrivacyStatuses() {
+		List<PrivacyStatus> result = new ArrayList<PrivacyStatus>();
+
+		try {
+			java.sql.Connection con = getConnection();
+			java.sql.Statement st = con.createStatement();
+
+			String selectAllQuery = generator.getSelectAllQuery(DbCertificate.PrivacyStatusTable.TABLE_NAME);
+
+			ResultSet rs = st.executeQuery(selectAllQuery);
+
+			result = getPrivacyStatusesList(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	private List<PrivacyStatus> getPrivacyStatusesList(ResultSet rs) throws SQLException {
+		List<PrivacyStatus> privacyStatuses = new ArrayList<PrivacyStatus>();
+
+		while (rs.next()) {
+			int id = rs.getInt(DbCertificate.PrivacyStatusTable.COLUMN_NAME_ID);
+			String name = rs.getString(DbCertificate.PrivacyStatusTable.COLUMN_NAME_NAME);
+
+			privacyStatuses.add(new PrivacyStatus(id, name));
+		}
+		return null;
 	}
 
 }

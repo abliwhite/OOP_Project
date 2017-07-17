@@ -6,6 +6,7 @@ import Chat.Models.DbModels.ExternalMessage;
 import Chat.Models.DbModels.GroupChat;
 import Chat.Models.DbModels.InternalMessage;
 import Chat.Models.DbModels.Lobby;
+import Chat.Models.DbModels.PrivacyStatus;
 
 public interface ChatDbManagerInterface  {
 
@@ -30,5 +31,7 @@ public interface ChatDbManagerInterface  {
 	public void addInternalMessage(InternalMessage internalMessage);
 	
 	public void addExternalMessage(ExternalMessage externalMessage);
+	
+	public List<PrivacyStatus> getAllPrivacyStatuses();
 	
 }
