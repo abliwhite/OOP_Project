@@ -1,6 +1,7 @@
 package Chat.Models.ViewModels;
 
 import java.util.List;
+import java.util.Set;
 
 import Account.Models.User;
 import Chat.Models.DbModels.GroupChat;
@@ -8,9 +9,9 @@ import Chat.Models.DbModels.GroupChat;
 public class GroupChatViewModel {
 
 	private GroupChat groupChat;
-	private List<User> users;
+	private Set<User> users;
 	
-	public GroupChatViewModel(GroupChat groupChat, List<User> users){
+	public GroupChatViewModel(GroupChat groupChat, Set<User> users){
 		this.groupChat = groupChat;
 		this.users = users;
 	}
@@ -23,11 +24,11 @@ public class GroupChatViewModel {
 		this.groupChat = groupChat;
 	}
 
-	public List<User> getUsers() {
+	public Set<User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
 	
