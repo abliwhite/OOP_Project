@@ -4,19 +4,24 @@
 <%@ page import="Account.Models.*"%>
 <%@ page import="Account.AppCode.*"%>
 <%@ page import="Subject.Models.DbModels.*"%>
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.Set"%>
+<%@ page import="java.util.HashSet"%>       
+<%@ page import="java.util.ArrayList"%> 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <%
-Subject subject = (Subject)request.getAttribute("subject");
+	Subject subject = (Subject)request.getAttribute("subject");
+	List<User> classmates = (List<User>)request.getAttribute("classmates");
 %>
 
 <title><%=subject.getName()%>  <%=subject.getYear()%></title>
 </head>
 <body>
 <h1><%=subject.getName()%> <%=subject.getYear()%></h1>
-<h2></h2>
+<h2>Classmates:</h2>
 
 </body>
 </html>

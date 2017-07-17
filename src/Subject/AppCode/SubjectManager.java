@@ -11,6 +11,7 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 
 import com.mysql.jdbc.Statement;
 
+import Account.Models.User;
 import Common.AppCode.CommonConstants;
 import Common.AppCode.DaoController;
 import Database.DbCertificate;
@@ -776,5 +777,40 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 			result.add(new SubjectComponentMaterial(id, path, uploadDate, componentId));
 		}
 		return result;
+	}
+
+	@Override
+	public List<User> getSubjectAllUsers(String subject, int year, int termId) {
+		List<User> classmates = null;
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = "SELECT * FROM " + DbCertificate.SubjectTable.TABLE_NAME + " WHERE "
+					+ DbCertificate.SubjectTable.COLUMN_NAME_NAME + " = \"" + subject + "\"" + " AND "
+					+ DbCertificate.SubjectTable.COLUMN_NAME_YEAR + " = " + year + " AND "
+					+ DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID + " = " + termId;
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			ResultSet rs = st.executeQuery();
+
+			classmates = getUsersList(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return classmates;
+	}
+
+	private List<User> getUsersList(ResultSet rs) throws SQLException {
+		List<User> classmates = new ArrayList<>();
+		
+		while (rs.next()){
+			 break;
+		}
+	
+		return classmates;
 	}
 }

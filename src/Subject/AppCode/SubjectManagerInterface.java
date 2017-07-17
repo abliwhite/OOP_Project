@@ -2,6 +2,7 @@ package Subject.AppCode;
 
 import java.util.List;
 
+import Account.Models.User;
 import Subject.Models.DbModels.CommonSubjectComponent;
 import Subject.Models.DbModels.Subject;
 import Subject.Models.DbModels.SubjectComponentType;
@@ -59,6 +60,8 @@ public interface SubjectManagerInterface {
 	public CommonSubjectComponentViewModel getCommonSubjectComponentViewmodelById(int componentId);
 
 	public List<SubjectComponentMaterial> getSubjectComponentMaterialsByComponentId(int componentId);
+
+	public List<User> getSubjectAllUsers(String subject, int year, int termId);
 	
 }
 
