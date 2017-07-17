@@ -1,6 +1,6 @@
 package Chat.AppCode.ChatManagers;
 
-import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,12 +34,12 @@ public class LobbyManager {
 		lcs.stream().forEach(x -> x.setGroupChatControllers(getAllGroupChatsByLobby(x.getLobby())));
 		return lcs;
 	}
-	
-	
 
 	private List<GroupChatController> getAllGroupChatsByLobby(Lobby lobby) {
 		List<GroupChat> groupChats = db.getAllGroupChatsByLobbyId(lobby.getId());
-		List<GroupChatController> gccs = groupChats.stream().map(x -> new GroupChatController(x)).collect(Collectors.toList());
+		List<GroupChatController> gccs = groupChats.stream().map(x -> new GroupChatController(x))
+				.collect(Collectors.toList());
+		gccs.forEach(x -> x.setMessages(db.getLimitInternalMessagesByGroupChatId(x.getGroupChat().getId(), 100)));
 		return gccs;
 	}
 
@@ -106,13 +106,13 @@ public class LobbyManager {
 		return Collections.emptySet();
 	}
 
-	public List<User> getUsersByGroupId(int lobbyId, int groupId) {
+	public Set<User> getUsersByGroupId(int lobbyId, int groupId) {
 		LobbyController lobbyController = getLobbyControllerByLobby(lobbyId);
 		GroupChatController gcc = lobbyController.getGroupChatControllerById(groupId);
 		if (gcc != null) {
 			return gcc.getUsers();
 		}
-		return Collections.emptyList();
+		return Collections.emptySet();
 	}
 
 	private LobbyController getLobbyControllerByComponent(int subjectComponentID) {

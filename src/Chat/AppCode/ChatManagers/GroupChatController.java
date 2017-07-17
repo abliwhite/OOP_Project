@@ -6,21 +6,25 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
 import Account.Models.User;
 import Chat.AppCode.ChatCore.ChatEndpoint;
 import Chat.Models.DbModels.GroupChat;
+import Chat.Models.DbModels.InternalMessage;
 
 public class GroupChatController {
 
 	private Map<Integer, ChatEndpoint> userEndpoints;
-	private List<User> users;
+	private Set<User> users;
+	private List<InternalMessage> messages;
 	private GroupChat groupChat;
 
 	public GroupChatController(GroupChat groupChat) {
 		userEndpoints = new ConcurrentHashMap<Integer, ChatEndpoint>();
-		users = new CopyOnWriteArrayList<User>();
+		users = new CopyOnWriteArraySet<User>();
+		messages = new CopyOnWriteArrayList<InternalMessage>();
 		this.groupChat = groupChat;
 	}
 
@@ -36,12 +40,20 @@ public class GroupChatController {
 		return Collections.emptySet();
 	}
 
-	public List<User> getUsers() {
+	public Set<User> getUsers() {
 		return users;
 	}
 
 	public GroupChat getGroupChat() {
 		return groupChat;
+	}
+
+	public List<InternalMessage> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<InternalMessage> messages) {
+		this.messages = messages;
 	}
 
 }
