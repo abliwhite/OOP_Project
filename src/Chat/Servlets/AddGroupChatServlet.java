@@ -61,7 +61,6 @@ public class AddGroupChatServlet extends ChatServletParent {
 		
 		chatDbManager.addGroupChat(groupChat);
 		
-
 	}
 
 }
