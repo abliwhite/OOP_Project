@@ -278,12 +278,14 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 	}
 
 	@Override
-	public List<InternalMessage> getAllInternalMessagesByGroupChatId(int groupChatId) {
+	public List<InternalMessage> getLimitInternalMessagesByGroupChatId(int groupChatId, int limit) {
 		List<InternalMessage> result = new ArrayList<InternalMessage>();
 		try {
 			java.sql.Connection con = getConnection();
-			String selectQuery = generator.getSelectByIDQuery(DbCertificate.InternalMessageTable.TABLE_NAME,
-					DbCertificate.InternalMessageTable.COLUMN_NAME_GROUP_ID, 1);
+			String selectQuery = generator.getSelectTopLimitOrderByByIDQuery(
+					DbCertificate.InternalMessageTable.TABLE_NAME,
+					DbCertificate.InternalMessageTable.COLUMN_NAME_GROUP_ID, 1, limit,
+					DbCertificate.InternalMessageTable.COLUMN_NAME_ID);
 
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
 			st.executeQuery(generator.getUseDatabaseQuery());
@@ -308,9 +310,9 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 			String dateSent = rs.getString(DbCertificate.InternalMessageTable.COLUMN_NAME_DATE_SENT);
 			String message = rs.getString(DbCertificate.InternalMessageTable.COLUMN_NAME_MESSAGE);
 			int senderId = rs.getInt(DbCertificate.InternalMessageTable.COLUMN_NAME_SENDER_ID);
-			
-			InternalMessage internalMessage = new InternalMessage(id,message,dateSent,senderId,groupId);
-			
+
+			InternalMessage internalMessage = new InternalMessage(id, message, dateSent, senderId, groupId);
+
 			internalMessages.add(internalMessage);
 		}
 

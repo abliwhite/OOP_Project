@@ -24,5 +24,5 @@ public interface ChatDbManagerInterface  {
 	
 	public List<GroupChat> getAllGroupChatsByLobbyId(int lobbyId);
 	
-	public List<InternalMessage> getAllInternalMessagesByGroupChatId(int groupChatId);
+	public List<InternalMessage> getLimitInternalMessagesByGroupChatId(int groupChatId, int limit);
 }
