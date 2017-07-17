@@ -10,9 +10,11 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 
 import com.mysql.jdbc.Statement;
 
+import Chat.Models.DbModels.ExternalMessage;
 import Chat.Models.DbModels.GroupChat;
 import Chat.Models.DbModels.InternalMessage;
 import Chat.Models.DbModels.Lobby;
+import Chat.Models.DbModels.PrivacyStatus;
 import Common.AppCode.DaoController;
 import Database.DbCertificate;
 import Subject.Models.DbModels.SubjectComponentType;
@@ -23,11 +25,15 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 	private List<String> groupChatColumnNames;
 	private List<String> lobbyColumnNames;
+	private List<String> internalMessageColumnNames;
+	private List<String> externalMessageColumnNames;
 
 	public ChatDbManager(DataSource pool) {
 		super(pool);
 		groupChatColumnNames = getColumnsNames(DbCertificate.GroupChatTable.TABLE_NAME);
 		lobbyColumnNames = getColumnsNames(DbCertificate.LobbyTable.TABLE_NAME);
+		internalMessageColumnNames = getColumnsNames(DbCertificate.InternalMessageTable.TABLE_NAME);
+		externalMessageColumnNames = getColumnsNames(DbCertificate.ExternalMessageTable.TABLE_NAME);
 	}
 
 	@Override
@@ -153,9 +159,9 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 			setValues(Arrays.asList(String.valueOf(componentId)), st);
 
 			ResultSet rs = st.executeQuery();
-
 			result = getLobby(rs);
 
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -235,6 +241,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 			result = getLobbyList(rs);
 
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -256,7 +263,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 	@Override
 	public List<GroupChat> getAllGroupChatsByLobbyId(int lobbyId) {
-		
+
 		List<GroupChat> result = new ArrayList<GroupChat>();
 		try {
 			java.sql.Connection con = getConnection();
@@ -268,9 +275,10 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 			setValues(Arrays.asList(String.valueOf(lobbyId)), st);
 			ResultSet rs = st.executeQuery();
-			
+
 			result = getGroupChatList(rs);
 
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -294,8 +302,9 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 			setValues(Arrays.asList(String.valueOf(groupChatId)), st);
 			ResultSet rs = st.executeQuery();
 
-			result = getInternalMessages(rs);
+			result = getInternalMessageList(rs);
 
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -303,7 +312,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		return result;
 	}
 
-	private List<InternalMessage> getInternalMessages(ResultSet rs) throws SQLException {
+	private List<InternalMessage> getInternalMessageList(ResultSet rs) throws SQLException {
 		List<InternalMessage> internalMessages = new ArrayList<InternalMessage>();
 		while (rs.next()) {
 			int id = rs.getInt(DbCertificate.InternalMessageTable.COLUMN_NAME_ID);
@@ -318,6 +327,124 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		}
 
 		return internalMessages;
+	}
+
+	@Override
+	public void addInternalMessage(InternalMessage internalMessage) {
+		try {
+			java.sql.Connection con = getConnection();
+			String insertQuery = generator.getInsertQuery(internalMessageColumnNames,
+					DbCertificate.InternalMessageTable.TABLE_NAME);
+
+			con.createStatement().executeQuery(generator.getUseDatabaseQuery());
+			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+			setValues(getInternalMessages(internalMessage), st);
+			st.executeUpdate();
+
+			try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					internalMessage.setId(generatedKeys.getInt(1));
+				} else {
+					throw new SQLException();
+				}
+			}
+
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private List<String> getInternalMessages(InternalMessage internalMessage) {
+		return Arrays.asList(internalMessage.getMessage(), internalMessage.getDateSent(),
+				String.valueOf(internalMessage.getSenderID()), String.valueOf(internalMessage.getGroupID()));
+	}
+
+	@Override
+	public void addExternalMessage(ExternalMessage externalMessage) {
+		try {
+			java.sql.Connection con = getConnection();
+			String insertQuery = generator.getInsertQuery(externalMessageColumnNames,
+					DbCertificate.ExternalMessageTable.TABLE_NAME);
+
+			con.createStatement().executeQuery(generator.getUseDatabaseQuery());
+			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+			setValues(getExternalMessages(externalMessage), st);
+			st.executeUpdate();
+
+			try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					externalMessage.setId(generatedKeys.getInt(1));
+				} else {
+					throw new SQLException();
+				}
+			}
+
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private List<String> getExternalMessages(ExternalMessage externalMessage) {
+		return Arrays.asList(externalMessage.getMessage(), externalMessage.getDateSent(),
+				String.valueOf(externalMessage.getSenderID()), String.valueOf(externalMessage.getSenderGroupID()),
+				String.valueOf(externalMessage.getReceiverGroupID()));
+	}
+
+	@Override
+	public List<PrivacyStatus> getAllPrivacyStatuses() {
+		List<PrivacyStatus> result = new ArrayList<PrivacyStatus>();
+
+		try {
+			java.sql.Connection con = getConnection();
+			java.sql.Statement st = con.createStatement();
+
+			String selectAllQuery = generator.getSelectAllQuery(DbCertificate.PrivacyStatusTable.TABLE_NAME);
+
+			ResultSet rs = st.executeQuery(selectAllQuery);
+
+			result = getPrivacyStatusesList(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	private List<PrivacyStatus> getPrivacyStatusesList(ResultSet rs) throws SQLException {
+		List<PrivacyStatus> privacyStatuses = new ArrayList<PrivacyStatus>();
+
+		while (rs.next()) {
+			int id = rs.getInt(DbCertificate.PrivacyStatusTable.COLUMN_NAME_ID);
+			String name = rs.getString(DbCertificate.PrivacyStatusTable.COLUMN_NAME_NAME);
+
+			privacyStatuses.add(new PrivacyStatus(id, name));
+		}
+		return null;
+	}
+
+	@Override
+	public void updateGroupChat(GroupChat groupChat) {
+		try {
+			java.sql.Connection con = getConnection();
+			String updateStatement = generator.getUpdateByIdQuery(groupChatColumnNames,
+					DbCertificate.SubjectTable.TABLE_NAME, groupChat.getId());
+
+			java.sql.PreparedStatement st = con.prepareStatement(updateStatement);
+
+			setValues(getGroupChatValues(groupChat), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

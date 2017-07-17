@@ -713,6 +713,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 			ResultSet rs = st.executeQuery(selectStatement);
 			result = getCommonSubjectComponentViewModel(rs);
 
+			con.close();
 		} catch (SQLException e) {
 
 			// TODO Auto-generated catch block
@@ -778,7 +779,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		}
 		return result;
 	}
-	
+
 	public User getUserById(int id) {
 		User result = null;
 		try {
@@ -797,10 +798,10 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
-	
+
 	private User getUser(ResultSet rs) {
 		try {
 			while (rs.next()) {
@@ -842,7 +843,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return classmates;
 	}
 
@@ -884,5 +885,44 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 			return rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_ID);
 		}
 		return -1;
+	}
+
+	@Override
+	public void deleteUserSubjectByAllFields(int userId, int subjectId) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = "DELETE FROM " + DbCertificate.UserSubjectTable.TABLE_NAME + "WHERE "
+					+ DbCertificate.UserSubjectTable.COLUMN_NAME_USER_ID + " = ?" + " AND "
+					+ DbCertificate.UserSubjectTable.COLUMN_NAME_SUBJECT_ID + " = ?";
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(userId), String.valueOf(subjectId)), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteUserSubjectComponentByUserId(String userId) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByAnyIDQuery(DbCertificate.UserSubjectComponentTable.TABLE_NAME,
+					DbCertificate.UserSubjectComponentTable.COLUMN_NAME_USER_ID);
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(userId)), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import Common.AppCode.CommonConstants;
+import Common.Models.ResponseModel;
+
 /**
  * Servlet implementation class DeleteUserSubjectServlet
  */
@@ -27,8 +30,8 @@ public class DeleteUserSubjectServlet extends SubjectServletParent {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		super.doGet(request, response);
+		returnDefaultJsonToView(request, response);
 	}
 
 	/**
@@ -50,8 +53,12 @@ public class DeleteUserSubjectServlet extends SubjectServletParent {
 		int subjId = Integer.parseInt(subjectId);
 		int usId = Integer.parseInt(userId);
 		
+		manager.deleteUserSubjectComponentByUserId(userId);
+		manager.deleteUserSubjectByAllFields(subjId, usId);
 		
-		
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
+				new ResponseModel(true,CommonConstants.SUCCESSFUL_MESSAGE));
+		doGet(request, response);
 	}
 
 }

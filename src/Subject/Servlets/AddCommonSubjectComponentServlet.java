@@ -91,7 +91,6 @@ public class AddCommonSubjectComponentServlet extends SubjectServletParent {
 		
 		manager.AddCommonSubjectComponent(csc);
 		Lobby curLobby = new Lobby(csc.getId());
-		chatDbManager.addLobby(curLobby);
 		LobbyManager.instance().createLobby(curLobby);
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
 				new ResponseModel(subjectId.toString(), true, CommonConstants.SUCCESSFUL_MESSAGE));

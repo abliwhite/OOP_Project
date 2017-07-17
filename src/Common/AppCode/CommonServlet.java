@@ -60,7 +60,7 @@ public abstract class CommonServlet extends HttpServlet {
 		return null;
 	}
 
-	private boolean checkRequestPermission(HttpServletRequest request) {
+	public boolean checkRequestPermission(HttpServletRequest request) {
 		HttpSession session = request.getSession(true);
 
 		return session.getAttribute(session.getId()) != null;

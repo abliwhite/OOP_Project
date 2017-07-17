@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import Account.Models.User;
 import Chat.Models.DbModels.GroupChat;
+import Chat.Models.DbModels.InternalMessage;
 import Chat.Models.DbModels.Lobby;
 
 public class LobbyController {
@@ -28,6 +30,14 @@ public class LobbyController {
 
 	public Lobby getLobby() {
 		return lobby;
+	}
+
+	public List<InternalMessage> getMessagesByGroup(int groupId) {
+		List<GroupChatController> filteredList = groupChatControllers.stream()
+				.filter(x -> x.getGroupChat().getId() == groupId).collect(Collectors.toList());
+		if(!filteredList.isEmpty())
+			return filteredList.get(0).getMessages();
+		return Collections.emptyList();
 	}
 
 	public void addGroupChat(GroupChat groupChat) {
@@ -58,4 +68,10 @@ public class LobbyController {
 		return filteredList.stream().map(xx -> xx.getGroupChat()).collect(Collectors.toList());
 	}
 
+	public List<User> getActiveUsers(GroupChat groupChat){
+		List<GroupChatController> filteredList = groupChatControllers.stream().filter(x -> x.getGroupChat().equals(groupChat)).collect(Collectors.toList());
+		if(!filteredList.isEmpty())
+			return filteredList.get(0).getActiveUsers();
+		return Collections.emptyList();
+	}
 }
