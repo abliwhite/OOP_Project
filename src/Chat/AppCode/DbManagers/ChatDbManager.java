@@ -34,8 +34,6 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		internalMessageColumnNames = getColumnsNames(DbCertificate.InternalMessageTable.TABLE_NAME);
 		externalMessageColumnNames = getColumnsNames(DbCertificate.ExternalMessageTable.TABLE_NAME);
 	}
-	
-	
 
 	@Override
 	public List<GroupChat> getAllGroupChat() {
@@ -327,20 +325,71 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		return internalMessages;
 	}
 
-
-
 	@Override
 	public void addInternalMessage(InternalMessage internalMessage) {
-		// TODO Auto-generated method stub
-		
+		try {
+			java.sql.Connection con = getConnection();
+			String insertQuery = generator.getInsertQuery(internalMessageColumnNames,
+					DbCertificate.InternalMessageTable.TABLE_NAME);
+
+			con.createStatement().executeQuery(generator.getUseDatabaseQuery());
+			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+			setValues(getInternalMessages(internalMessage), st);
+			st.executeUpdate();
+
+			try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					internalMessage.setId(generatedKeys.getInt(1));
+				} else {
+					throw new SQLException();
+				}
+			}
+
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-
+	private List<String> getInternalMessages(InternalMessage internalMessage) {
+		return Arrays.asList(internalMessage.getMessage(), internalMessage.getDateSent(),
+				String.valueOf(internalMessage.getSenderID()), String.valueOf(internalMessage.getGroupID()));
+	}
 
 	@Override
 	public void addExternalMessage(ExternalMessage externalMessage) {
-		// TODO Auto-generated method stub
-		
+		try {
+			java.sql.Connection con = getConnection();
+			String insertQuery = generator.getInsertQuery(externalMessageColumnNames,
+					DbCertificate.ExternalMessageTable.TABLE_NAME);
+
+			con.createStatement().executeQuery(generator.getUseDatabaseQuery());
+			java.sql.PreparedStatement st = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+			setValues(getExternalMessages(externalMessage), st);
+			st.executeUpdate();
+
+			try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					externalMessage.setId(generatedKeys.getInt(1));
+				} else {
+					throw new SQLException();
+				}
+			}
+
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private List<String> getExternalMessages(ExternalMessage externalMessage) {
+		return Arrays.asList(externalMessage.getMessage(), externalMessage.getDateSent(),
+				String.valueOf(externalMessage.getSenderID()), String.valueOf(externalMessage.getSenderGroupID()),
+				String.valueOf(externalMessage.getReceiverGroupID()));
 	}
 
 }
