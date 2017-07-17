@@ -220,4 +220,60 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		}
 	}
 
+	@Override
+	public List<Lobby> getAllLobbies() {
+		List<Lobby> result = new ArrayList<Lobby>();
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = generator.getSelectAllQuery(DbCertificate.LobbyTable.TABLE_NAME);
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			ResultSet rs = st.executeQuery(selectQuery);
+
+			result = getLobbyList(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	private List<Lobby> getLobbyList(ResultSet rs) throws SQLException {
+		List<Lobby> lobbies = new ArrayList<Lobby>();
+		while (rs.next()) {
+			int id = rs.getInt(DbCertificate.LobbyTable.COLUMN_NAME_ID);
+			int componentId = rs.getInt(DbCertificate.LobbyTable.COLUMN_NAME_SUBJECT_COMPONENT_ID);
+
+			lobbies.add(new Lobby(id, componentId));
+		}
+
+		return lobbies;
+	}
+
+	@Override
+	public List<GroupChat> getAllGroupChatsByLobbyId(int lobbyId) {
+		List<GroupChat> result = new ArrayList<GroupChat>();
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = generator.getSelectByIDQuery(DbCertificate.GroupChatTable.TABLE_NAME,
+					DbCertificate.GroupChatTable.COLUMN_NAME_LOBBY_ID, 1);
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(lobbyId)), st);
+			ResultSet rs = st.executeQuery(selectQuery);
+
+			result = getGroupChatList(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
 }

@@ -11,6 +11,7 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 import Account.AppCode.AccountManager;
+import Chat.AppCode.ChatManagers.LobbyManager;
 import Chat.AppCode.DbManagers.ChatDbManager;
 import Chat.AppCode.DbManagers.ChatDbManagerInterface;
 import Database.MyDBInfo;
@@ -23,19 +24,19 @@ import Subject.AppCode.SubjectManager;
 @WebListener
 public class ContextListener implements ServletContextListener {
 
-    /**
-     * Default constructor. 
-     */
-    public ContextListener() {
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * Default constructor.
+	 */
+	public ContextListener() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
-     * @see ServletContextListener#contextDestroyed(ServletContextEvent)
-     */
-    public void contextDestroyed(ServletContextEvent arg0)  { 
-         // TODO Auto-generated method stub
-    }
+	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
+	 */
+	public void contextDestroyed(ServletContextEvent arg0) {
+		// TODO Auto-generated method stub
+	}
 
 	/**
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
@@ -46,15 +47,18 @@ public class ContextListener implements ServletContextListener {
     	
     	context.setAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE, new AccountManager(pool));
     	context.setAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE, new SubjectManager(pool));
-    	context.setAttribute(ChatDbManager.CHAT_DB_MANAGER_ATTRIBUTE, new ChatDbManager(pool));
+    	ChatDbManagerInterface chatDbManager = new ChatDbManager(pool);
+    	context.setAttribute(ChatDbManager.CHAT_DB_MANAGER_ATTRIBUTE, chatDbManager);
+    	
+    	LobbyManager.instance().initialize(chatDbManager);
     }
-    
-    //Todo gasatania sadme 
+
+	// Todo gasatania sadme
 	private DataSource getDataSource() {
 		DataSource pool = new DataSource();
 		PoolProperties properties = new PoolProperties();
-		
-		//unicodi
+
+		// unicodi
 		properties.setUrl("jdbc:mysql://" + MyDBInfo.MYSQL_DATABASE_SERVER + "/mysql");
 		properties.setDriverClassName("com.mysql.jdbc.Driver");
 		properties.setUsername(MyDBInfo.MYSQL_USERNAME);
@@ -63,5 +67,5 @@ public class ContextListener implements ServletContextListener {
 		pool.setPoolProperties(properties);
 		return pool;
 	}
-	
+
 }

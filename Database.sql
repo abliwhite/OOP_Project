@@ -133,13 +133,11 @@ CREATE TABLE `common_subject_components` (
    UNIQUE KEY `ID_UNIQUE` (`ID`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
- CREATE TABLE `lobby` (
+CREATE TABLE `lobby` (
    `ID` int(11) NOT NULL AUTO_INCREMENT,
    `SubjectComponentID` int(11) NOT NULL,
    PRIMARY KEY (`ID`),
-   UNIQUE KEY `ID_UNIQUE` (`ID`),
-   KEY `FK_Lobby_To_Component_idx` (`SubjectComponentID`),
-   CONSTRAINT `FK_Lobby_To_Component` FOREIGN KEY (`SubjectComponentID`) REFERENCES `common_subject_components` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+   UNIQUE KEY `ID_UNIQUE` (`ID`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  
  CREATE TABLE `group_chat` (

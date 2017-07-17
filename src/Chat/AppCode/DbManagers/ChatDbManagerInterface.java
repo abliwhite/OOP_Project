@@ -18,4 +18,8 @@ public interface ChatDbManagerInterface  {
 	public List<GroupChat> getGroupChatByUserId(int userId);
 
 	public void deleteLobbyByComponentID(int componentId);
+	
+	public List<Lobby> getAllLobbies();
+	
+	public List<GroupChat> getAllGroupChatsByLobbyId(int lobbyId);
 }

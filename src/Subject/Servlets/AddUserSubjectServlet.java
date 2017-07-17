@@ -56,14 +56,15 @@ public class AddUserSubjectServlet extends SubjectServletParent {
 		String termId = data.get("subjectTermId").getAsString();
 		String userId =  data.get("userId").getAsString();
 
-		if (fullNumericStringValidation(year) && fullNumericStringValidation(termId)) {
+		if (!(fullNumericStringValidation(year) && fullNumericStringValidation(termId))) {
+			
+		} else {
 			Subject subject = manager.getSubjectByFilter(name, Integer.parseInt(year), Integer.parseInt(termId));
-			UserSubject us = new UserSubject(1, Integer.parseInt(userId), subject.getId());
+			UserSubject us = new UserSubject(Integer.parseInt(userId), subject.getId());
 			manager.addUserSubject(us);
 			
+			
 			request.setAttribute("userId", userId);
-		} else {
-			// incorrect paramaters
 		}
 		doGet(request, response);
 	}
