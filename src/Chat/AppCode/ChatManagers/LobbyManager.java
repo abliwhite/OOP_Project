@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import Account.Models.User;
 import Chat.AppCode.ChatCore.ChatEndpoint;
+import Chat.AppCode.DbManagers.ChatDbManagerInterface;
 import Chat.Models.DbModels.GroupChat;
 import Chat.Models.DbModels.Lobby;
 
@@ -18,11 +19,18 @@ public class LobbyManager {
 	private List<LobbyController> lobbyControllers;
 	private Map<String, User> onlineLobbyUsers;
 
+	private ChatDbManagerInterface db;
+
 	private static LobbyManager ins;
 
 	private LobbyManager() {
-		lobbyControllers = new ArrayList<LobbyController>();
+		lobbyControllers = getLobbyControllersFromDB();
 		onlineLobbyUsers = new ConcurrentHashMap<String, User>();
+	}
+
+	private List<LobbyController> getLobbyControllersFromDB() {
+		List<Lobby> lobbies;
+		return null;
 	}
 
 	public static LobbyManager instance() {
@@ -30,6 +38,10 @@ public class LobbyManager {
 			ins = new LobbyManager();
 		}
 		return ins;
+	}
+
+	public void initialize(ChatDbManagerInterface db) {
+		this.db = db;
 	}
 
 	public void addUser(String sessionId, User user) {
