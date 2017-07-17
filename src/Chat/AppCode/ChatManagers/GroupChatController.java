@@ -32,6 +32,10 @@ public class GroupChatController {
 		userEndpoints.put(user, chatEndpoint);
 		users.add(user);
 	}
+	
+	public void removeUser(User user){
+		userEndpoints.remove(user);
+	}
 
 	public Set<ChatEndpoint> getUserEndpoints() {
 		Set<ChatEndpoint> cep = userEndpoints.keySet().stream().map(x -> userEndpoints.get(x)).collect(Collectors.toSet());
@@ -62,6 +66,7 @@ public class GroupChatController {
 
 	public void addMessage(InternalMessage message) {
 		messages.add(message);
+		
 	}
 
 }

@@ -62,8 +62,35 @@ public class LobbyManager {
 
 	public void removeUser(String sessionId) {
 		User user = onlineLobbyUsers.get(sessionId);
-		
+		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getOnlineUsers().contains(user))
+				.collect(Collectors.toList());
+		if (!filteredList.isEmpty())
+			filteredList.get(0).removeUser(user);
 		onlineLobbyUsers.remove(sessionId);
+	}
+
+	public void removeUserFromLobby(User user, int lobbyId) {
+		List<LobbyController> filteredLobbyList = lobbyControllers.stream()
+				.filter(x -> x.getOnlineUsers().contains(user)).collect(Collectors.toList());
+		if (filteredLobbyList.isEmpty())
+			return;
+		removeUserFromGroup(user, filteredLobbyList.get(0).getGroupByUser(user).getGroupChat().getId());
+		filteredLobbyList.get(0).removeUser(user);
+	}
+
+	public void removeUserFromGroup(User user, int groupId) {
+		List<LobbyController> filteredLobbyList = lobbyControllers.stream()
+				.filter(x -> x.getOnlineUsers().contains(user)).collect(Collectors.toList());
+		if (filteredLobbyList.isEmpty())
+			return;
+		LobbyController lc = filteredLobbyList.get(0);
+		List<GroupChatController> filteredGroupList = lc.getGroupChatControllers().stream()
+				.filter(x -> x.getGroupChat().getId() == groupId).collect(Collectors.toList());
+		if (filteredGroupList.isEmpty())
+			return;
+		GroupChatController gcc = filteredGroupList.get(0);
+		gcc.removeUser(user);
+
 	}
 
 	public User getUser(String sessionId) {
