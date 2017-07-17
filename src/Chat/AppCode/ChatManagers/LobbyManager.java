@@ -1,6 +1,7 @@
 package Chat.AppCode.ChatManagers;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,6 +21,7 @@ public class LobbyManager {
 	private static LobbyManager ins;
 
 	private LobbyManager() {
+		lobbyControllers = new ArrayList<LobbyController>();
 		onlineLobbyUsers = new ConcurrentHashMap<String, User>();
 	}
 
@@ -75,13 +77,17 @@ public class LobbyManager {
 	}
 	
 	private LobbyController getLobbyControllerByComponent(int subjectComponentID) {
-		return lobbyControllers.stream().filter(x -> x.getLobby().getSubjectComponentID() == subjectComponentID)
-				.collect(Collectors.toList()).get(0);
+		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getLobby().getSubjectComponentID() == subjectComponentID)
+				.collect(Collectors.toList());
+		if (filteredList.isEmpty()) return null;
+		return filteredList.get(0);
 	}
 	
 	private LobbyController getLobbyControllerByLobby(int lobbyID) {
-		return lobbyControllers.stream().filter(x -> x.getLobby().getId() == lobbyID)
-				.collect(Collectors.toList()).get(0);
+		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getLobby().getId() == lobbyID)
+				.collect(Collectors.toList());
+		if (filteredList.isEmpty()) return null;
+		return filteredList.get(0);
 	}
 	
 	
