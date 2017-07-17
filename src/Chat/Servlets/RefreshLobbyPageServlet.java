@@ -49,6 +49,7 @@ public class RefreshLobbyPageServlet extends ChatServletParent {
 		
 		ResponseModel responseModel = getLobbyViewModel(componentId, request);
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
+		doGet(request,response);
 	}
 
 }
