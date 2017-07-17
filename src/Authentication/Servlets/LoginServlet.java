@@ -20,8 +20,6 @@ import Account.AppCode.AccountManagerInterface;
 import Account.Models.AuthModel;
 import Account.Models.User;
 import Account.Models.UserProfile;
-import Common.AppCode.DaoController;
-import Common.AppCode.ViewTextContainer;
 import Common.Models.ResponseModel;
 import Database.DbCertificate;
 import Subject.Models.DbModels.Subject;
@@ -50,6 +48,8 @@ public class LoginServlet extends AuthenticationServletParent {
 			throws ServletException, IOException {
 		super.doGet(request, response);
 		returnDefaultJsonToView(request, response);
+		
+		
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class LoginServlet extends AuthenticationServletParent {
 		if (user != null) {
 			request.setAttribute(ViewTextContainer.RESULT, "Success");
 
-			// addUserInSession(request, user);
+			addUserInSession(request, user);
 			OnlineUsersManager.instance().addUser(request.getSession().getId(), user);
 
 			if (user.getUsername().equals(DbCertificate.UserTable.ADMIN_USERNAME)
@@ -77,20 +77,7 @@ public class LoginServlet extends AuthenticationServletParent {
 
 				responseModel = new ResponseModel<>(true, DbCertificate.UserTable.ADMIN_ROLE);
 			} else {
-
 				responseModel = new ResponseModel<Object, Integer>(user.getId(), true, DbCertificate.UserTable.STUDENT_ROLE);
-
-				/*
-				 * if (user.getProfile() == null) { UserProfile profile =
-				 * accountManager.getProfile(user);
-				 * user.setUserProfile(profile); } List<Subject> userSubjects =
-				 * accountManager.getUserSubjects(user);
-				 * 
-				 * request.setAttribute("UserSubjects", userSubjects);
-				 * request.setAttribute("user", user);
-				 * request.getRequestDispatcher("/ProfilePageGeneratorServlet").
-				 * forward(request, response);
-				 */
 			}
 		} else {
 			responseModel = new ResponseModel<Object, Object>(false, "Incorrect username or password!");

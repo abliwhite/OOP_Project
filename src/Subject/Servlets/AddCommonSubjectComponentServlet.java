@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import Chat.Models.DbModels.Lobby;
 import Common.AppCode.CommonConstants;
 import Common.Models.ResponseModel;
 import Subject.AppCode.SubjectManager;
@@ -86,9 +87,10 @@ public class AddCommonSubjectComponentServlet extends SubjectServletParent {
 
 		CommonSubjectComponent csc = new CommonSubjectComponent(Integer.parseInt(typeId), Integer.parseInt(subjectId),
 				Double.parseDouble(percentage), Integer.parseInt(number));
-
+		
 		manager.AddCommonSubjectComponent(csc);
-
+		chatDbManager.addLobby(new Lobby(csc.getId()));
+		
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
 				new ResponseModel(subjectId.toString(), true, CommonConstants.SUCCESSFUL_MESSAGE));
 

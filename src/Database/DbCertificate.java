@@ -122,8 +122,8 @@ public final class DbCertificate {
 		public final static String COLUMN_NAME_UPLOAD_DATE = "UploadDate";
 		public final static String COLUMN_NAME_SUBJECT_COMPONENT_ID = "SubjectComponentID";
 	}
-	
-	public static class UserSubjectComponentTable{
+
+	public static class UserSubjectComponentTable {
 		public final static String TABLE_NAME = "user_subject_components";
 
 		public final static String COLUMN_NAME_ID = "ID";
@@ -131,24 +131,24 @@ public final class DbCertificate {
 		public final static String COLUMN_NAME_COMMON_SUBJECT_COMPONENT_ID = "CommonSubjectComponentID";
 		public final static String COLUMN_NAME_DEAD_LINE_DATE = "DeadLineDate";
 	}
-	
-	public static class ActiveStatusTable{
+
+	public static class ActiveStatusTable {
 		public final static String TABLE_NAME = "active_status";
-		
+
 		public final static String COLUMN_NAME_ID = "ID";
 		public final static String COLUMN_NAME_NAME = "Name";
 	}
-	
-	public static class LobbyTable{
+
+	public static class LobbyTable {
 		public final static String TABLE_NAME = "lobby";
-		
+
 		public final static String COLUMN_NAME_ID = "ID";
 		public final static String COLUMN_NAME_SUBJECT_COMPONENT_ID = "SubjectComponentID";
 	}
-	
-	public static class GroupChatTable{
+
+	public static class GroupChatTable {
 		public final static String TABLE_NAME = "group_chat";
-		
+
 		public final static String COLUMN_NAME_ID = "ID";
 		public final static String COLUMN_NAME_NAME = "Name";
 		public final static String COLUMN_NAME_CREATE_DATE = "CreateDate";
@@ -157,32 +157,40 @@ public final class DbCertificate {
 		public final static String COLUMN_NAME_PRIVACY_STATUS_ID = "PrivacyStatysID";
 		public final static String COLUMN_NAME_ACTIVE_STATUS_ID = "ActiveStatusID";
 	}
-	
-	public static class PrivacyStatusTable{
+
+	public static class PrivacyStatusTable {
 		public final static String TABLE_NAME = "privacy_status";
-		
+
 		public final static String COLUMN_NAME_ID = "ID";
 		public final static String COLUMN_NAME_NAME = "Name";
 	}
-	
-	public static class InternalMessageTable{
+
+	public static class InternalMessageTable {
 		public final static String TABLE_NAME = "internal_group_messages";
-		
+
 		public final static String COLUMN_NAME_ID = "ID";
 		public final static String COLUMN_NAME_MESSAGE = "Message";
 		public final static String COLUMN_NAME_DATE_SENT = "DateSent";
 		public final static String COLUMN_NAME_SENDER_ID = "SenderID";
 		public final static String COLUMN_NAME_GROUP_ID = "GroupID";
 	}
-	
-	public static class ExternalMessageTable{
+
+	public static class ExternalMessageTable {
 		public final static String TABLE_NAME = "external_group_messages";
-		
+
 		public final static String COLUMN_NAME_ID = "ID";
 		public final static String COLUMN_NAME_MESSAGE = "Message";
 		public final static String COLUMN_NAME_DATE_SENT = "DateSent";
 		public final static String COLUMN_NAME_SENDER_ID = "SenderID";
 		public final static String COLUMN_NAME_SENDER_GROUP_ID = "SenderGroupID";
 		public final static String COLUMN_NAME_RECEIVER_GROUP_ID = "ReceiverGroupID";
+	}
+
+	public static class UserGroupChatTable {
+		public final static String TABLE_NAME = "user_group_chats";
+
+		public final static String COLUMN_NAME_ID = "ID";
+		public final static String COLUMN_NAME_USER_ID = "UserID";
+		public final static String COLUMN_NAME_GROUP_CHAT_ID = "GroupChatID";
 	}
 }

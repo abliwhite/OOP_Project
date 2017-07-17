@@ -44,6 +44,8 @@ public class EditSubjectPageGeneratorServlet extends SubjectServletParent {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		super.doGet(request, response);
+		redirectToLoginIfNotLogged(request, response);
+		
 		String subjectId = request.getParameter("id");
 
 		if (fullNumericStringValidation(subjectId)) {

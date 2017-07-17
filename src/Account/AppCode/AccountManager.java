@@ -30,12 +30,10 @@ public class AccountManager extends DaoController implements AccountManagerInter
 
 	public static final String ACCOUNT_MANAGER_ATTRIBUTE = "Account Manager Attribute";
 
-	private List<String> userColumnNames;
 	private List<String> profileColumnNames;
 
 	public AccountManager(DataSource pool) {
 		super(pool);
-		userColumnNames = getColumnsNames(DbCertificate.UserTable.TABLE_NAME);
 		profileColumnNames = getColumnsNames(DbCertificate.ProfileTable.TABLE_NAME);
 	}
 
