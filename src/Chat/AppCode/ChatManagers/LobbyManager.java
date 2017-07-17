@@ -49,9 +49,23 @@ public class LobbyManager {
 		lobbyControllers.add(lc);
 	}
 
+	public void removeLobby(Lobby lobby) {
+		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getLobby().equals(lobby))
+				.collect(Collectors.toList());
+		if (!filteredList.isEmpty() && filteredList != null)
+			lobbyControllers.remove(filteredList.get(0));
+	}
+
 	public void createGroupChat(Lobby lobby, GroupChat groupChat) {
 		LobbyController lc = getLobbyControllerByLobby(lobby.getId());
-		lc.addGroupChat(groupChat);
+		if (lc != null)
+			lc.addGroupChat(groupChat);
+	}
+
+	public void removeGroupChat(Lobby lobby, GroupChat groupChat) {
+		LobbyController lc = getLobbyControllerByLobby(lobby.getId());
+		if (lc != null)
+			lc.addGroupChat(groupChat);
 	}
 
 	public List<GroupChat> getActiveGroupChats(int subjectComponentID) {
