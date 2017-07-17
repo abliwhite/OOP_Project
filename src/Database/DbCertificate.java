@@ -150,6 +150,9 @@ public final class DbCertificate {
 		public final static String TABLE_NAME = "group_chat";
 
 		public final static String COLUMN_NAME_ID = "ID";
+		public final static String UNIQUE_COLUMN_NAME_ID = TABLE_NAME+"."+COLUMN_NAME_ID;
+		
+		
 		public final static String COLUMN_NAME_NAME = "Name";
 		public final static String COLUMN_NAME_CREATE_DATE = "CreateDate";
 		public final static String COLUMN_NAME_LOBBY_ID = "LobbyID";

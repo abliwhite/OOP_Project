@@ -8,6 +8,10 @@ public class Lobby {
 	private int subjectComponentID;
 	
 
+	public Lobby(){
+		
+	}
+	
 	public Lobby(Integer id, int subjectComponentID) {
 		this.id = id;
 		this.subjectComponentID = subjectComponentID;

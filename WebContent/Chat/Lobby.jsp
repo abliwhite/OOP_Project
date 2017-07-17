@@ -95,14 +95,14 @@
 				
 				out.print("<div class='card-card-block'>");
 				out.print("<h4 class='card-title'>Users</h4>");
-				
-				List<User> users = activeChats.get(i).getUsers();
 				String u = "";
+				/* List<User> users = activeChats.get(i).getUsers();
+				
 				
 				for(int j=0; j < users.size()-1;j++){
 					u = u + users.get(j).getUsername()+", ";
 				}
-				u = u + users.get(users.size()-1).getUsername();
+				u = u + users.get(users.size()-1).getUsername();*/
 				out.print("<p class='card-text'>"+u+"</p>");
 				out.print("<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >");
 				out.print("</div>");
@@ -195,7 +195,7 @@ function askToJoin(){
 _lobbyId =<%out.print(lobby.getId());%>
 _componentId = <%out.print(lobby.getSubjectComponentID());%>
 function refreshLobbyData(){
-	
+	console.log("refreshing");
 	data = {
 			lobbyId: _lobbyId,
 			componentId : _componentId

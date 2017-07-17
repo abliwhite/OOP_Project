@@ -111,7 +111,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		try {
 			java.sql.Connection con = getConnection();
 
-			String selectQuery = "SELECT " + DbCertificate.GroupChatTable.COLUMN_NAME_ID + ","
+			String selectQuery = "SELECT " + DbCertificate.GroupChatTable.UNIQUE_COLUMN_NAME_ID + ","
 					+ DbCertificate.GroupChatTable.COLUMN_NAME_ACTIVE_STATUS_ID + ","
 					+ DbCertificate.GroupChatTable.COLUMN_NAME_PRIVACY_STATUS_ID + ","
 					+ DbCertificate.GroupChatTable.COLUMN_NAME_CREATOR_ID + ","
@@ -121,14 +121,14 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 					+ DbCertificate.UserGroupChatTable.TABLE_NAME + " INNER JOIN "
 					+ DbCertificate.GroupChatTable.TABLE_NAME + " ON "
 					+ DbCertificate.UserGroupChatTable.COLUMN_NAME_GROUP_CHAT_ID + " = "
-					+ DbCertificate.GroupChatTable.COLUMN_NAME_ID + " WHERE "
+					+ DbCertificate.GroupChatTable.UNIQUE_COLUMN_NAME_ID + " WHERE "
 					+ DbCertificate.UserGroupChatTable.COLUMN_NAME_USER_ID + " = ?";
 
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
 			st.executeQuery(generator.getUseDatabaseQuery());
 
 			setValues(Arrays.asList(String.valueOf(userId)), st);
-			ResultSet rs = st.executeQuery(selectQuery);
+			ResultSet rs = st.executeQuery();
 
 			result = getGroupChatList(rs);
 
@@ -141,7 +141,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 	@Override
 	public Lobby getLobbyByComponentId(int componentId) {
-		Lobby result = null;
+		Lobby result = new Lobby();
 		try {
 			java.sql.Connection con = getConnection();
 			String selectQuery = generator.getSelectByIDQuery(DbCertificate.LobbyTable.TABLE_NAME,
@@ -152,7 +152,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 			setValues(Arrays.asList(String.valueOf(componentId)), st);
 
-			ResultSet rs = st.executeQuery(selectQuery);
+			ResultSet rs = st.executeQuery();
 
 			result = getLobby(rs);
 
