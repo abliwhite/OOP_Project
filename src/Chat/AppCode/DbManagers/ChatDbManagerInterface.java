@@ -16,4 +16,6 @@ public interface ChatDbManagerInterface  {
 	public void addLobby(Lobby lobby);
 	
 	public List<GroupChat> getGroupChatByUserId(int userId);
+
+	public void deleteLobbyByComponentID(int componentId);
 }

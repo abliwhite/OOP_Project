@@ -121,7 +121,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 					+ DbCertificate.GroupChatTable.TABLE_NAME + " ON "
 					+ DbCertificate.UserGroupChatTable.COLUMN_NAME_GROUP_CHAT_ID + " = "
 					+ DbCertificate.GroupChatTable.COLUMN_NAME_ID + " WHERE "
-					+ DbCertificate.UserGroupChatTable.COLUMN_NAME_USER_ID + " ?";
+					+ DbCertificate.UserGroupChatTable.COLUMN_NAME_USER_ID + " = ?";
 
 			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
 			st.executeQuery(generator.getUseDatabaseQuery());
@@ -199,6 +199,25 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 
 	private List<String> getlobbyValues(Lobby lobby) {
 		return Arrays.asList(String.valueOf(lobby.getSubjectComponentID()));
+	}
+
+	@Override
+	public void deleteLobbyByComponentID(int componentId) {
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getDeleteByAnyIDQuery(DbCertificate.LobbyTable.TABLE_NAME,
+					DbCertificate.LobbyTable.COLUMN_NAME_SUBJECT_COMPONENT_ID);
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(componentId)), st);
+			st.executeUpdate();
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
