@@ -105,7 +105,7 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 	}
 
 	private List<String> getGroupChatValues(GroupChat groupChat) {
-		return Arrays.asList(String.valueOf(groupChat.getId()), String.valueOf(groupChat.getLobbyID()),
+		return Arrays.asList(String.valueOf(groupChat.getLobbyID()),
 				String.valueOf(groupChat.getCreatorID()), groupChat.getCreateDate(), groupChat.getName(),
 				String.valueOf(groupChat.getPrivacyStatusID()), String.valueOf(groupChat.getActiveStatusID()));
 	}
