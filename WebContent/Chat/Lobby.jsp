@@ -298,7 +298,7 @@ function refreshLobbyData(){
 		  var activeGroups = [];
 		  var passiveGroups = [];
 		  console.log(data.resultObject.activeGroupchats);
-		  $.each( data.resultObject.activeGroupchats, function(activeChat) {
+		  data.resultObject.activeGroupchats.forEach(function(activeChat) {
 			  activeGroups.push(getActiveGroup(activeChat));
 		  });
 		  activeGroups.push(getAddNewChatCard());
