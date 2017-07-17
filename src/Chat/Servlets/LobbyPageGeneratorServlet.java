@@ -65,7 +65,7 @@ public class LobbyPageGeneratorServlet extends ChatServletParent {
 
 		ResponseModel responseModel = new ResponseModel<Object, LobbyViewModel>(lobbyViewModel, true,
 				CommonConstants.SUCCESSFUL_MESSAGE);
-		
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
 		request.getRequestDispatcher("Chat/Lobby.jsp").forward(request, response);
 	}
 
