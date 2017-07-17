@@ -215,7 +215,7 @@ function newGroupChat(){
 	data = {
 			lobbyId: _lobbyId,
 			groupChatName : groupName,
-			privacyStatusId : rdBntVal + 1
+			privacyStatusId : (parseInt(rdBntVal) + 1)
 		};
 	
 	$.ajax({
