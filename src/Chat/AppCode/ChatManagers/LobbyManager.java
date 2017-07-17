@@ -61,6 +61,8 @@ public class LobbyManager {
 	}
 
 	public void removeUser(String sessionId) {
+		User user = onlineLobbyUsers.get(sessionId);
+		
 		onlineLobbyUsers.remove(sessionId);
 	}
 
@@ -102,8 +104,12 @@ public class LobbyManager {
 	}
 
 	public void removeGroupChat(GroupChat groupChat) {
-		groupChat.setActiveStatusID(1); //TODO active status enum
-		db.updateGroupChat(groupChat);
+		groupChat.setActiveStatusID(1); // TODO active status Enum
+		try {
+			db.updateGroupChat(groupChat);
+		} catch (Exception e) {
+			return;
+		}
 		LobbyController lc = getLobbyControllerByLobby(groupChat.getLobbyID());
 		if (lc != null)
 			lc.removeGroupChat(groupChat);
@@ -146,11 +152,11 @@ public class LobbyManager {
 		db.addInternalMessage(message);
 		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getLobby().getId() == lobbyId)
 				.collect(Collectors.toList());
-		if(!filteredList.isEmpty())
+		if (!filteredList.isEmpty())
 			filteredList.get(0).addMessage(message);
 	}
 
-	//TODO sheileba akopirebs
+	// TODO sheileba akopirebs
 	private LobbyController getLobbyControllerByComponent(int subjectComponentID) {
 		List<LobbyController> filteredList = lobbyControllers.stream()
 				.filter(x -> x.getLobby().getSubjectComponentID() == subjectComponentID).collect(Collectors.toList());
