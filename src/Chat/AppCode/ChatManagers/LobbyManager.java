@@ -18,7 +18,7 @@ import Chat.Models.DbModels.Lobby;
 public class LobbyManager {
 
 	private List<LobbyController> lobbyControllers;
-	private Map<String, User> onlineLobbyUsers;
+	private Map<User, ChatEndpoint> userEndpoints;
 
 	private ChatDbManagerInterface db;
 
@@ -26,7 +26,7 @@ public class LobbyManager {
 
 	private LobbyManager() {
 		lobbyControllers = new ArrayList<LobbyController>();
-		onlineLobbyUsers = new ConcurrentHashMap<String, User>();
+		userEndpoints = new ConcurrentHashMap<User, ChatEndpoint>();
 	}
 
 	private List<LobbyController> getLobbyControllersFromDB() {
@@ -56,24 +56,22 @@ public class LobbyManager {
 		this.lobbyControllers = getLobbyControllersFromDB();
 	}
 
-	public void addUser(String sessionId, User user) {
-		onlineLobbyUsers.put(sessionId, user);
+	public void addUser(User user, ChatEndpoint cep) {
+		userEndpoints.put(user, cep);
 	}
 
-	public void removeUser(String sessionId) {
-		User user = onlineLobbyUsers.get(sessionId);
+	public void removeUser(User user) {
 		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getOnlineUsers().contains(user))
 				.collect(Collectors.toList());
 		if (!filteredList.isEmpty())
 			filteredList.get(0).removeUser(user);
-		onlineLobbyUsers.remove(sessionId);
+		userEndpoints.remove(user);
 	}
 
 	public void removeUserFromLobby(User user, int lobbyId) {
 		List<LobbyController> filteredLobbyList = lobbyControllers.stream()
 				.filter(x -> x.getOnlineUsers().contains(user)).collect(Collectors.toList());
-		if (filteredLobbyList.isEmpty())
-			return;
+		if (filteredLobbyList.isEmpty())			return;
 		removeUserFromGroup(user, filteredLobbyList.get(0).getGroupByUser(user).getGroupChat().getId());
 		filteredLobbyList.get(0).removeUser(user);
 	}
@@ -91,10 +89,6 @@ public class LobbyManager {
 		GroupChatController gcc = filteredGroupList.get(0);
 		gcc.removeUser(user);
 
-	}
-
-	public User getUser(String sessionId) {
-		return onlineLobbyUsers.get(sessionId);
 	}
 
 	public void createLobby(Lobby lobby) {
@@ -119,15 +113,16 @@ public class LobbyManager {
 			lobbyControllers.remove(filteredList.get(0));
 	}
 
-	public void createGroupChat(GroupChat groupChat) {
+	public void createGroupChat(User user, GroupChat groupChat) {
 		try {
 			db.addGroupChat(groupChat);
 		} catch (Exception e) {
 			return;
 		}
 		LobbyController lc = getLobbyControllerByLobby(groupChat.getLobbyID());
-		if (lc != null)
-			lc.addGroupChat(groupChat);
+		if (lc == null) return;
+		lc.addGroupChat(groupChat);
+		lc.getGroupChatControllerById(groupChat.getId()).addUser(user, userEndpoints.get(user));
 	}
 
 	public void removeGroupChat(GroupChat groupChat) {

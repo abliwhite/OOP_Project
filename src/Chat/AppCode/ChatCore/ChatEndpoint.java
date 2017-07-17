@@ -27,7 +27,7 @@ public class ChatEndpoint {
         String sessionId = session.getId();
         
         User user = OnlineUsersManager.instance().getUser(sessionId);
-        LobbyManager.instance().addUser(session.getId(), user);
+        LobbyManager.instance().addUser(user, this);
 
         this.session = session;
     }
@@ -40,7 +40,8 @@ public class ChatEndpoint {
 
     @OnClose
     public void onClose(Session session) throws IOException, EncodeException {
-        LobbyManager.instance().removeUser(session.getId());
+    	User user = OnlineUsersManager.instance().getUser(session.getId());
+        LobbyManager.instance().removeUser(user);
     }
 
     @OnError
