@@ -15,22 +15,50 @@
 	</head>
 	
 	<body>
-		<h1><%=((ViewTextContainer)request.getAttribute(ViewTextContainer.RESULT)).LOGIN_HEAD_VALIDATION_ERROR%></h1>
-		<form action="LoginServlet" method="post">
-		  <br><%=((ViewTextContainer)request.getAttribute(ViewTextContainer.RESULT)).LOGIN_VALIDATION_ERROR%><br>
-		  <br>Username:<br>
-		  <input type="text" name="name">
-		  <br>Password:<br>
-		  <input type="password" name="password">
-		  <input type="submit" value="Login">
-		</form>
-		
-		<form action="LoginServlet" method="post">
-		  <input type="submit" value="Login with facebook">
-		</form>
-
-		<form action="Registration/Register.jsp" method="post">
-		  <input type="submit" value="Register">
-		</form>
+		<div class="container">
+    <div class="row">
+ 
+        <div class="col-lg-3">
+            <h3>Item 1</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+ 
+        <div class="col-lg-3">
+            <h3>Item 2</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+ 
+        <div class="col-lg-3">
+            <h3>Item 3</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+        </div>
+ 
+        <div class="col-lg-3">
+            <h3>Item 4</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+ 
+                <div class="col-lg-3">
+            <h3>Item 5</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+        </div>
+ 
+        <div class="col-lg-3">
+            <h3>Item 6</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+ 
+        <div class="col-lg-3">
+            <h3>Item 7</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+        </div>
+ 
+        <div class="col-lg-3">
+            <h3>Item 8</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+         
+    </div>
+</div>
 	</body>
 </html>

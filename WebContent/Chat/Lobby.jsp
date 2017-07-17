@@ -37,14 +37,60 @@
 		
 	%>
 	
+	<style type="text/css">
+	
+	.card-group {
+  display: -webkit-flex;
+  display: flex;
+  flex-wrap: wrap;
+  /* max-height:475px; <-- remove */
+  background-color: lightgrey;
+}
+
+.card img {
+  width: 100%;
+}
+
+.card {
+  background-color: cornflowerblue;
+  width: 30%;
+  margin: 0px;
+  flex: 2;
+  border: 1px solid lightgrey;
+  display: flex;           /* new */
+  flex-direction: column;  /* new */
+}
+
+.card-block {
+  padding: 10px;
+  background-color: #fff;
+  flex: 1;                /* new */
+}
+
+.card-title {
+  font-size: 18px;
+  color: grey;
+  font-family: verdana, sans;
+}
+
+.card-footer {
+  padding: 15px;
+  border-top: 1px solid lightgrey;
+  background-color: lightgrey;
+}
+	
+	
+	</style>
+	
 </head>
 <body>
 	
-
-	<div class="row">
+	
+	<div class="col-md-8">
+	<div >
 		<%
 			for(int i = 0;i< activeChats.size();i++){
-				out.print("<div class='card w-50'>");
+				out.print("<div class='card w-25'>");
 				out.print("<div class='card-header'>"+activeChats.get(i).getGroupChat().getName()+"</div>");
 				
 				out.print("<div class='card-card-block'>");
@@ -64,17 +110,129 @@
 			}
 		
 		%>
-
+		<div class='card w-25'>	
+		<div class='card-header'> Create Group </div>
+		<div class='card-card-block'>
+		<h4 class='card-title'>Users</h4>
+		<p class='card-text'>"+u+"</p>
+		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+		</div>
+		</div>
+		
+		<div class='card w-25'>	
+		<div class='card-header'> Create Group </div>
+		<div class='card-card-block'>
+		<h4 class='card-title'>Users</h4>
+		<p class='card-text'>"+u+"</p>
+		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+		</div>
+		</div>
+		
+		<div class='card w-25'>	
+		<div class='card-header'> Create Group </div>
+		<div class='card-card-block'>
+		<h4 class='card-title'>Users</h4>
+		<p class='card-text'>"+u+"</p>
+		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+		</div>
+		
+		</div>
+		
+		<div class='card w-25'>	
+		<div class='card-header'> Create Group </div>
+		<div class='card-card-block'>
+		<h4 class='card-title'>Users</h4>
+		<p class='card-text'>"+u+"</p>
+		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+		</div>
+		</div>
+		
+		<div class='card w-25'>	
+		<div class='card-header'> Create Group </div>
+		<div class='card-card-block'>
+		<h4 class='card-title'>Users</h4>
+		<p class='card-text'>"+u+"</p>
+		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+		</div>
+		</div>
+		
+		
+		<div class='card w-25'>	
+		<div class='card-header'> Create Group </div>
+		<div class='card-card-block'>
+		<h4 class='card-title'>Users</h4>
+		<p class='card-text'>"+u+"</p>
+		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+		</div>
+		</div>
+		
+		
+		<div class='card w-25'>	
+		<div class='card-header'> Create Group </div>
+		<div class='card-card-block'>
+		<h4 class='card-title'>Users</h4>
+		<p class='card-text'>"+u+"</p>
+		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+		</div>
+		</div>
+		
+		</div>
+		
+		
 	
-
 </body>
 
 <script>
+
+function addGroupPlus(){
+	
+}
 
 function askToJoin(){
 	
 }
 
+_lobbyId =<%out.print(lobby.getId());%>
+_componentId = <%out.print(lobby.getSubjectComponentID());%>
+function refreshLobbyData(){
+	
+	data = {
+			lobbyId: _lobbyId,
+			componentId : _componentId
+		};
+	
+	$.ajax({
+	    type: "POST",
+	    url: "/RefreshLobbyPageServlet",
+	    contentType: "application/json",
+	    data: JSON.stringify(data),
+	    success:  function( data ) {
+		  var activeGroups = [];
+		  var passiveGroups = [];
+		  console.log(data);
+		  $.each( data, function( key, val ) {
+			  console.log("Key = " + key + "Value = " + Value);
+		  });
+		 
+		  /* $( "<ul/>", {
+		    "class": "my-new-list",
+		    html: items.join( "" )
+		  }).appendTo( "body" );*/
+		}
+	});
+}
+refreshLobbyData();
+function getActiveGroup(json)
+{
+	activeg = "<div class='card w-25'>";
+	activeg += "<div class='card-header'> Create Group </div>";
+	activeg +="<div class='card-card-block'>";
+	activeg +="<h4 class='card-title'>Users</h4>";
+	activeg +="<p class='card-text'>"+u+"</p>";
+	activeg +="<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >";
+	activeg +="</div>";
+	activeg +="</div>";
+}
 </script>
 
 </html>

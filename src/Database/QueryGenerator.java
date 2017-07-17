@@ -43,7 +43,7 @@ public class QueryGenerator {
 		for (int i = 0; i < numValues; i++) {
 			str.append("?,");
 		}
-		str.replace(str.length() - 1, str.length(), ");");
+		str.replace(str.length() - 1, str.length(), ")");
 
 		return str.toString();
 	}
