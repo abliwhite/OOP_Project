@@ -95,8 +95,8 @@
 						out.println("<label subject_name_label_id='"+subject.getId()+"' >" + subject.getName() + "</label>");
 						out.println("</td>");
 						out.println("<td>");
-						out.print("<input value='Edit' class='btn btn-primary' type='button' onclick='EditSubject("+subject.getId()+");'>");
-						out.print("<input value='Delete' class='btn btn-danger' type='button' onclick='DeleteSubject("+subject.getId()+");'>");
+						out.print("<input value='Edit' class='btn btn-primary' type='button' onclick='EditUserSubject("+subject.getId()+");'>");
+						out.print("<input value='Delete' class='btn btn-danger' type='button' onclick='DeleteUserSubject("+subject.getId()+");'>");
 						out.println("</td>");
 						out.println("</tr>");
 					}
@@ -110,6 +110,32 @@
 </body>
 
 <script>
+
+function EditUserSubject(subjectId){
+	
+}
+
+function DeleteUserSubject(subjectId){
+	
+	userId = $("#hidden_user_id").val();
+	
+	data = {
+			userId : userId,
+			subjectId : subjectId
+		}
+		
+	$.ajax({
+		type : "POST",
+		url : "/DeleteUserSubjectServlet",
+		contentType : "application/json",
+		data : JSON.stringify(data),
+		success : function(response) {
+			$("#subject_tr_"+subjectId).remove();
+		 }
+	});
+	
+}
+
 function addUserSubject(){
 	subjectName = $("#subjects_id").val();
 	subjectYear = $("#year_id").val();

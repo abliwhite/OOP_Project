@@ -11,6 +11,7 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import com.mysql.jdbc.Statement;
 
 import Chat.Models.DbModels.GroupChat;
+import Chat.Models.DbModels.InternalMessage;
 import Chat.Models.DbModels.Lobby;
 import Common.AppCode.DaoController;
 import Database.DbCertificate;
@@ -274,6 +275,46 @@ public class ChatDbManager extends DaoController implements ChatDbManagerInterfa
 		}
 
 		return result;
+	}
+
+	@Override
+	public List<InternalMessage> getAllInternalMessagesByGroupChatId(int groupChatId) {
+		List<InternalMessage> result = new ArrayList<InternalMessage>();
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = generator.getSelectByIDQuery(DbCertificate.InternalMessageTable.TABLE_NAME,
+					DbCertificate.InternalMessageTable.COLUMN_NAME_GROUP_ID, 1);
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(groupChatId)), st);
+			ResultSet rs = st.executeQuery(selectQuery);
+
+			result = getInternalMessages(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	private List<InternalMessage> getInternalMessages(ResultSet rs) throws SQLException {
+		List<InternalMessage> internalMessages = new ArrayList<InternalMessage>();
+		while (rs.next()) {
+			int id = rs.getInt(DbCertificate.InternalMessageTable.COLUMN_NAME_ID);
+			int groupId = rs.getInt(DbCertificate.InternalMessageTable.COLUMN_NAME_GROUP_ID);
+			String dateSent = rs.getString(DbCertificate.InternalMessageTable.COLUMN_NAME_DATE_SENT);
+			String message = rs.getString(DbCertificate.InternalMessageTable.COLUMN_NAME_MESSAGE);
+			int senderId = rs.getInt(DbCertificate.InternalMessageTable.COLUMN_NAME_SENDER_ID);
+			
+			InternalMessage internalMessage = new InternalMessage(id,message,dateSent,senderId,groupId);
+			
+			internalMessages.add(internalMessage);
+		}
+
+		return internalMessages;
 	}
 
 }

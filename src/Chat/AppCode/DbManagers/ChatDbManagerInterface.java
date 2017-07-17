@@ -3,6 +3,7 @@ package Chat.AppCode.DbManagers;
 import java.util.List;
 
 import Chat.Models.DbModels.GroupChat;
+import Chat.Models.DbModels.InternalMessage;
 import Chat.Models.DbModels.Lobby;
 
 public interface ChatDbManagerInterface  {
@@ -22,4 +23,6 @@ public interface ChatDbManagerInterface  {
 	public List<Lobby> getAllLobbies();
 	
 	public List<GroupChat> getAllGroupChatsByLobbyId(int lobbyId);
+	
+	public List<InternalMessage> getAllInternalMessagesByGroupChatId(int groupChatId);
 }
