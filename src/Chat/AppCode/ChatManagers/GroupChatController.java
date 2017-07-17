@@ -60,4 +60,8 @@ public class GroupChatController {
 		this.messages = messages;
 	}
 
+	public void addMessage(InternalMessage message) {
+		messages.add(message);
+	}
+
 }

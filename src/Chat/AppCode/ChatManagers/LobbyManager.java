@@ -69,11 +69,21 @@ public class LobbyManager {
 	}
 
 	public void createLobby(Lobby lobby) {
+		try {
+			db.addLobby(lobby);
+		} catch (Exception e) {
+			return;
+		}
 		LobbyController lc = new LobbyController(lobby);
 		lobbyControllers.add(lc);
 	}
 
 	public void removeLobby(Lobby lobby) {
+		try {
+			db.deleteLobbyByComponentID(lobby.getSubjectComponentID());
+		} catch (Exception e) {
+			return;
+		}
 		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getLobby().equals(lobby))
 				.collect(Collectors.toList());
 		if (!filteredList.isEmpty() && filteredList != null)
@@ -81,15 +91,22 @@ public class LobbyManager {
 	}
 
 	public void createGroupChat(GroupChat groupChat) {
+		try {
+			db.addGroupChat(groupChat);
+		} catch (Exception e) {
+			return;
+		}
 		LobbyController lc = getLobbyControllerByLobby(groupChat.getLobbyID());
 		if (lc != null)
 			lc.addGroupChat(groupChat);
 	}
 
 	public void removeGroupChat(GroupChat groupChat) {
+		groupChat.setActiveStatusID(1); //TODO active status enum
+		db.updateGroupChat(groupChat);
 		LobbyController lc = getLobbyControllerByLobby(groupChat.getLobbyID());
 		if (lc != null)
-			lc.addGroupChat(groupChat);
+			lc.removeGroupChat(groupChat);
 	}
 
 	public List<GroupChat> getActiveGroupChats(int subjectComponentID) {
@@ -124,9 +141,16 @@ public class LobbyManager {
 			return filteredList.get(0).getMessagesByGroup(groupId);
 		return Collections.emptyList();
 	}
-	
-	
 
+	public void addMessage(InternalMessage message, int lobbyId) {
+		db.addInternalMessage(message);
+		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getLobby().getId() == lobbyId)
+				.collect(Collectors.toList());
+		if(!filteredList.isEmpty())
+			filteredList.get(0).addMessage(message);
+	}
+
+	//TODO sheileba akopirebs
 	private LobbyController getLobbyControllerByComponent(int subjectComponentID) {
 		List<LobbyController> filteredList = lobbyControllers.stream()
 				.filter(x -> x.getLobby().getSubjectComponentID() == subjectComponentID).collect(Collectors.toList());

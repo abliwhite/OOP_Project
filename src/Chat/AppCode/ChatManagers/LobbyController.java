@@ -35,7 +35,7 @@ public class LobbyController {
 	public List<InternalMessage> getMessagesByGroup(int groupId) {
 		List<GroupChatController> filteredList = groupChatControllers.stream()
 				.filter(x -> x.getGroupChat().getId() == groupId).collect(Collectors.toList());
-		if(!filteredList.isEmpty())
+		if (!filteredList.isEmpty())
 			return filteredList.get(0).getMessages();
 		return Collections.emptyList();
 	}
@@ -68,10 +68,18 @@ public class LobbyController {
 		return filteredList.stream().map(xx -> xx.getGroupChat()).collect(Collectors.toList());
 	}
 
-	public List<User> getActiveUsers(GroupChat groupChat){
-		List<GroupChatController> filteredList = groupChatControllers.stream().filter(x -> x.getGroupChat().equals(groupChat)).collect(Collectors.toList());
-		if(!filteredList.isEmpty())
+	public List<User> getActiveUsers(GroupChat groupChat) {
+		List<GroupChatController> filteredList = groupChatControllers.stream()
+				.filter(x -> x.getGroupChat().equals(groupChat)).collect(Collectors.toList());
+		if (!filteredList.isEmpty())
 			return filteredList.get(0).getActiveUsers();
 		return Collections.emptyList();
+	}
+
+	public void addMessage(InternalMessage message) {
+		List<GroupChatController> filteredList = groupChatControllers.stream()
+				.filter(x -> x.getGroupChat().getId() == message.getGroupID()).collect(Collectors.toList());
+		if(!filteredList.isEmpty())
+			filteredList.get(0).addMessage(message);
 	}
 }
