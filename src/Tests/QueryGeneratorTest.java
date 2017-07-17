@@ -30,8 +30,15 @@ public class QueryGeneratorTest {
 	@Test
 	public void testInsert() {
 		List<String> columnNames = Arrays.asList("ID","username", "surname", "password");
-		assertEquals("INSERT INTO table (username,surname,password) VALUES (?,?,?);",
+		assertEquals("INSERT INTO table (username,surname,password) VALUES (?,?,?)",
 				generator.getInsertQuery(columnNames, "table"));
+
+	}
+	
+	@Test
+	public void testLimitSelect() {
+		assertEquals("SELECT * FROM table WHERE ID IN (?)  Order By ID LIMIT 100",
+				generator.getSelectTopLimitOrderByByIDQuery("table", "ID", 1, 100, "ID"));
 
 	}
 	

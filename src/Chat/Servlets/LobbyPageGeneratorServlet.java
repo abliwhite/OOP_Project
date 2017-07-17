@@ -49,22 +49,8 @@ public class LobbyPageGeneratorServlet extends ChatServletParent {
 
 		// LobbyManager.instance().getLobbyController(Integer.parseInt(componentId));
 
-		int id = Integer.parseInt(componentId);
-		int userId = getUserFromSession(request).getId();
-
-		CommonSubjectComponentViewModel svm = subjectManager.getCommonSubjectComponentViewmodelById(id);
-		List<GroupChat> userGroupChats = chatDbManager.getGroupChatByUserId(userId);
-		List<GroupChatViewModel> activeGroupChats = new ArrayList<GroupChatViewModel>();
-		Lobby lobby = chatDbManager.getLobbyByComponentId(id);
-		LobbyManager.instance().getActiveGroupChats(id).forEach(x->{
-			activeGroupChats.add(new GroupChatViewModel(x, LobbyManager.instance().getUsersByGroupId(lobby.getId(), x.getId())));
-		});
+		ResponseModel responseModel = getLobbyViewModel(componentId, request);
 		
-
-		LobbyViewModel lobbyViewModel = new LobbyViewModel(svm, lobby, userGroupChats, activeGroupChats);
-
-		ResponseModel responseModel = new ResponseModel<Object, LobbyViewModel>(lobbyViewModel, true,
-				CommonConstants.SUCCESSFUL_MESSAGE);
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
 		request.getRequestDispatcher("Chat/Lobby.jsp").forward(request, response);
 	}
