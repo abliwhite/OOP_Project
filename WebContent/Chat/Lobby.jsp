@@ -10,12 +10,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
 	<script src="http://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
 	<script src="http://code.jquery.com/jquery-3.2.1.js" type="text/javascript"></script>
 	<script type="text/javascript" src="../Subject/SubjectShareJS.js" ></script>
 	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
 	 		integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" 
 			integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
@@ -87,103 +89,76 @@
 	
 	
 	<div class="col-md-8">
-	<div >
-		<%
-			for(int i = 0;i< activeChats.size();i++){
-				out.print("<div class='card w-25'>");
-				out.print("<div class='card-header'>"+activeChats.get(i).getGroupChat().getName()+"</div>");
-				
-				out.print("<div class='card-card-block'>");
-				out.print("<h4 class='card-title'>Users</h4>");
-				String u = "";
-				/* List<User> users = activeChats.get(i).getUsers();
-				
-				
-				for(int j=0; j < users.size()-1;j++){
-					u = u + users.get(j).getUsername()+", ";
-				}
-				u = u + users.get(users.size()-1).getUsername();*/
-				out.print("<p class='card-text'>"+u+"</p>");
-				out.print("<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >");
-				out.print("</div>");
-				out.print("</div>");
-			}
+	<div>
 		
-		%>
 		<div class='card w-25'>	
-		<div class='card-header'> Create Group </div>
-		<div class='card-card-block'>
-		<h4 class='card-title'>Users</h4>
-		<p class='card-text'>"+u+"</p>
-		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
-		</div>
+			<div class='card-header'> Create Group </div>
+				<a class='btn btn-primary'>
+				<div class='card-card-block' style="height:100px" data-toggle="modal" data-target="#myModal" >
+					<i class="fa fa-plus fa-5x"></i>
+				</div>
+			</a>
 		</div>
 		
 		<div class='card w-25'>	
-		<div class='card-header'> Create Group </div>
-		<div class='card-card-block'>
-		<h4 class='card-title'>Users</h4>
-		<p class='card-text'>"+u+"</p>
-		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
-		</div>
-		</div>
-		
-		<div class='card w-25'>	
-		<div class='card-header'> Create Group </div>
-		<div class='card-card-block'>
-		<h4 class='card-title'>Users</h4>
-		<p class='card-text'>"+u+"</p>
-		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
-		</div>
-		
-		</div>
-		
-		<div class='card w-25'>	
-		<div class='card-header'> Create Group </div>
-		<div class='card-card-block'>
-		<h4 class='card-title'>Users</h4>
-		<p class='card-text'>"+u+"</p>
-		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
-		</div>
-		</div>
-		
-		<div class='card w-25'>	
-		<div class='card-header'> Create Group </div>
-		<div class='card-card-block'>
-		<h4 class='card-title'>Users</h4>
-		<p class='card-text'>"+u+"</p>
-		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
-		</div>
+			<div class='card-header'> Create Group </div>
+			<div class='card-card-block' style="height:100px">
+				<h4 class='card-title'>Users</h4>
+				<p class='card-text'>"+u+"</p>
+				<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
+			</div>
 		</div>
 		
 		
-		<div class='card w-25'>	
-		<div class='card-header'> Create Group </div>
-		<div class='card-card-block'>
-		<h4 class='card-title'>Users</h4>
-		<p class='card-text'>"+u+"</p>
-		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
-		</div>
-		</div>
 		
 		
-		<div class='card w-25'>	
-		<div class='card-header'> Create Group </div>
-		<div class='card-card-block'>
-		<h4 class='card-title'>Users</h4>
-		<p class='card-text'>"+u+"</p>
-		<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
-		</div>
-		</div>
 		
 		</div>
 		
-		
+	</div>
+	
+
+
+	<!-- Modal avige bootstrap is modeli rogorc unda gaaketo popup-->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Create Group</h4>
+	      </div>
+	      <div class="modal-body">
+	        	Group Name: <input type="text" class="form-control " placeholder="Group Name" name="groupname" id="groupname" >
+	        	<div class="form-check form-check-inline">
+				  <label class="form-check-label">
+				    <input class="form-check-input" type="radio" name="groupType" id="inlineRadio1" value="0"> Public
+				  </label>
+				</div>
+				<div class="form-check form-check-inline">
+				  <label class="form-check-label">
+				    <input class="form-check-input" type="radio" name="groupType" id="inlineRadio2" value="1"> Private
+				  </label>
+				</div>
+				<div class="form-check form-check-inline">
+				  <label class="form-check-label">
+				    <input class="form-check-input" type="radio" name="groupType" id="inlineRadio3" value="2"> Secret
+				  </label>
+				</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="newGroupChat()">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	
 </body>
 
 <script>
-
+$('#myModal').on('shown.bs.modal', function () {
+	  $('#myInput').focus()
+	})
 function addGroupPlus(){
 	
 }
@@ -195,7 +170,7 @@ function askToJoin(){
 _lobbyId =<%out.print(lobby.getId());%>
 _componentId = <%out.print(lobby.getSubjectComponentID());%>
 function refreshLobbyData(){
-	console.log("refreshing");
+	
 	data = {
 			lobbyId: _lobbyId,
 			componentId : _componentId
@@ -209,10 +184,16 @@ function refreshLobbyData(){
 	    success:  function( data ) {
 		  var activeGroups = [];
 		  var passiveGroups = [];
-		  console.log(data);
-		  $.each( data, function( key, val ) {
-			  console.log("Key = " + key + "Value = " + Value);
+		  console.log(data.resultObject.activeGroupchats);
+		  $.each( data.resultObject.activeGroupchats, function(activeChat) {
+			  activeGroups.push(getActiveGroup(activeChat));
 		  });
+		  activeGroups.add(getAddNewChatCard());
+		  $.each( data.resultObject.userGroupChats, function(passiveChat) {
+			  passiveGroups.push(getPassiveGroup(activeChat));
+		  });
+		  drawActiveGroups(activeGroups);
+		  drawPassiveGroups(passiveGroups);
 		 
 		  /* $( "<ul/>", {
 		    "class": "my-new-list",
@@ -222,16 +203,69 @@ function refreshLobbyData(){
 	});
 }
 refreshLobbyData();
-function getActiveGroup(json)
+
+function newGroupChat(){
+
+	rdBntVal = $('input[name=groupType]:checked').val();
+	groupName = $('input[name=groupname]').val();
+	console.log(rdBntVal);
+	console.log(groupName);
+	
+	
+	data = {
+			lobbyId: _lobbyId,
+			groupChatName : groupName,
+			privacyStatusId : rdBntVal + 1
+		};
+	
+	$.ajax({
+	    type: "POST",
+	    url: "/AddGroupChatServlet",
+	    contentType: "application/json",
+	    data: JSON.stringify(data),
+	    success:  function( data ) {
+	    	refreshLobbyData();
+		}
+	});
+
+	$('#myModal').modal('toggle');
+}
+
+function getAddNewChatCard()
 {
 	activeg = "<div class='card w-25'>";
 	activeg += "<div class='card-header'> Create Group </div>";
+	activeg +="<div class='card-card-block'>";
+	activeg +="<h4 class='card-title'>Users</h4>";
+	activeg +="<p class='card-text'></p>";
+	activeg +="<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >";
+	activeg +="</div>";
+	activeg +="</div>";
+}
+
+function getActiveGroup(json)
+{
+	console.log(json);
+	activeg = "<div class='card w-25'>";
+	activeg += "<div class='card-header'>" + json.groupChat.name + "</div>";
 	activeg +="<div class='card-card-block'>";
 	activeg +="<h4 class='card-title'>Users</h4>";
 	activeg +="<p class='card-text'>"+u+"</p>";
 	activeg +="<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >";
 	activeg +="</div>";
 	activeg +="</div>";
+}
+
+function getPassiveGroup(json)
+{
+	activeg = "<div class='card w-25'>";
+	activeg += "<div class='card-header'> Create Group </div>";
+	activeg += "<div class='card-card-block'>";
+	activeg += "<h4 class='card-title'>Users</h4>";
+	activeg += "<p class='card-text'>"+u+"</p>";
+	activeg += "<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >";
+	activeg += "</div>";
+	activeg += "</div>";
 }
 </script>
 
