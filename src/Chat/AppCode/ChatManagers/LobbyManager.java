@@ -29,8 +29,18 @@ public class LobbyManager {
 	}
 
 	private List<LobbyController> getLobbyControllersFromDB() {
-		List<Lobby> lobbies;
-		return null;
+		List<Lobby> lobbies = db.getAllLobbies();
+		List<LobbyController> lcs = lobbies.stream().map(x -> new LobbyController(x)).collect(Collectors.toList());
+		lcs.stream().forEach(x -> x.setGroupChatControllers(getAllGroupChatsByLobby(x.getLobby())));
+		return lcs;
+	}
+	
+	
+
+	private List<GroupChatController> getAllGroupChatsByLobby(Lobby lobby) {
+		List<GroupChat> groupChats = db.getAllGroupChatsByLobbyId(lobby.getId());
+		List<GroupChatController> gccs = groupChats.stream().map(x -> new GroupChatController(x)).collect(Collectors.toList());
+		return gccs;
 	}
 
 	public static LobbyManager instance() {
