@@ -23,5 +23,10 @@
 <h1><%=subject.getName()%> <%=subject.getYear()%></h1>
 <h2>Classmates:</h2>
 
+<%
+	for (User user : classmates) {
+		out.print("<h1>" + user.getUsername() + "</h1>");
+	}
+%>
 </body>
 </html>

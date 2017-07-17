@@ -778,6 +778,47 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		}
 		return result;
 	}
+	
+	public User getUserById(int id) {
+		User result = null;
+		try {
+			java.sql.Connection con = getConnection();
+			String deleteStatement = generator.getSelectByIDQuery(DbCertificate.UserTable.TABLE_NAME,
+					DbCertificate.UserTable.COLUMN_NAME_ID, 1);
+
+			java.sql.PreparedStatement st = con.prepareStatement(deleteStatement);
+			st.execute(generator.getUseDatabaseQuery());
+
+			setValues(Arrays.asList(String.valueOf(id)), st);
+			ResultSet rs = st.executeQuery();
+			result = getUser(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	private User getUser(ResultSet rs) {
+		try {
+			while (rs.next()) {
+				int id = rs.getInt(DbCertificate.UserTable.COLUMN_NAME_ID);
+				String username = rs.getString(DbCertificate.UserTable.COLUMN_NAME_USERNAME);
+				String password = rs.getString(DbCertificate.UserTable.COLUMN_NAME_PASSWORD);
+				String email = rs.getString(DbCertificate.UserTable.COLUMN_NAME_EMAIL);
+				String role = rs.getString(DbCertificate.UserTable.COLUMN_NAME_ROLE);
+				String gmailID = rs.getString(DbCertificate.UserTable.COLUMN_NAME_GMAIL_ID);
+				String facebookID = rs.getString(DbCertificate.UserTable.COLUMN_NAME_FACEBOOK_ID);
+				int profileID = rs.getInt(DbCertificate.UserTable.COLUMN_NAME_PROFILE_ID);
+				return new User(id, username, password, email, role, gmailID, facebookID, profileID, null);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	@Override
 	public List<User> getSubjectAllUsers(String subject, int year, int termId) {
@@ -794,7 +835,8 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 
 			ResultSet rs = st.executeQuery();
 
-			classmates = getUsersList(rs);
+			int subjectId = getSubjectId(rs);
+			classmates = findAllUsersWithConcreteSubject(subjectId);
 
 			con.close();
 		} catch (SQLException e) {
@@ -804,13 +846,43 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		return classmates;
 	}
 
-	private List<User> getUsersList(ResultSet rs) throws SQLException {
+	private List<User> findAllUsersWithConcreteSubject(int subjectId) {
 		List<User> classmates = new ArrayList<>();
-		
-		while (rs.next()){
-			 break;
+		try {
+			java.sql.Connection con = getConnection();
+			String selectQuery = "SELECT * FROM " + DbCertificate.UserSubjectTable.TABLE_NAME + " WHERE "
+					+ DbCertificate.UserSubjectTable.COLUMN_NAME_SUBJECT_ID + " = \"" + subjectId + "\"";
+
+			java.sql.PreparedStatement st = con.prepareStatement(selectQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			ResultSet rs = st.executeQuery();
+
+			classmates = getClassmatesArraylist(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-	
 		return classmates;
+	}
+
+	private List<User> getClassmatesArraylist(ResultSet rs) {
+		List<User> classmates = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				classmates.add(getUserById(rs.getInt(DbCertificate.UserSubjectTable.COLUMN_NAME_USER_ID)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return classmates;
+	}
+
+	private int getSubjectId(ResultSet rs) throws SQLException {
+		while (rs.next()) {
+			return rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_ID);
+		}
+		return -1;
 	}
 }
