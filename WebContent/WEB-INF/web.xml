@@ -107,34 +107,33 @@
     <servlet-class>Subject.Servlets.MaterialUploadServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>AddGroupChatServlet</display-name>
-  	<servlet-name>AddGroupChatServlet</servlet-name>
-  	<servlet-class>Chat.Servlets.AddGroupChatServlet</servlet-class>
+    <display-name>AddGroupChatServlet</display-name>
+    <servlet-name>AddGroupChatServlet</servlet-name>
+    <servlet-class>Chat.Servlets.AddGroupChatServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>LobbyPageGeneratorServlet</display-name>
-  	<servlet-name>LobbyPageGeneratorServlet</servlet-name>
-  	<servlet-class>Chat.Servlets.LobbyPageGeneratorServlet</servlet-class>
+    <display-name>LobbyPageGeneratorServlet</display-name>
+    <servlet-name>LobbyPageGeneratorServlet</servlet-name>
+    <servlet-class>Chat.Servlets.LobbyPageGeneratorServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>DeleteUserSubjectServlet</display-name>
-  	<servlet-name>DeleteUserSubjectServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.DeleteUserSubjectServlet</servlet-class>
+    <display-name>DeleteUserSubjectServlet</display-name>
+    <servlet-name>DeleteUserSubjectServlet</servlet-name>
+    <servlet-class>Subject.Servlets.DeleteUserSubjectServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>RefreshLobbyPageServlet</display-name>
-  	<servlet-name>RefreshLobbyPageServlet</servlet-name>
-  	<servlet-class>Chat.Servlets.RefreshLobbyPageServlet</servlet-class>
+    <display-name>RefreshLobbyPageServlet</display-name>
+    <servlet-name>RefreshLobbyPageServlet</servlet-name>
+    <servlet-class>Chat.Servlets.RefreshLobbyPageServlet</servlet-class>
   </servlet>
-  
   <servlet-mapping>
     <servlet-name>LobbyPageGeneratorServlet</servlet-name>
     <url-pattern>/LobbyPageGeneratorServlet</url-pattern>
@@ -200,16 +199,16 @@
     <url-pattern>/MaterialUploadServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>AddGroupChatServlet</servlet-name>
-  	<url-pattern>/AddGroupChatServlet</url-pattern>
+    <servlet-name>AddGroupChatServlet</servlet-name>
+    <url-pattern>/AddGroupChatServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>DeleteUserSubjectServlet</servlet-name>
-  	<url-pattern>/DeleteUserSubjectServlet</url-pattern>
+    <servlet-name>DeleteUserSubjectServlet</servlet-name>
+    <url-pattern>/DeleteUserSubjectServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>RefreshLobbyPageServlet</servlet-name>
-  	<url-pattern>/RefreshLobbyPageServlet</url-pattern>
+    <servlet-name>RefreshLobbyPageServlet</servlet-name>
+    <url-pattern>/RefreshLobbyPageServlet</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

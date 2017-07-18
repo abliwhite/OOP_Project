@@ -2,6 +2,7 @@ package Chat.AppCode.DbManagers;
 
 import java.util.List;
 
+import Account.Models.User;
 import Chat.Models.DbModels.ExternalMessage;
 import Chat.Models.DbModels.GroupChat;
 import Chat.Models.DbModels.InternalMessage;
@@ -35,5 +36,5 @@ public interface ChatDbManagerInterface  {
 	public List<PrivacyStatus> getAllPrivacyStatuses();
 	
 	public void updateGroupChat(GroupChat groupChat);
-	
+
 }

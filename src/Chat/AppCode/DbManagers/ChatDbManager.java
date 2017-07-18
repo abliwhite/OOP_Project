@@ -10,6 +10,7 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 
 import com.mysql.jdbc.Statement;
 
+import Account.Models.User;
 import Chat.Models.DbModels.ExternalMessage;
 import Chat.Models.DbModels.GroupChat;
 import Chat.Models.DbModels.InternalMessage;

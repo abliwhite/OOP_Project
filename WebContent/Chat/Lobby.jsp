@@ -135,8 +135,9 @@
 		
 		<%
 			out.print("<input type='hidden' value='"+session.getId()+"' id='si_id'>");
+			out.print("<input type='hidden' value='"+us.getUsername()+"' id='username_id'>");
 		%>
-		
+			<input type='hidden' id="current_groupChat_id">
 		<div>
 			
 			<div class='form-group col-lg-3 container'>
@@ -177,7 +178,7 @@
 			<table>
 				<tr>
 			        <td>
-			            <textarea rows="10" cols="80" id="log" title="Chat"></textarea>
+			            <textarea rows="10" cols="80" id="chat_messages" title="Chat"></textarea>
 			        </td>
 			    </tr>
 			    <tr>
@@ -240,24 +241,83 @@ $(document).ready(function() {
         console.log(event.data);
         var message = JSON.parse(event.data);
         
+       if(message.type == "ResponseMessage" && message.content == "Success"){
+    	   refreshChatWindow($("#current_groupChat_id").val());
+    	   console.log(message.content);
+       }
+       
        if(message.type == "RequestMessage"){
     	   console.log(message.content);
        }
+       
+       if(message.type == "InternalMessage"){
+    	   refreshChatWindow($("#current_groupChat_id").val());
+       }
+       
     };
 });
 
 $('#myModal').on('shown.bs.modal', function () {
 	  $('#myInput').focus()
 	})
+	
+function send(){
+	groupChatId = $("#current_groupChat_id").val();
+	var json = JSON.stringify({
+        userId: _userId,
+        type: "InternalMessage",
+        recieverId: groupChatId,
+        lobbyId: _lobbyId,
+        content: $("#msg").val()
+    });
+	
+    ws.send(json);
+}
+	
+function fillChatWithMessages(json){
+	chat = $("#chat_messages");
+	chat.empty();
+	messages = "";
+	u = $("#username_id").val();
+	for (i = 0; i < json.messages.length; i++) {
+		user = json.messages[i].user.username
+		if(user==u){
+			messages += "Me: "+json.messages[i].message.message+"\n";		
+		}else{
+	    	messages += user+": "+json.messages[i].message.message+"\n";
+		}
+	}
+	chat.html(messages);
+}
+
+function refreshChatWindow(groupChatId){
+	data = {
+			lobbyId: _lobbyId,
+			groupId : groupChatId
+		};
+	
+	$.ajax({
+	    type: "POST",
+	    url: "/RefreshChatServlet",
+	    contentType: "application/json",
+	    data: JSON.stringify(data),
+	    success:  function(data) {
+	    	$("#chat_id").show();
+	    	fillChatWithMessages(data.resultObject);
+	    	//refreshLobbyData();
+		}
+	});
+}
 
 function askToJoin(groupChatId){
+	//$("#chat_id").show();
 	var json = JSON.stringify({
         userId: _userId,
         type: "RequestMessage",
-        recieverGroupId: groupChatId,
+        recieverId: groupChatId,
         lobbyId: _lobbyId
     });
-
+	$("#current_groupChat_id").val(groupChatId);
     ws.send(json);
 }
 
