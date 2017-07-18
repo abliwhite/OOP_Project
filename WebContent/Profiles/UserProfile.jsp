@@ -96,7 +96,8 @@ List<Subject> userSubjects = spViewModel.getUserSubjects();
 <script>
 
 function EditUserSubject(subjectId){
-	
+	redirectUrl = "EditUserSubjectPageGenerator?id="+subjectId;
+	window.location = redirectUrl;
 }
 
 function DeleteUserSubject(subjectId){
@@ -141,15 +142,14 @@ function generateSubjectTable(list){
 	templates.append(thead);
 
 	list.forEach(function createComponentTemplateTableRow(args) {
-		console.log(args.subject.name)
 		var tr = document.createElement('tr');
-		tr.setAttribute("id", "subject_tr_"+args.subject.id);
+		tr.setAttribute("id", "subject_tr_"+args.id);
 		tr.setAttribute("class", "info");
 
 		var nameTd = document.createElement('td');
 		var name = document.createElement("label");
-		name.setAttribute("id", "subject_name_label_id" + args.subject.id);
-		name.innerHTML = args.subject.name;
+		name.setAttribute("id", "subject_name_label_id" + args.id);
+		name.innerHTML = args.name;
 		nameTd.append(name);
 
 		var removeEditTd = document.createElement('td');
@@ -157,14 +157,14 @@ function generateSubjectTable(list){
 		var remove = document.createElement("INPUT");
 		remove.setAttribute("type", "button");
 		remove.setAttribute("value", "Delete");
-		remove.setAttribute("onclick", "DeleteSubject(" + args.subject.id
+		remove.setAttribute("onclick", "DeleteUserSubject(" + args.id
 				+ "); return false;");
 		remove.setAttribute("class", "btn btn-danger");
 		
 		var edit = document.createElement("INPUT");
 		edit.setAttribute("type", "button");
 		edit.setAttribute("value", "Edit");
-		edit.setAttribute("onclick", "EditSubject(" + args.subject.id
+		edit.setAttribute("onclick", "EditUserSubject(" + args.id
 				+ "); return false;");
 		edit.setAttribute("class", "btn btn-primary");
 		

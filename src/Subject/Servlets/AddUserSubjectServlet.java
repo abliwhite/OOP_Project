@@ -19,6 +19,7 @@ import Subject.Models.DbModels.CommonSubjectComponent;
 import Subject.Models.DbModels.Subject;
 import Subject.Models.DbModels.SubjectComponentType;
 import Subject.Models.DbModels.UserSubject;
+import Subject.Models.ViewModels.CommonSubjectComponentViewModel;
 
 /**
  * Servlet implementation class AddUserSubjectServlet
@@ -62,10 +63,15 @@ public class AddUserSubjectServlet extends SubjectServletParent {
 			int sId = Integer.parseInt(subjectId);
 
 			UserSubject us = new UserSubject(uId, sId);
+			List<CommonSubjectComponentViewModel> cscViewModels = manager
+					.getAllCommonSubjectComponentsViewModelBySubjectID(sId);
+			
+			
 			manager.addUserSubject(us);
 
-			List<String> subjects = manager.getUserSubjects(uId).stream().map(x -> x.getName())
-					.collect(Collectors.toList());
+			System.out.println(manager.getUserSubjects(uId).size());
+			List<Subject> subjects = manager.getUserSubjects(uId);
+			System.out.println(subjects.size());
 			ResponseModel responseModel = new ResponseModel(subjects, true, CommonConstants.SUCCESSFUL_MESSAGE);
 			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
 		}

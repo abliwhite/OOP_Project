@@ -966,6 +966,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 			int year = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_YEAR);
 			int subjectInfoID = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_SUBJECT_INFO_ID);
 			
+			result.add(new Subject(id,name, termId, year, subjectInfoID));
 		}
 		
 		return result;
