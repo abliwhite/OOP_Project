@@ -191,7 +191,24 @@
 		</div>
 	</div>
 	
-
+	<!-- Modal avige bootstrap is modeli rogorc unda gaaketo popup-->
+	<div class="modal fade" id="joinRequest" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Request</h4>
+	      </div>
+	      <div class="modal-body" id="joinRequest_content">
+	        	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Reject</button>
+	        <button type="button" class="btn btn-primary" onclick="AcceptJoin()">Accept</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 	<!-- Modal avige bootstrap is modeli rogorc unda gaaketo popup-->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -250,6 +267,12 @@ window.onload = function() {
        
        if(message.type == "RequestMessage"){
     	   console.log(message.content);
+    	   
+    	   $("#joinRequest_content").html(message.content);
+    	   $('#joinRequest_content').modal('toggle');
+    	   $('#joinRequest_content').addEventListener('click', function(){
+    		   AcceptJoin(message.userId);
+    		});
        }
        
        if(message.type == "InternalMessage"){
@@ -260,6 +283,18 @@ window.onload = function() {
     
 };
 
+function AcceptJoin(userId){
+	groupChatId = $("#current_groupChat_id").val();
+	var json = JSON.stringify({
+        userId: _userId,
+        type: "ResponseMessage",
+        receiverId: userId,
+        lobbyId: _lobbyId,
+        content: "Success"
+    });
+	
+    ws.send(json);
+}
 
 $('#myModal').on('shown.bs.modal', function () {
 	  $('#myInput').focus()
