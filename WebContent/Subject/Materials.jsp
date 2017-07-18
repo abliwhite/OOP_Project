@@ -35,7 +35,6 @@
 	CommonSubjectComponentViewModel viewModel = (CommonSubjectComponentViewModel)resp.getResultObject();
 	List<SubjectComponentMaterial> materials = viewModel.getMaterials();
 	Subject subject=viewModel.getSubject();
-	
 %>
 </head>
 
@@ -77,9 +76,13 @@
 				}
 				%>
 			</table>
-			<form action="MaterialUploadervlet" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" />
-    <input type="submit" class="btn btn-success" />
+		 <form action="MaterialUploadServlet" method="post"
+                    enctype="multipart/form-data">
+      <input type="file" name="file" size="50" />
+       <br />
+    <input type="submit" value="Upload File" />
+   
+       </form>
 </form>
 		</div>
 		

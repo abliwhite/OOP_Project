@@ -100,7 +100,7 @@ public class QueryGenerator {
 	public String getDeleteByIdListQuery(String tableName, String idName, int numIds) {
 		String result = "";
 		for (int i = 0; i < numIds; i++) {
-			result = result + getDeleteByAnyIDQuery(tableName, idName);
+			result = result + getDeleteByAnyIDQuery(tableName, idName)+";";
 		}
 
 		return result;
