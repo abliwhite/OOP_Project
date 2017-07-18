@@ -15,7 +15,9 @@ public class SubjectComponentMaterial {
 	}
 
 	public SubjectComponentMaterial(String materialPath, String uploadDate, String subjectComponentId) {
-		this(null, materialPath, uploadDate, subjectComponentId);
+		this.materialPath=materialPath;
+		this.subjectComponentId=subjectComponentId;
+		this.uploadDate=uploadDate;
 	}
 
 	public int getId() {
