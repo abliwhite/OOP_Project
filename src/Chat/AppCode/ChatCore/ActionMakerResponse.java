@@ -13,6 +13,9 @@ public class ActionMakerResponse implements ActionMakerInterface {
 	@Override
 	public void processMessage(Message message) {
 		ChatEndpoint endpoint = LobbyManager.instance().getEndpointByUserId(message.getReceiverId());
+		if (message.getContent().equals("Success")) {
+			LobbyManager.instance().addUserToGroup(message.getReceiverId(), message.getSenderGroupId(), message.getLobbyId());
+		}
 		if (endpoint == null)
 			return;
 		synchronized (endpoint) {

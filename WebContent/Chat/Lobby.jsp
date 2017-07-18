@@ -204,7 +204,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Reject</button>
-	        <button type="button" class="btn btn-primary" onclick="AcceptJoin()">Accept</button>
+	        <button type="button" class="btn btn-primary" >Accept</button>
 	      </div>
 	    </div>
 	  </div>
@@ -274,12 +274,10 @@ window.onload = function() {
        
        if(message.type == "RequestMessage"){
     	   console.log(message.content);
-    	   
-    	   $("#joinRequest_content").html(message.content);
-    	   $('#joinRequest_content').modal('toggle');
-    	   $('#joinRequest_content').addEventListener('click', function(){
+    	   if (confirm(message.content)) {
     		   AcceptJoin(message.userId);
-    		});
+   	   		}
+    	   
        }
        
        if(message.type == "InternalMessage"){
@@ -433,7 +431,7 @@ function newGroupChat(){
 	data = {
 			lobbyId: _lobbyId,
 			groupChatName : groupName,
-			privacyStatusId : 1 //(parseInt(rdBntVal) + 1)
+			privacyStatusId : (parseInt(rdBntVal) + 1)
 		};
 	
 	$.ajax({
