@@ -138,7 +138,7 @@ public class MaterialUploadServlet extends SubjectServletParent {
 		String dat=CommonConstants.getDatetime();
 		String path= file.getPath();
 		SubjectComponentMaterial material= new SubjectComponentMaterial(path, dat, "2");
-		manager.addSubjectComponentMaterial(material);
+		//manager.addSubjectComponentMaterial(material);
 		response.sendRedirect("/ComponentMaterialsPageGeneratorServlet?id=2");
 	}
 

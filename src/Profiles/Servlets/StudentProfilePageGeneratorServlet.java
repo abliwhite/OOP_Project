@@ -2,6 +2,7 @@ package Profiles.Servlets;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import Account.Models.User;
 import Account.Models.UserProfile;
+import Common.AppCode.CommonConstants;
+import Common.Models.ResponseModel;
+import Profiles.ProfileViewModels.StudentProfileViewModel;
+import Profiles.ProfileViewModels.UserSubjectDropDownViewModel;
 import Subject.Models.DbModels.Subject;
 import Subject.Models.DbModels.SubjectTerm;
 import Subject.Servlets.SubjectServletParent;
@@ -36,17 +41,17 @@ public class StudentProfilePageGeneratorServlet extends ProfileServletParent {
 			throws ServletException, IOException {
 		super.doGet(request, response);
 		String userId = request.getParameter("id");
-		
-		if(!fullNumericStringValidation(userId)){
-			
+
+		if (!fullNumericStringValidation(userId)) {
+
 			return;
 		}
 		// TODO yleobebia shesasworebelia
 
 		User user = accountManager.getUserById(Integer.parseInt(userId));
-		
+
 		if (user == null) {
-			//TODO errois page
+			// TODO errois page
 			return;
 		}
 
@@ -55,16 +60,17 @@ public class StudentProfilePageGeneratorServlet extends ProfileServletParent {
 			user.setUserProfile(profile);
 		}
 		List<Subject> userSubjects = accountManager.getUserSubjects(user);
-		List<Subject> allSubjects = subjectManager.getAllSubjects();
+		List<UserSubjectDropDownViewModel> allSubjects = subjectManager.getAllSubjects()
+				.stream().map(x -> new UserSubjectDropDownViewModel(x.getName() + " "
+						+ (x.getTermId() == 1 ? "Fall" : "Spring")  + String.valueOf(x.getYear()), x.getId()))
+				.collect(Collectors.toList());
 
-		request.setAttribute("UserSubjects", userSubjects);
-		request.setAttribute("user", user);
-		request.setAttribute("AllSubjects", allSubjects);
-		
-		List<SubjectTerm> SubjectTerms = subjectManager.GetAllSubjectTerms();
+		StudentProfileViewModel spViewModel = new StudentProfileViewModel(user, allSubjects, userSubjects);
 
-		request.setAttribute("SubjectTerms", SubjectTerms);
+		ResponseModel responseModel = new ResponseModel<Object, StudentProfileViewModel>(spViewModel, true,
+				CommonConstants.SUCCESSFUL_MESSAGE);
 
+		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
 		request.getRequestDispatcher("/Profiles/UserProfile.jsp").forward(request, response);
 	}
 

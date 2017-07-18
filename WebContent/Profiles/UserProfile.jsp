@@ -3,7 +3,9 @@
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page import="Account.Models.*"%>
+<%@ page import="Common.Models.*"%>
 <%@ page import="Account.AppCode.*"%>
+<%@ page import="Profiles.ProfileViewModels.*"%>
 <%@ page import="Subject.Models.DbModels.*"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Set"%>
@@ -21,11 +23,9 @@
 <script src="http://code.jquery.com/jquery-3.2.1.js" type="text/javascript"></script>
 
 <%
-	User user = (User) request.getAttribute("user");
-	UserProfile profile = user.getProfile();
-	List<SubjectTerm> subjectTermsList = (ArrayList<SubjectTerm>) request.getAttribute("SubjectTerms");
-	List<Subject> userSubjects = (ArrayList<Subject>)request.getAttribute("UserSubjects");
-	List<Subject> allSubjects = (ArrayList<Subject>)request.getAttribute("AllSubjects");
+ResponseModel responseModel = (ResponseModel)request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
+StudentProfileViewModel  spViewModel = (StudentProfileViewModel)responseModel.getResultObject();
+List<Subject> userSubjects = spViewModel.getUserSubjects();
 %>
 
 <head>
@@ -36,36 +36,19 @@
 
 <body>
 	<div class="w3-container w3-blue">
-		<h1>Hello, <%=profile.getName()%>!</h1>
+		<h1>Hello, <%=spViewModel.getUser().getProfile().getName()%>!</h1>
 	</div>
 	<br>
 	
 	<div class="container">
-		<input type="hidden" id="hidden_user_id" value="<%=user.getId()%>">
+		<input type="hidden" id="hidden_user_id" value="<%=spViewModel.getUser().getId()%>">
 		<h3>Add Subject:</h3>
 		Subject: <select class="form-control" name="Subjects" id="subjects_id">
 		<%
-			Set<Integer> years = new HashSet<Integer>();
-			for (Subject sub : allSubjects) {
-				years.add(sub.getYear());
-				out.print("<option value = '" + sub.getName() + "'>" + sub.getName() + "</option>");
-			}
-		%>
-		</select>
-			
-		Year: <select class="form-control" name="SubjectYears" id="year_id">
-		<%
-			for (int year : years) {
-				out.print("<option value = '" + year + "'>" + year + "</option>");
-			}
-		%>
-		</select>
-		
-		Term: <select class="form-control" name="SubjectTerm" id="term_id">
-		<%
-			for (int i = 0; i < subjectTermsList.size(); i++) {
-				SubjectTerm term = subjectTermsList.get(i);
-				out.print("<option value = '" + term.getId() + "'>" + term.getName() + "</option>");
+			List<UserSubjectDropDownViewModel> allSubjects = spViewModel.getAllSubjects();
+			for (UserSubjectDropDownViewModel sub : allSubjects) {
+				
+				out.print("<option value = '" + sub.getSubjectId() + "'>" + sub.getSubjectIdentityString()+ "</option>");
 			}
 		%>
 		</select>
@@ -137,29 +120,72 @@ function DeleteUserSubject(subjectId){
 	
 }
 
+function generateSubjectTable(list){
+	var templatesDiv = $("#search_subject_list_id");
+
+	templatesDiv.empty();
+
+	var templates = document.createElement('table');
+
+	templates.setAttribute("class", "table");
+	var thead = document.createElement('thead');
+	// thead.setAttribute("class","thead-inverse");
+	var tr1 = document.createElement('tr');
+	var th1 = document.createElement('th');
+	th1.innerText = "Name";
+
+	tr1.append(th1);
+
+	thead.append(tr1);
+
+	templates.append(thead);
+
+	list.forEach(function createComponentTemplateTableRow(args) {
+		console.log(args.subject.name)
+		var tr = document.createElement('tr');
+		tr.setAttribute("id", "subject_tr_"+args.subject.id);
+		tr.setAttribute("class", "info");
+
+		var nameTd = document.createElement('td');
+		var name = document.createElement("label");
+		name.setAttribute("id", "subject_name_label_id" + args.subject.id);
+		name.innerHTML = args.subject.name;
+		nameTd.append(name);
+
+		var removeEditTd = document.createElement('td');
+		
+		var remove = document.createElement("INPUT");
+		remove.setAttribute("type", "button");
+		remove.setAttribute("value", "Delete");
+		remove.setAttribute("onclick", "DeleteSubject(" + args.subject.id
+				+ "); return false;");
+		remove.setAttribute("class", "btn btn-danger");
+		
+		var edit = document.createElement("INPUT");
+		edit.setAttribute("type", "button");
+		edit.setAttribute("value", "Edit");
+		edit.setAttribute("onclick", "EditSubject(" + args.subject.id
+				+ "); return false;");
+		edit.setAttribute("class", "btn btn-primary");
+		
+		removeEditTd.append(edit);
+		removeEditTd.append(remove);	
+		
+		tr.append(nameTd);
+		tr.append(removeEditTd);
+
+		templates.append(tr);
+	});
+
+	templatesDiv.append(templates);
+}
+
 function addUserSubject(){
-	subjectName = $("#subjects_id").val();
-	subjectYear = $("#year_id").val();
-	subjectTermId = $("#term_id").val();
+	subjectId = $("#subjects_id").val();
 	userId = $("#hidden_user_id").val();
 	
-	console.log(subjectName);
-	console.log(subjectYear);
-	console.log(subjectTermId);
-	console.log(userId);
-		
-	if (subjectName == "" || subjectYear == "" || subjectTermId == ""){
-		$("#alert_div_id").removeClass("alert alert-success");
-		$("#alert_div_id").addClass("alert alert-danger");
-		$("#alert_div_id").html("Fill All Fields!");
-    	$("#alert_div_id").show();
-    	return;
-	}
-		
 	data = {
-			subjectName: subjectName,			
-			subjectYear: subjectYear,
-			subjectTermId: subjectTermId,
+			subjectId: subjectId,			
 			userId: userId
 		};
 		
@@ -169,7 +195,8 @@ function addUserSubject(){
 		contentType: "application/json",
 		data: JSON.stringify(data),
 		success: function(response) {
-		    buildNewComponentTemplateTable(response);
+			console.log(response.resultList);
+			generateSubjectTable(response.resultList);
 		}
 	});
 }

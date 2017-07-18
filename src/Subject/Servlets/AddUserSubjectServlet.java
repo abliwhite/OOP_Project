@@ -1,6 +1,9 @@
 package Subject.Servlets;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import Common.AppCode.CommonConstants;
+import Common.Models.ResponseModel;
 import Subject.Models.DbModels.CommonSubjectComponent;
 import Subject.Models.DbModels.Subject;
 import Subject.Models.DbModels.SubjectComponentType;
@@ -21,46 +25,49 @@ import Subject.Models.DbModels.UserSubject;
  */
 public class AddUserSubjectServlet extends SubjectServletParent {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddUserSubjectServlet() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//redirectToLoginIfNotLogged(request,response);
+	public AddUserSubjectServlet() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// redirectToLoginIfNotLogged(request,response);
 		super.doGet(request, response);
 		returnDefaultJsonToView(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		super.doPost(request, response);//use in every do post method
+		super.doPost(request, response);// use in every do post method
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
-		String name = data.get("subjectName").getAsString();
-		String year = data.get("subjectYear").getAsString();
-		String termId = data.get("subjectTermId").getAsString();
-		String userId =  data.get("userId").getAsString();
+		String subjectId = data.get("subjectId").getAsString();
+		String userId = data.get("userId").getAsString();
 
-		if (!(fullNumericStringValidation(year) && fullNumericStringValidation(termId))) {
-			
+		if (!(fullNumericStringValidation(subjectId) && fullNumericStringValidation(userId))) {
+
 		} else {
-			Subject subject = manager.getSubjectByFilter(name, Integer.parseInt(year), Integer.parseInt(termId));
 			int uId = Integer.parseInt(userId);
-			int sId = subject.getId();
+			int sId = Integer.parseInt(subjectId);
+
 			UserSubject us = new UserSubject(uId, sId);
 			manager.addUserSubject(us);
-			
-			
-			request.setAttribute("userId", userId);
+
+			List<String> subjects = manager.getUserSubjects(uId).stream().map(x -> x.getName())
+					.collect(Collectors.toList());
+			ResponseModel responseModel = new ResponseModel(subjects, true, CommonConstants.SUCCESSFUL_MESSAGE);
+			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
 		}
 		doGet(request, response);
 	}

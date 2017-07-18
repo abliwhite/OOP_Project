@@ -87,6 +87,8 @@ public class AddSubjectServlet extends SubjectServletParent {
 		Subject subject = new Subject(name, Integer.parseInt(termId), Integer.parseInt(year), subjectInfoId);
 		manager.AddSubject(subject);
 		Integer subjectId = subject.getId();
+		
+		
 
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
 				new ResponseModel(subjectId.toString(), true,CommonConstants.SUCCESSFUL_MESSAGE));

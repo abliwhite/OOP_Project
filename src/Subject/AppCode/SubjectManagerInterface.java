@@ -67,6 +67,8 @@ public interface SubjectManagerInterface {
 
 	public void deleteUserSubjectComponentByUserId(String userId);
 	
+	public List<Subject> getUserSubjects(int userId);
+	
 }
 
 

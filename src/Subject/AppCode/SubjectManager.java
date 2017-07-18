@@ -457,7 +457,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		try {
 			java.sql.Connection con = getConnection();
 			String selectQuery = "SELECT * FROM " + DbCertificate.SubjectTable.TABLE_NAME + " WHERE "
-					+ DbCertificate.SubjectTable.COLUMN_NAME_NAME + " = " + subjectName  + " AND "
+					+ DbCertificate.SubjectTable.COLUMN_NAME_NAME + " = " + subjectName + " AND "
 					+ DbCertificate.SubjectTable.COLUMN_NAME_YEAR + " = " + year + " AND "
 					+ DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID + " = " + termId;
 
@@ -925,4 +925,50 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public List<Subject> getUserSubjects(int userId) {
+		List<Subject> result = null;
+		try {
+			java.sql.Connection con = getConnection();
+			String selectAllQuery = "SELECT " + DbCertificate.SubjectTable.UNIQUE_COLUMN_NAME_ID + ","
+					+ DbCertificate.SubjectTable.COLUMN_NAME_NAME + ","
+					+ DbCertificate.SubjectTable.COLUMN_NAME_SUBJECT_INFO_ID + ","
+					+ DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID + "," + DbCertificate.SubjectTable.COLUMN_NAME_YEAR
+					+ " From " + DbCertificate.UserSubjectTable.TABLE_NAME + " INNER JOIN "
+					+ DbCertificate.SubjectTable.TABLE_NAME + " ON " + DbCertificate.SubjectTable.UNIQUE_COLUMN_NAME_ID
+					+ " = " + DbCertificate.UserSubjectTable.COLUMN_NAME_SUBJECT_ID + " WHERE "
+					+ DbCertificate.UserSubjectTable.COLUMN_NAME_USER_ID + " = " + userId;
+
+			System.out.println(selectAllQuery);
+			java.sql.PreparedStatement st = con.prepareStatement(selectAllQuery);
+			st.executeQuery(generator.getUseDatabaseQuery());
+
+			ResultSet rs = st.executeQuery();
+
+			result = getJoinSubjectList(rs);
+
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+	
+	private List<Subject> getJoinSubjectList(ResultSet rs) throws SQLException{
+		List<Subject> result = new ArrayList<Subject>();
+
+		while (rs.next()) {
+			int id = rs.getInt(DbCertificate.SubjectTable.UNIQUE_COLUMN_NAME_ID);
+			String name = rs.getString(DbCertificate.SubjectTable.COLUMN_NAME_NAME);
+			int termId = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID);
+			int year = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_YEAR);
+			int subjectInfoID = rs.getInt(DbCertificate.SubjectTable.COLUMN_NAME_SUBJECT_INFO_ID);
+			
+		}
+		
+		return result;
+	}
+
 }
