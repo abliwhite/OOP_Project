@@ -296,7 +296,7 @@ function AcceptJoin(userId){
         receiverId: userId,
         lobbyId: _lobbyId,
         content: "Success",
-        senderGroupId:$("#current_groupChat_id").val();
+        senderGroupId:$("#current_groupChat_id").val()
     });
 	
     ws.send(json);

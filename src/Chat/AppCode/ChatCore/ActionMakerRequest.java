@@ -14,7 +14,7 @@ public class ActionMakerRequest implements ActionMakerInterface {
 	@Override
 	public void processMessage(Message message) {
 		if (LobbyManager.instance().getGroupChatById(message.getLobbyId(), message.getReceiverId())
-				.getPrivacyStatusID() == 0){ //PrivacyStatusEnum.PUBLIC.ordinal() + 1) {
+				.getPrivacyStatusID() == 1){ //PrivacyStatusEnum.PUBLIC.ordinal() + 1) {
 			Message response = new Message(message.getReceiverId(), null, message.getReceiverId(),
 					message.getUserId(), message.getLobbyId(), "ResponseMessage", "Success");
 			response.setActionMaker();
