@@ -8,7 +8,6 @@
     <servlet-name>AddSubjectPageGeneratorServlet</servlet-name>
     <servlet-class>Subject.Servlets.AddSubjectPageGeneratorServlet</servlet-class>
   </servlet>
-  
   <servlet>
     <description>
   	</description>
@@ -44,7 +43,6 @@
     <servlet-name>EditSubjectPageGeneratorServlet</servlet-name>
     <servlet-class>Subject.Servlets.EditSubjectPageGeneratorServlet</servlet-class>
   </servlet>
-  
   <servlet>
     <description>
   	</description>
@@ -81,33 +79,65 @@
     <servlet-class>Authentication.Servlets.RegisterServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>SubjectPageGeneratorServlet</display-name>
-  	<servlet-name>SubjectPageGeneratorServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.UserSubjectPageGeneratorServlet</servlet-class>
+    <display-name>SubjectPageGeneratorServlet</display-name>
+    <servlet-name>SubjectPageGeneratorServlet</servlet-name>
+    <servlet-class>Subject.Servlets.UserSubjectPageGeneratorServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>LobbyServlet</display-name>
-  	<servlet-name>LobbyServlet</servlet-name>
-  	<servlet-class>Chat.Servlets.LobbyServlet</servlet-class>
+    <display-name>LobbyServlet</display-name>
+    <servlet-name>LobbyServlet</servlet-name>
+    <servlet-class>Chat.Servlets.LobbyServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>ComponentMaterialsPageGeneratorServlet</display-name>
-  	<servlet-name>ComponentMaterialsPageGeneratorServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.ComponentMaterialsPageGeneratorServlet</servlet-class>
+    <display-name>ComponentMaterialsPageGeneratorServlet</display-name>
+    <servlet-name>ComponentMaterialsPageGeneratorServlet</servlet-name>
+    <servlet-class>Subject.Servlets.ComponentMaterialsPageGeneratorServlet</servlet-class>
   </servlet>
   <servlet>
-  	<description>
+    <description>
   	</description>
-  	<display-name>MaterialUploadServlet</display-name>
-  	<servlet-name>MaterialUploadServlet</servlet-name>
-  	<servlet-class>Subject.Servlets.MaterialUploadServlet</servlet-class>
+    <display-name>MaterialUploadServlet</display-name>
+    <servlet-name>MaterialUploadServlet</servlet-name>
+    <servlet-class>Subject.Servlets.MaterialUploadServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description>
+  	</description>
+    <display-name>AddGroupChatServlet</display-name>
+    <servlet-name>AddGroupChatServlet</servlet-name>
+    <servlet-class>Chat.Servlets.AddGroupChatServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>
+  	</description>
+    <display-name>LobbyPageGeneratorServlet</display-name>
+    <servlet-name>LobbyPageGeneratorServlet</servlet-name>
+    <servlet-class>Chat.Servlets.LobbyPageGeneratorServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>
+  	</description>
+    <display-name>DeleteUserSubjectServlet</display-name>
+    <servlet-name>DeleteUserSubjectServlet</servlet-name>
+    <servlet-class>Subject.Servlets.DeleteUserSubjectServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>
+  	</description>
+    <display-name>RefreshLobbyPageServlet</display-name>
+    <servlet-name>RefreshLobbyPageServlet</servlet-name>
+    <servlet-class>Chat.Servlets.RefreshLobbyPageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LobbyPageGeneratorServlet</servlet-name>
+    <url-pattern>/LobbyPageGeneratorServlet</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>RegisterServlet</servlet-name>
     <url-pattern>/RegisterServlet</url-pattern>
@@ -153,20 +183,32 @@
     <url-pattern>/StudentProfilePageGeneratorServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>SubjectPageGeneratorServlet</servlet-name>
-  	<url-pattern>/SubjectPageGeneratorServlet</url-pattern>
+    <servlet-name>SubjectPageGeneratorServlet</servlet-name>
+    <url-pattern>/SubjectPageGeneratorServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>LobbyServlet</servlet-name>
-  	<url-pattern>/LobbyServlet</url-pattern>
+    <servlet-name>LobbyServlet</servlet-name>
+    <url-pattern>/LobbyServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>ComponentMaterialsPageGeneratorServlet</servlet-name>
-  	<url-pattern>/ComponentMaterialsPageGeneratorServlet</url-pattern>
+    <servlet-name>ComponentMaterialsPageGeneratorServlet</servlet-name>
+    <url-pattern>/ComponentMaterialsPageGeneratorServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>MaterialUploadServlet</servlet-name>
-  	<url-pattern>/MaterialUploadServlet</url-pattern>
+    <servlet-name>MaterialUploadServlet</servlet-name>
+    <url-pattern>/MaterialUploadServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AddGroupChatServlet</servlet-name>
+    <url-pattern>/AddGroupChatServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DeleteUserSubjectServlet</servlet-name>
+    <url-pattern>/DeleteUserSubjectServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RefreshLobbyPageServlet</servlet-name>
+    <url-pattern>/RefreshLobbyPageServlet</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

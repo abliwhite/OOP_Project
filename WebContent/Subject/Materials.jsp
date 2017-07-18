@@ -32,7 +32,7 @@
 <title>Edit Subject</title>
 <% 
 	ResponseModel resp = (ResponseModel)request.getAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE);
-CommonSubjectComponentViewModel viewModel = (CommonSubjectComponentViewModel)resp.getResultObject();
+	CommonSubjectComponentViewModel viewModel = (CommonSubjectComponentViewModel)resp.getResultObject();
 	List<SubjectComponentMaterial> materials = viewModel.getMaterials();
 	Subject subject=viewModel.getSubject();
 %>

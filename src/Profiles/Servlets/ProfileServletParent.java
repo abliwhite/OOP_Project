@@ -7,7 +7,7 @@ import Common.AppCode.CommonServlet;
 import Subject.AppCode.SubjectManager;
 import Subject.AppCode.SubjectManagerInterface;
 
-public class ProfileServletParent extends CommonServlet {
+public abstract class ProfileServletParent extends CommonServlet {
 	public SubjectManagerInterface subjectManager;
 	public AccountManagerInterface accountManager;
 

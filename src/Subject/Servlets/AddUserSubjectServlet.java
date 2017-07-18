@@ -34,14 +34,8 @@ public class AddUserSubjectServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//redirectToLoginIfNotLogged(request,response);
-		int userId = (int) request.getAttribute("userId");
-
-		String json = new Gson().toJson(userId);
-
-		response.setContentType(CommonConstants.DATA_TRANSFER_METHOD_JSON);
-		response.setCharacterEncoding(CommonConstants.CHAR_ENCODING);
-
-		response.getWriter().write(json);
+		super.doGet(request, response);
+		returnDefaultJsonToView(request, response);
 	}
 
 	/**
@@ -56,14 +50,17 @@ public class AddUserSubjectServlet extends SubjectServletParent {
 		String termId = data.get("subjectTermId").getAsString();
 		String userId =  data.get("userId").getAsString();
 
-		if (fullNumericStringValidation(year) && fullNumericStringValidation(termId)) {
+		if (!(fullNumericStringValidation(year) && fullNumericStringValidation(termId))) {
+			
+		} else {
 			Subject subject = manager.getSubjectByFilter(name, Integer.parseInt(year), Integer.parseInt(termId));
-			UserSubject us = new UserSubject(1, Integer.parseInt(userId), subject.getId());
+			int uId = Integer.parseInt(userId);
+			int sId = subject.getId();
+			UserSubject us = new UserSubject(uId, sId);
 			manager.addUserSubject(us);
 			
+			
 			request.setAttribute("userId", userId);
-		} else {
-			// incorrect paramaters
 		}
 		doGet(request, response);
 	}

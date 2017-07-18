@@ -1,11 +1,14 @@
 package Subject.Servlets;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Account.Models.User;
 import Authentication.Servlets.AuthenticationServletParent;
 import Subject.Models.DbModels.Subject;
 
@@ -28,12 +31,17 @@ public class UserSubjectPageGeneratorServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		redirectToLoginIfNotLogged(request, response);
+		
 		String subject = request.getParameter("subject");
 		String year = request.getParameter("year");
 		String termId = request.getParameter("term");
 	
 		Subject existedSubject = manager.getSubjectByFilter(subject, Integer.parseInt(year), Integer.parseInt(termId));
 		
+		List<User> classmates = manager.getSubjectAllUsers(subject, Integer.parseInt(year), Integer.parseInt(termId));
+		
+		request.setAttribute("classmates", classmates);
 		request.setAttribute("subject", existedSubject);
 		request.getRequestDispatcher("/Subject/SubjectPage.jsp").forward(request, response);
 	}

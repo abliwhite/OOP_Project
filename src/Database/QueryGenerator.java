@@ -43,7 +43,7 @@ public class QueryGenerator {
 		for (int i = 0; i < numValues; i++) {
 			str.append("?,");
 		}
-		str.replace(str.length() - 1, str.length(), ");");
+		str.replace(str.length() - 1, str.length(), ")");
 
 		return str.toString();
 	}
@@ -87,16 +87,22 @@ public class QueryGenerator {
 				+ getInsertNonInjectiveQuery(numInClauseArguments);
 	}
 
+	public String getSelectTopLimitOrderByByIDQuery(String tableName, String idName, int numInClauseArguments,
+			int limit, String orderColumnName) {
+		return getSelectByIDQuery(tableName, idName, numInClauseArguments) + " " + " Order By " + orderColumnName
+				+ " LIMIT " + limit;
+	}
+
 	public String getSelectAllQuery(String tableName) {
 		return DB_SELECT_ALL + " " + tableName;
 	}
 
-	public String getDeleteByIdListQuery(String tableName,String idName, int numIds) {
+	public String getDeleteByIdListQuery(String tableName, String idName, int numIds) {
 		String result = "";
 		for (int i = 0; i < numIds; i++) {
-			result = result + getDeleteByAnyIDQuery(tableName,idName);
+			result = result + getDeleteByAnyIDQuery(tableName, idName)+";";
 		}
-		
+
 		return result;
 	}
 

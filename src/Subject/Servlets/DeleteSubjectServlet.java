@@ -75,7 +75,7 @@ public class DeleteSubjectServlet extends SubjectServletParent {
 		manager.deleteSubjectById(id);
 
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
-				new ResponseModel(false,CommonConstants.SUCCESSFUL_MESSAGE));
+				new ResponseModel(true,CommonConstants.SUCCESSFUL_MESSAGE));
 		doGet(request, response);
 	}
 

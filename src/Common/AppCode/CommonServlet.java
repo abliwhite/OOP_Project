@@ -21,10 +21,9 @@ public abstract class CommonServlet extends HttpServlet {
 	}
 
 	public void addUserInSession(HttpServletRequest request, User user) {
-		String userIpAddress = getRequestIp(request);
-
+		
 		HttpSession session = request.getSession(true);
-		session.setAttribute(userIpAddress, user);
+		session.setAttribute(session.getId(), user);
 	}
 
 	private boolean numericStringValidation(String input) {
@@ -56,21 +55,22 @@ public abstract class CommonServlet extends HttpServlet {
 	public User getUserFromSession(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if (session != null)
-			return (User) session.getAttribute(getRequestIp(request));
+			return (User) session.getAttribute(session.getId());
 
 		return null;
 	}
 
-	private boolean checkRequestPermission(HttpServletRequest request) {
+	public boolean checkRequestPermission(HttpServletRequest request) {
 		HttpSession session = request.getSession(true);
 
-		return session.getAttribute(getRequestIp(request)) != null;
+		return session.getAttribute(session.getId()) != null;
 	}
 
-	private void redirectToLoginIfNotLogged(HttpServletRequest request, HttpServletResponse response) {
+	public void redirectToLoginIfNotLogged(HttpServletRequest request, HttpServletResponse response) {
 		if (!checkRequestPermission(request)) {
 			try {
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
+				return;
 			} catch (ServletException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -92,7 +92,7 @@ public abstract class CommonServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		initialManager();
-		// redirectToLoginIfNotLogged(request, response);
+		//redirectToLoginIfNotLogged(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

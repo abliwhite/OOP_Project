@@ -58,7 +58,8 @@ public class DeleteCommonSubjectComponentServlet extends SubjectServletParent {
 			doGet(request, response);
 			return;
 		}
-
+		int componentId = Integer.parseInt(id);
+		//chatDbManager.deleteLobbyByComponentID(componentId);
 		manager.DeleteCommonSubjectComponentByID(Integer.parseInt(id));
 		//manager.DeleteSubjectComponentTemplateByID(Integer.parseInt(id));
 

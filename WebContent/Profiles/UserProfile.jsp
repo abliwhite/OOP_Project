@@ -69,6 +69,7 @@
 			}
 		%>
 		</select>
+		<br>
 		<input onclick="addUserSubject(); return false;" id="subject_add_Button_id" type='button' class='btn btn-primary' value='Add'>
 		<br>
 		<div style="display:none" class="alert alert-success" id="alert_div_id" role="alert"></div>
@@ -76,25 +77,76 @@
 
 	<br>
 
-	<div class="w3-container w3-black">
-		<h2>Your Subjects:</h2>
-		<%
-			for (Subject subject : userSubjects) {
-				out.print("<h3> <a href= 'SubjectPageGeneratorServlet?subject=" + subject.getName() + "&year=" + subject.getYear() + "&term="  + subject.getTermId()+ "'>" + subject.getName() + " " + subject.getYear() + "</a>");
-				out.print(" <input onclick='deleteUserSubject(); return false;' id='subject_delete_Button_id' type='button' class='btn btn-primary' value='Delete'> </h3>");
-			}
-		%>
+	<div class="container-fluid">
+		<h2>All Subjects:</h2>
+		<div id="search_subject_list_id">
+			<table class="table table-condensed">
+				<thead>
+					<tr>
+						<th>
+							Name
+						</th>						
+						
+					</tr>
+				</thead>
+				<%
+					for (Subject subject : userSubjects) {
+						out.println("<tr id = 'subject_tr_"+subject.getId()+"' >");
+						out.println("<td>");
+						out.println("<label subject_name_label_id='"+subject.getId()+"' >" + subject.getName() + "</label>");
+						out.println("</td>");
+						out.println("<td>");
+						out.print("<input value='Edit' class='btn btn-primary' type='button' onclick='EditUserSubject("+subject.getId()+");'>");
+						out.print("<input value='Delete' class='btn btn-danger' type='button' onclick='DeleteUserSubject("+subject.getId()+");'>");
+						out.println("</td>");
+						out.println("</tr>");
+					}
+				%>
+			</table>
+		</div>
+		
 	</div>
 	
 
 </body>
 
 <script>
+
+function EditUserSubject(subjectId){
+	
+}
+
+function DeleteUserSubject(subjectId){
+	
+	userId = $("#hidden_user_id").val();
+	
+	data = {
+			userId : userId,
+			subjectId : subjectId
+		}
+		
+	$.ajax({
+		type : "POST",
+		url : "/DeleteUserSubjectServlet",
+		contentType : "application/json",
+		data : JSON.stringify(data),
+		success : function(response) {
+			$("#subject_tr_"+subjectId).remove();
+		 }
+	});
+	
+}
+
 function addUserSubject(){
-	subjectName = $("#name_id").val();
+	subjectName = $("#subjects_id").val();
 	subjectYear = $("#year_id").val();
 	subjectTermId = $("#term_id").val();
 	userId = $("#hidden_user_id").val();
+	
+	console.log(subjectName);
+	console.log(subjectYear);
+	console.log(subjectTermId);
+	console.log(userId);
 		
 	if (subjectName == "" || subjectYear == "" || subjectTermId == ""){
 		$("#alert_div_id").removeClass("alert alert-success");

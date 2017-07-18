@@ -37,6 +37,8 @@ public class ComponentMaterialsPageGeneratorServlet extends SubjectServletParent
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
+		redirectToLoginIfNotLogged(request, response);
+		
 		int componentId = Integer.parseInt(request.getParameter("id"));
 		CommonSubjectComponentViewModel svm= manager.getCommonSubjectComponentViewmodelById(componentId);
 		List<SubjectComponentMaterial> materials=manager.getSubjectComponentMaterialsByComponentId(componentId);
