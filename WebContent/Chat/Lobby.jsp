@@ -297,7 +297,8 @@ function AcceptJoin(userId){
         type: "ResponseMessage",
         receiverId: userId,
         lobbyId: _lobbyId,
-        content: "Success"
+        content: "Success",
+        senderGroupId:$("#current_groupChat_id").val();
     });
 	
     ws.send(json);
@@ -433,7 +434,7 @@ function newGroupChat(){
 	data = {
 			lobbyId: _lobbyId,
 			groupChatName : groupName,
-			privacyStatusId : 1 //(parseInt(rdBntVal) + 1)
+			privacyStatusId : (parseInt(rdBntVal) + 1)
 		};
 	
 	$.ajax({
