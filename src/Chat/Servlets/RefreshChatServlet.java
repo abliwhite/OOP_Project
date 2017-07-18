@@ -1,7 +1,12 @@
 package Chat.Servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,21 +16,24 @@ import com.google.gson.JsonObject;
 
 import Account.Models.User;
 import Chat.AppCode.ChatManagers.LobbyManager;
-import Chat.Models.DbModels.ActiveStatusEnum;
 import Chat.Models.DbModels.GroupChat;
+import Chat.Models.DbModels.InternalMessage;
+import Chat.Models.ViewModels.GroupChatViewModel;
+import Chat.Models.ViewModels.InternalMessageViewModel;
 import Common.AppCode.CommonConstants;
 import Common.Models.ResponseModel;
 
 /**
- * Servlet implementation class AddGroupChatServlet
+ * Servlet implementation class RefreshChatServlet
  */
-public class AddGroupChatServlet extends ChatServletParent {
+@WebServlet("/RefreshChatServlet")
+public class RefreshChatServlet extends ChatServletParent {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AddGroupChatServlet() {
+	public RefreshChatServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -48,25 +56,31 @@ public class AddGroupChatServlet extends ChatServletParent {
 			throws ServletException, IOException {
 		super.doPost(request, response);
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
-
+		String groupId = data.get("groupId").getAsString();
 		String lobbyId = data.get("lobbyId").getAsString();
-		String name = data.get("groupChatName").getAsString();
-		String privacyStatusId = data.get("privacyStatusId").getAsString();
 
-		if (!(fullNumericStringValidation(lobbyId) && fullNumericStringValidation(privacyStatusId))) {
-			ResponseModel responseModel = new ResponseModel(false, "Failed!");
+		if (!(fullNumericStringValidation(groupId) && fullNumericStringValidation(lobbyId))) {
+
+			ResponseModel responseModel = new ResponseModel(false, "Enter numeric!");
 			request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
 			doGet(request, response);
 			return;
 		}
-		User user = getUserFromSession(request);
+		int lId = Integer.parseInt(lobbyId);
+		int gId = Integer.parseInt(groupId);
 
-		GroupChat groupChat = new GroupChat(name, CommonConstants.getDatetime(), Integer.parseInt(lobbyId),
-				user.getId(), Integer.parseInt(privacyStatusId), ActiveStatusEnum.ACTIVE.ordinal() + 1);
+		List<InternalMessageViewModel> messages = new ArrayList<InternalMessageViewModel>();
+		LobbyManager.instance().getMessagesByGroupId(lId, gId).forEach(x -> {
+			messages.add(new InternalMessageViewModel(x, accountManager.getUserById(x.getSenderID())));
+		});
+		
+		Set<User> users = LobbyManager.instance().getUsersByGroupId(lId, gId);
+		GroupChat groupChat = LobbyManager.instance().getGroupChatById(lId, gId);
 
-		LobbyManager.instance().createGroupChat(user, groupChat);
+		GroupChatViewModel groupChatViewModel = new GroupChatViewModel(groupChat, users, messages);
 
-		ResponseModel responseModel = new ResponseModel(groupChat, true, CommonConstants.SUCCESSFUL_MESSAGE);
+		ResponseModel responseModel = new ResponseModel<Object, GroupChatViewModel>(groupChatViewModel, true,
+				CommonConstants.SUCCESSFUL_MESSAGE);
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
 		doGet(request, response);
 	}

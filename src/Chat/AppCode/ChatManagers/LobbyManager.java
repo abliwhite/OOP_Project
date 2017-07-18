@@ -56,22 +56,37 @@ public class LobbyManager {
 		this.lobbyControllers = getLobbyControllersFromDB();
 	}
 
+	public List<User> getOnlineUsers() {
+		return userEndpoints.keySet().stream().collect(Collectors.toList());
+	}
+
+	public ChatEndpoint getEndpointByUserId(int userId) {
+		List<User> users = getOnlineUsers().stream().filter(x -> x.getId() == userId).collect(Collectors.toList());
+		if (users.isEmpty())
+			return null;
+		return userEndpoints.get(users.get(0));
+	}
+
 	public void addUser(User user, ChatEndpoint cep) {
 		userEndpoints.put(user, cep);
 	}
+	
+	
 
 	public void removeUser(User user) {
 		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getOnlineUsers().contains(user))
 				.collect(Collectors.toList());
 		if (!filteredList.isEmpty())
 			filteredList.get(0).removeUser(user);
-		userEndpoints.remove(user);
+		if (userEndpoints.containsKey(user))
+			userEndpoints.remove(user);
 	}
 
 	public void removeUserFromLobby(User user, int lobbyId) {
 		List<LobbyController> filteredLobbyList = lobbyControllers.stream()
 				.filter(x -> x.getOnlineUsers().contains(user)).collect(Collectors.toList());
-		if (filteredLobbyList.isEmpty())			return;
+		if (filteredLobbyList.isEmpty())
+			return;
 		removeUserFromGroup(user, filteredLobbyList.get(0).getGroupByUser(user).getGroupChat().getId());
 		filteredLobbyList.get(0).removeUser(user);
 	}
@@ -114,13 +129,17 @@ public class LobbyManager {
 	}
 
 	public void createGroupChat(User user, GroupChat groupChat) {
+		GroupChatController oldgcc = getUserActiveGroupChatController(user, groupChat.getLobbyID());
+		if (oldgcc != null)
+			oldgcc.removeUser(user);
 		try {
 			db.addGroupChat(groupChat);
 		} catch (Exception e) {
 			return;
 		}
 		LobbyController lc = getLobbyControllerByLobby(groupChat.getLobbyID());
-		if (lc == null) return;
+		if (lc == null)
+			return;
 		lc.addGroupChat(groupChat);
 		lc.getGroupChatControllerById(groupChat.getId()).addUser(user, userEndpoints.get(user));
 	}
@@ -135,6 +154,28 @@ public class LobbyManager {
 		LobbyController lc = getLobbyControllerByLobby(groupChat.getLobbyID());
 		if (lc != null)
 			lc.removeGroupChat(groupChat);
+	}
+
+	public GroupChat getUserActiveGroupChat(User user, int lobbyId) {
+		LobbyController lc = getLobbyControllerByLobby(lobbyId);
+		if (lc == null)
+			return null;
+		List<GroupChatController> gccs = lc.getGroupChatControllers().stream()
+				.filter(x -> x.getActiveUsers().contains(user)).collect(Collectors.toList());
+		if (gccs.isEmpty())
+			return null;
+		return gccs.get(0).getGroupChat();
+	}
+
+	private GroupChatController getUserActiveGroupChatController(User user, int lobbyId) {
+		LobbyController lc = getLobbyControllerByLobby(lobbyId);
+		if (lc == null)
+			return null;
+		List<GroupChatController> gccs = lc.getGroupChatControllers().stream()
+				.filter(x -> x.getActiveUsers().contains(user)).collect(Collectors.toList());
+		if (gccs.isEmpty())
+			return null;
+		return gccs.get(0);
 	}
 
 	public List<GroupChat> getActiveGroupChats(int subjectComponentID) {
@@ -177,8 +218,16 @@ public class LobbyManager {
 		if (!filteredList.isEmpty())
 			filteredList.get(0).addMessage(message);
 	}
+	
+	public GroupChat getGroupChatById(int lobbyId, int groupId){
+		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getLobby().getId() == lobbyId)
+				.collect(Collectors.toList());
+		if(filteredList.isEmpty()) return null;
+		return filteredList.get(0).getGroupChatControllerById(groupId).getGroupChat();
+	}
 
 	// TODO sheileba akopirebs
+	
 	private LobbyController getLobbyControllerByComponent(int subjectComponentID) {
 		List<LobbyController> filteredList = lobbyControllers.stream()
 				.filter(x -> x.getLobby().getSubjectComponentID() == subjectComponentID).collect(Collectors.toList());

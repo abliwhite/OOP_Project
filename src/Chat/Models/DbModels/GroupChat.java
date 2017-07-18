@@ -72,8 +72,8 @@ public class GroupChat {
 		return privacyStatusID;
 	}
 
-	public void setPrivacyStatusID(int privacyStatusID) {
-		this.privacyStatusID = privacyStatusID;
+	public void setPrivacyStatusID(int privacyStatus) {
+		this.privacyStatusID = privacyStatus;
 	}
 
 	public int getActiveStatusID() {

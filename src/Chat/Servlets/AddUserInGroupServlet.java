@@ -2,6 +2,7 @@ package Chat.Servlets;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,35 +18,32 @@ import Common.AppCode.CommonConstants;
 import Common.Models.ResponseModel;
 
 /**
- * Servlet implementation class AddGroupChatServlet
+ * Servlet implementation class AddUserInGroupServlet
  */
-public class AddGroupChatServlet extends ChatServletParent {
+@WebServlet("/AddUserInGroupServlet")
+public class AddUserInGroupServlet extends ChatServletParent {
 	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AddUserInGroupServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
-	 * @see HttpServlet#HttpServlet()
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public AddGroupChatServlet() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doGet(request, response);
 		returnDefaultJsonToView(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		super.doPost(request, response);
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 
@@ -60,13 +58,14 @@ public class AddGroupChatServlet extends ChatServletParent {
 			return;
 		}
 		User user = getUserFromSession(request);
-
+		
 		GroupChat groupChat = new GroupChat(name, CommonConstants.getDatetime(), Integer.parseInt(lobbyId),
-				user.getId(), Integer.parseInt(privacyStatusId), ActiveStatusEnum.ACTIVE.ordinal() + 1);
+				user.getId(), Integer.parseInt(privacyStatusId),
+				ActiveStatusEnum.ACTIVE.ordinal() + 1);
 
-		LobbyManager.instance().createGroupChat(user, groupChat);
+		LobbyManager.instance().createGroupChat(user,groupChat);
 
-		ResponseModel responseModel = new ResponseModel(groupChat, true, CommonConstants.SUCCESSFUL_MESSAGE);
+		ResponseModel responseModel = new ResponseModel(true, CommonConstants.SUCCESSFUL_MESSAGE);
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
 		doGet(request, response);
 	}

@@ -6,7 +6,7 @@ public class UserSubject {
 	private int userId;
 	private int subjectId;
 
-	public UserSubject(int id, int userId, int subjectId) {
+	public UserSubject(Integer id, int userId, int subjectId) {
 		this.id = id;
 		this.userId = userId;
 		this.subjectId = subjectId;

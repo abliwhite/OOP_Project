@@ -14,17 +14,19 @@ public class LobbyViewModel {
 	private Lobby lobby;
 	private List<GroupChat> userGroupChats;
 	private List<GroupChatViewModel> activeGroupchats;
+	private GroupChatViewModel activeUserGroupChatViewModel;
 	private List<PrivacyStatus> privacyStatuses;
 
 	private CommonSubjectComponentViewModel cscViewModel;
 
 	public LobbyViewModel(CommonSubjectComponentViewModel cscViewModel, Lobby lobby, List<GroupChat> userGroupChats,
-			List<GroupChatViewModel> activeGroupChats, List<PrivacyStatus> privacyStatuses) {
+			List<GroupChatViewModel> activeGroupChats, List<PrivacyStatus> privacyStatuses,GroupChatViewModel activeUserGroupChatViewModel) {
 		this.lobby = lobby;
 		this.userGroupChats = userGroupChats;
 		this.activeGroupchats = activeGroupChats;
 		this.cscViewModel = cscViewModel;
 		this.privacyStatuses = privacyStatuses;
+		this.activeUserGroupChatViewModel = activeUserGroupChatViewModel;
 	}
 
 	public List<GroupChat> getArchivedGroupChats() {
@@ -57,6 +59,22 @@ public class LobbyViewModel {
 
 	public void setCscViewModel(CommonSubjectComponentViewModel cscViewModel) {
 		this.cscViewModel = cscViewModel;
+	}
+
+	public GroupChatViewModel getActiveUserGroupChatViewModel() {
+		return activeUserGroupChatViewModel;
+	}
+
+	public void setActiveUserGroupChatViewModel(GroupChatViewModel activeUserGroupChatViewModel) {
+		this.activeUserGroupChatViewModel = activeUserGroupChatViewModel;
+	}
+
+	public List<PrivacyStatus> getPrivacyStatuses() {
+		return privacyStatuses;
+	}
+
+	public void setPrivacyStatuses(List<PrivacyStatus> privacyStatuses) {
+		this.privacyStatuses = privacyStatuses;
 	}
 
 }

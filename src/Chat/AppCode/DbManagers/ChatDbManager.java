@@ -10,11 +10,13 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 
 import com.mysql.jdbc.Statement;
 
+import Account.Models.User;
 import Chat.Models.DbModels.ExternalMessage;
 import Chat.Models.DbModels.GroupChat;
 import Chat.Models.DbModels.InternalMessage;
 import Chat.Models.DbModels.Lobby;
 import Chat.Models.DbModels.PrivacyStatus;
+import Chat.Models.DbModels.PrivacyStatusEnum;
 import Common.AppCode.DaoController;
 import Database.DbCertificate;
 import Subject.Models.DbModels.SubjectComponentType;

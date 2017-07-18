@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import Account.AppCode.AccountManager;
 import Account.AppCode.AccountManagerInterface;
+import Account.Models.User;
 import Chat.AppCode.ChatManagers.LobbyManager;
 import Chat.AppCode.DbManagers.ChatDbManager;
 import Chat.AppCode.DbManagers.ChatDbManagerInterface;
@@ -26,6 +27,7 @@ public abstract class ChatServletParent extends CommonServlet {
 
 	public ChatDbManagerInterface chatDbManager;
 	public SubjectManagerInterface subjectManager;
+	public AccountManagerInterface accountManager;
 
 	@Override
 	public void initialManager() {
@@ -36,12 +38,16 @@ public abstract class ChatServletParent extends CommonServlet {
 		subjectManager = subjectManager == null
 				? (SubjectManagerInterface) getServletContext().getAttribute(SubjectManager.SUBJECT_MANAGER_ATTRIBUTE)
 				: subjectManager;
+		accountManager = accountManager == null
 
+				? (AccountManagerInterface) getServletContext().getAttribute(AccountManager.ACCOUNT_MANAGER_ATTRIBUTE)
+				: accountManager;
 	}
 
 	public ResponseModel getLobbyViewModel(String componentId, HttpServletRequest request) {
 		int id = Integer.parseInt(componentId);
-		int userId = getUserFromSession(request).getId();
+		User user = getUserFromSession(request);
+		int userId = user.getId();
 
 		CommonSubjectComponentViewModel svm = subjectManager.getCommonSubjectComponentViewmodelById(id);
 		List<GroupChat> userGroupChats = chatDbManager.getGroupChatByUserId(userId);
@@ -54,9 +60,14 @@ public abstract class ChatServletParent extends CommonServlet {
 		});
 
 		List<PrivacyStatus> privacyStatuses = chatDbManager.getAllPrivacyStatuses();
+		GroupChat activeUserGroupChat = LobbyManager.instance().getUserActiveGroupChat(user, lobby.getId());
+		GroupChatViewModel activeUserGroupChatViewModel = null;
+		if(activeUserGroupChat != null)
+			activeUserGroupChatViewModel = new GroupChatViewModel(activeUserGroupChat,
+				LobbyManager.instance().getUsersByGroupId(lobby.getId(), activeUserGroupChat.getId()));
 
 		LobbyViewModel lobbyViewModel = new LobbyViewModel(svm, lobby, userGroupChats, activeGroupChats,
-				privacyStatuses);
+				privacyStatuses, activeUserGroupChatViewModel);
 
 		ResponseModel responseModel = new ResponseModel<Object, LobbyViewModel>(lobbyViewModel, true,
 				CommonConstants.SUCCESSFUL_MESSAGE);

@@ -5,6 +5,8 @@ public class ActionMakerFactory {
 	public static ActionMakerInterface getActionMaker(String type) {
 
 		switch (type) {
+		case "ResponseMessage":
+			return new ActionMakerResponse();
 		case "RequestMessage":
 			return new ActionMakerRequest();
 		case "ExternalMessage":
