@@ -60,14 +60,13 @@ public class AddGroupChatServlet extends ChatServletParent {
 			return;
 		}
 		User user = getUserFromSession(request);
-		
+
 		GroupChat groupChat = new GroupChat(name, CommonConstants.getDatetime(), Integer.parseInt(lobbyId),
-				user.getId(), Integer.parseInt(privacyStatusId),
-				ActiveStatusEnum.ACTIVE.ordinal() + 1);
+				user.getId(), Integer.parseInt(privacyStatusId), ActiveStatusEnum.ACTIVE.ordinal() + 1);
 
-		LobbyManager.instance().createGroupChat(user,groupChat);
+		LobbyManager.instance().createGroupChat(user, groupChat);
 
-		ResponseModel responseModel = new ResponseModel(true, CommonConstants.SUCCESSFUL_MESSAGE);
+		ResponseModel responseModel = new ResponseModel(groupChat, true, CommonConstants.SUCCESSFUL_MESSAGE);
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE, responseModel);
 		doGet(request, response);
 	}

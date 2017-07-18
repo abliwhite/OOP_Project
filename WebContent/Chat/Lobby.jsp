@@ -395,8 +395,11 @@ function newGroupChat(){
 	    contentType: "application/json",
 	    data: JSON.stringify(data),
 	    success:  function( data ) {
-	    	refreshLobbyData();
-	    	refreshChatWindow();
+	    	if(data.isSuccess){
+	    		refreshLobbyData();
+		    	refreshChatWindow(data.resultObject.id);
+	    	}
+	    	
 		}
 	});
 
