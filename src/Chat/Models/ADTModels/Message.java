@@ -18,6 +18,16 @@ public class Message {
     private String type;
     private String content;
     
+    public Message(int userId, String username, int senderGroupId, int receiverId, int lobbyId, String type, String content){
+    	this.userId = userId;
+    	this.username = username;
+    	this.senderGroupId = senderGroupId;
+    	this.receiverId = receiverId;
+    	this.lobbyId = lobbyId;
+    	this.type = type;
+    	this.content = content;
+    }
+    
     public String getUsername(){
     	return username;
     }
@@ -70,6 +80,14 @@ public class Message {
 
     public void setContent(String content) {
         this.content = content;
+    }
+    
+    public String getType(){
+    	return type;
+    }
+    
+    public void setType(String type){
+    	this.type = type;
     }
     
     public void setActionMaker(){

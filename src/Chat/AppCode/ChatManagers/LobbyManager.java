@@ -70,6 +70,8 @@ public class LobbyManager {
 	public void addUser(User user, ChatEndpoint cep) {
 		userEndpoints.put(user, cep);
 	}
+	
+	
 
 	public void removeUser(User user) {
 		List<LobbyController> filteredList = lobbyControllers.stream().filter(x -> x.getOnlineUsers().contains(user))
@@ -225,6 +227,7 @@ public class LobbyManager {
 	}
 
 	// TODO sheileba akopirebs
+	
 	private LobbyController getLobbyControllerByComponent(int subjectComponentID) {
 		List<LobbyController> filteredList = lobbyControllers.stream()
 				.filter(x -> x.getLobby().getSubjectComponentID() == subjectComponentID).collect(Collectors.toList());

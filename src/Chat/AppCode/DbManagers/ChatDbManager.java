@@ -16,6 +16,7 @@ import Chat.Models.DbModels.GroupChat;
 import Chat.Models.DbModels.InternalMessage;
 import Chat.Models.DbModels.Lobby;
 import Chat.Models.DbModels.PrivacyStatus;
+import Chat.Models.DbModels.PrivacyStatusEnum;
 import Common.AppCode.DaoController;
 import Database.DbCertificate;
 import Subject.Models.DbModels.SubjectComponentType;

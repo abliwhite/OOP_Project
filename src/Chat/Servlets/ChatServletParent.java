@@ -61,7 +61,9 @@ public abstract class ChatServletParent extends CommonServlet {
 
 		List<PrivacyStatus> privacyStatuses = chatDbManager.getAllPrivacyStatuses();
 		GroupChat activeUserGroupChat = LobbyManager.instance().getUserActiveGroupChat(user, lobby.getId());
-		GroupChatViewModel activeUserGroupChatViewModel = new GroupChatViewModel(activeUserGroupChat,
+		GroupChatViewModel activeUserGroupChatViewModel = null;
+		if(activeUserGroupChat != null)
+			activeUserGroupChatViewModel = new GroupChatViewModel(activeUserGroupChat,
 				LobbyManager.instance().getUsersByGroupId(lobby.getId(), activeUserGroupChat.getId()));
 
 		LobbyViewModel lobbyViewModel = new LobbyViewModel(svm, lobby, userGroupChats, activeGroupChats,
