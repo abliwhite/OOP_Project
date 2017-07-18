@@ -234,7 +234,8 @@ var ws;
 
 $(document).ready(function() {
 	_sI = $("#si_id").val();
-    ws = new WebSocket("ws://" + document.location.host  + "/chat/" + _sI);
+	if(ws.readyState != WebSocket.OPEN)
+    	ws = new WebSocket("ws://" + document.location.host  + "/chat/" + _sI);
 
     ws.onmessage = function (event) {
         var log = document.getElementById("log");
