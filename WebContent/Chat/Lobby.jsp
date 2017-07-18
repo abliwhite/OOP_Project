@@ -231,8 +231,7 @@
 
 <script>
 var ws;
-
-$(document).ready(function() {
+window.onload = function() {
 	_sI = $("#si_id").val();
 	if(ws.readyState != WebSocket.OPEN)
     	ws = new WebSocket("ws://" + document.location.host  + "/chat/" + _sI);
@@ -257,7 +256,8 @@ $(document).ready(function() {
        }
        
     };
-});
+};
+
 
 $('#myModal').on('shown.bs.modal', function () {
 	  $('#myInput').focus()
