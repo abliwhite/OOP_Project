@@ -244,4 +244,13 @@ public class LobbyManager {
 		return filteredList.get(0);
 	}
 
+	public void addUserToGroup(int userId, int receiverId, int lobbyId) {
+		List<User> users = getOnlineUsers().stream().filter(x -> x.getId() == userId).collect(Collectors.toList());
+		if(users.isEmpty()) return;
+		User user = users.get(0);
+		LobbyController lc = getLobbyControllerByLobby(lobbyId);
+		GroupChatController gcc = lc.getGroupChatControllerById(receiverId);
+		gcc.addUser(user, userEndpoints.get(user));
+	}
+
 }

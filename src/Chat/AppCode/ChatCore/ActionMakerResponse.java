@@ -12,7 +12,7 @@ public class ActionMakerResponse implements ActionMakerInterface {
 
 	@Override
 	public void processMessage(Message message) {
-		ChatEndpoint endpoint = LobbyManager.instance().getEndpointByUserId(message.getUserId());
+		ChatEndpoint endpoint = LobbyManager.instance().getEndpointByUserId(message.getReceiverId());
 		if (endpoint == null)
 			return;
 		synchronized (endpoint) {
