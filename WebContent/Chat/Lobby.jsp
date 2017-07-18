@@ -295,7 +295,8 @@ function AcceptJoin(userId){
         type: "ResponseMessage",
         receiverId: userId,
         lobbyId: _lobbyId,
-        content: "Success"
+        content: "Success",
+        senderGroupId:$("#current_groupChat_id").val();
     });
 	
     ws.send(json);
