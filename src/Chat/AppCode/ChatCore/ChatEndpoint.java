@@ -35,7 +35,7 @@ public class ChatEndpoint {
 
     @OnMessage
     public void onMessage(Session session, Message message) throws IOException, EncodeException {
-    	
+    	message.setActionMaker();
     	message.processMessage();
     }
 
@@ -46,7 +46,7 @@ public class ChatEndpoint {
 
     @OnError
     public void onError(Session session, Throwable throwable) {
-    	
+    	System.console().printf(null, throwable.getStackTrace());
     }
 
     public Session getSession(){

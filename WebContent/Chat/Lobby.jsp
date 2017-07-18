@@ -241,11 +241,18 @@ window.onload = function() {
         console.log(event.data);
         console.log("msg");
         var message = JSON.parse(event.data);
-        
+        console.log(message.type);
+        console.log(message.content);
        if(message.type == "ResponseMessage" && message.content == "Success"){
-    	   refreshChatWindow(senderGroupId);
+    	   console.log("responseeeeeeeeeeeeeeeeeeeeeeeee");
+    	   refreshLobbyData();
+    	   refreshChatWindow(message.senderGroupId);
+    	   
     	   $("#current_groupChat_id").val(message.senderGroupId);
     	   console.log(message.content);
+       }
+       else{
+    	   console.log("araresponseeeeeee");
        }
        
        if(message.type == "RequestMessage"){
@@ -319,7 +326,7 @@ function askToJoin(groupChatId){
 		var json = JSON.stringify({
 	        userId: _userId,
 	        type: "RequestMessage",
-	        recieverId: groupChatId,
+	        receiverId: groupChatId,
 	        lobbyId: _lobbyId
 	    });
 		$("#current_groupChat_id").val(groupChatId);
@@ -391,7 +398,7 @@ function newGroupChat(){
 	data = {
 			lobbyId: _lobbyId,
 			groupChatName : groupName,
-			privacyStatusId : (parseInt(rdBntVal) + 1)
+			privacyStatusId : 1 //(parseInt(rdBntVal) + 1)
 		};
 	
 	$.ajax({
