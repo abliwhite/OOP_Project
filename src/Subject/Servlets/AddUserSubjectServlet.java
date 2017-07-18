@@ -34,7 +34,7 @@ public class AddUserSubjectServlet extends SubjectServletParent {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//redirectToLoginIfNotLogged(request,response);
-		int userId = (int) request.getAttribute("userId");
+		String userId = (String) request.getAttribute("userId");
 
 		String json = new Gson().toJson(userId);
 

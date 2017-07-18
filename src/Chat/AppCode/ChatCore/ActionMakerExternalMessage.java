@@ -8,10 +8,8 @@ import javax.websocket.EncodeException;
 import Chat.AppCode.ChatManagers.LobbyManager;
 import Chat.Models.ADTModels.Message;
 
-public class ActionMakerExternalMessage implements ActionMakerInterface{
+public class ActionMakerExternalMessage implements ActionMakerInterface {
 
-	
-	
 	@Override
 	public void processMessage(Message message) {
 		Set<ChatEndpoint> userEndpoints = LobbyManager.instance().getEndpointsByGroupId(message.getLobbyId(),
@@ -28,6 +26,5 @@ public class ActionMakerExternalMessage implements ActionMakerInterface{
 			}
 		}
 	}
-	
 
 }

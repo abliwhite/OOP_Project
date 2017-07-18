@@ -132,6 +132,7 @@
 	
 	
 	<div class="col-md-8 container">
+		
 		<%
 			out.print("<input type='hidden' value='"+session.getId()+"' id='si_id'>");
 		%>
@@ -154,44 +155,13 @@
 							users = users + user.getUsername();
 						}
 						out.print("<p class='card-text'>"+users+"</p>");
-						out.print("<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >");
+						out.print("<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin("+item.getGroupChat().getId()+")' >");
 						out.print("</div>");
 						out.print("</div>");
 					}
 				
 				%>
-				<div class='card w-25 groupRow'>	
-					<div class='card-header'> Create Group </div>
-					<div class='card-card-block' style="height:100px">
-						<h4 class='card-title'>Users</h4>
-						<p class='card-text'>"+u+"</p>
-						<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
-					</div>
-				</div>
-				<div class='card w-25 groupRow'>	
-					<div class='card-header'> Create Group </div>
-					<div class='card-card-block' style="height:100px">
-						<h4 class='card-title'>Users</h4>
-						<p class='card-text'>"+u+"</p>
-						<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
-					</div>
-				</div>
-				<div class='card w-25 groupRow'>	
-					<div class='card-header'> Create Group </div>
-					<div class='card-card-block' style="height:100px">
-						<h4 class='card-title'>Users</h4>
-						<p class='card-text'>"+u+"</p>
-						<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >
-					</div>
-				</div>
-				<div class='card w-25 groupRow'>	
-					<div class='card-header'> Create Group </div>
-					<div class='card-card-block' style="height:100px">
-						<h4 class='card-title'>Users</h4>
-						<p class='card-text'>"+u+"</p>
-						<input type='button' value='Join' class='btn btn-primary centerJoinButton' onclick='askToJoin()' >
-					</div>
-				</div>
+				
 				
 				<div class='card w-25 groupRow'>	
 					<div class='card-header'> Create Group </div>
@@ -202,10 +172,22 @@
 					</a>
 				</div>
 			</div>
-			
-			
 		</div>
-		
+		<div id="chat_id" style="display: none;">
+			<table>
+				<tr>
+			        <td>
+			            <textarea rows="10" cols="80" id="log" title="Chat"></textarea>
+			        </td>
+			    </tr>
+			    <tr>
+			        <td>
+				        <input type="text" size="51" id="msg" placeholder="Message"/>
+			            <button type="button" onclick="send();">Send</button>
+			        </td>
+			    </tr>
+			</table>
+		</div>
 	</div>
 	
 
@@ -247,6 +229,7 @@
 </body>
 
 <script>
+var ws;
 
 $(document).ready(function() {
 	_sI = $("#si_id").val();
@@ -256,27 +239,36 @@ $(document).ready(function() {
         var log = document.getElementById("log");
         console.log(event.data);
         var message = JSON.parse(event.data);
-        log.innerHTML += message.from + " : " + message.content + "\n";
+        
+       if(message.type == "RequestMessage"){
+    	   console.log(message.content);
+       }
     };
 });
 
 $('#myModal').on('shown.bs.modal', function () {
 	  $('#myInput').focus()
 	})
-function addGroupPlus(){
-	
-}
 
-function askToJoin(){
-	
+function askToJoin(groupChatId){
+	var json = JSON.stringify({
+        userId: _userId,
+        type: "RequestMessage",
+        recieverGroupId: groupChatId,
+        lobbyId: _lobbyId
+    });
+
+    ws.send(json);
 }
 
 function drawActiveGroups(activeGroups){
-	$("#active_group_chats").clear();
+	$("#active_group_chats").empty();
+	console.log(activeGroups);
+	result = "";
 	activeGroups.forEach(function(entry) {
-	    console.log(entry);
+		result = result + entry;
 	});
-	$("#active_group_chats").html();
+	$("#active_group_chats").html(result);
 }
 
 _lobbyId =<%out.print(lobby.getId());%>
@@ -301,12 +293,15 @@ function refreshLobbyData(){
 		  data.resultObject.activeGroupchats.forEach(function(activeChat) {
 			  activeGroups.push(getActiveGroup(activeChat));
 		  });
+		  console.log(getAddNewChatCard());
 		  activeGroups.push(getAddNewChatCard());
+		  /*
 		  $.each( data.resultObject.userGroupChats, function(passiveChat) {
 			  passiveGroups.push(getPassiveGroup(activeChat));
 		  });
+		  */
 		  drawActiveGroups(activeGroups);
-		  drawPassiveGroups(passiveGroups);
+		  //drawPassiveGroups(passiveGroups);
 		 
 		  /* $( "<ul/>", {
 		    "class": "my-new-list",
@@ -346,27 +341,38 @@ function newGroupChat(){
 
 function getAddNewChatCard()
 {
-	activeg = "<div class='card w-25'>";
+	activeg = "<div class='card w-25 groupRow'>";
 	activeg += "<div class='card-header'> Create Group </div>";
-	activeg +="<div class='card-card-block'>";
-	activeg +="<h4 class='card-title'>Users</h4>";
-	activeg +="<p class='card-text'></p>";
-	activeg +="<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >";
+	activeg +="<a class='btn btn-primary'>";
+	activeg +="<div class='card-card-block addGroupChat' data-toggle='modal' data-target='#myModal' >";
+	activeg +="<i class='fa fa-plus fa-5x centerAddPlus'></i>";
 	activeg +="</div>";
+	activeg +="</a>";
 	activeg +="</div>";
+	
+	return activeg;
 }
 
 function getActiveGroup(json)
 {
 	console.log(json);
-	activeg = "<div class='card w-25'>";
+	activeg = "<div class='card w-25 groupRow'>";
+	console.log(json.groupChat);
+	console.log(json.groupChat.name);
 	activeg += "<div class='card-header'>" + json.groupChat.name + "</div>";
-	activeg +="<div class='card-card-block'>";
-	activeg +="<h4 class='card-title'>Users</h4>";
-	activeg +="<p class='card-text'>"+u+"</p>";
-	activeg +="<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >";
+	activeg +="<div class='card-card-block' style='height:100px'>";
+	activeg +="<h4 class='card-title'>Users:</h4>";
+	text = "";
+	for (i = 0; i < json.users.length-1; i++) { 
+	    text += json.users[i].username + ",";
+	}
+	text += json.users[json.users.length-1].username;
+	activeg +="<p class='card-text'>"+text+"</p>";
+	activeg +="<input type='button' value='Join' class='btn btn-primary centerJoinButton' onclick='askToJoin("+json.groupChat.id+")' >";
 	activeg +="</div>";
 	activeg +="</div>";
+	
+	return activeg;
 }
 
 function getPassiveGroup(json)
@@ -376,7 +382,7 @@ function getPassiveGroup(json)
 	activeg += "<div class='card-card-block'>";
 	activeg += "<h4 class='card-title'>Users</h4>";
 	activeg += "<p class='card-text'>"+u+"</p>";
-	activeg += "<input type='button' value='Join' class='btn btn-primary' onclick='askToJoin()' >";
+	activeg += "<input type='button' value='Join()' class='btn btn-primary' onclick='askToJoin()' >";
 	activeg += "</div>";
 	activeg += "</div>";
 }
