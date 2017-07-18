@@ -457,7 +457,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 		try {
 			java.sql.Connection con = getConnection();
 			String selectQuery = "SELECT * FROM " + DbCertificate.SubjectTable.TABLE_NAME + " WHERE "
-					+ DbCertificate.SubjectTable.COLUMN_NAME_NAME + " = \"" + subjectName + "\"" + " AND "
+					+ DbCertificate.SubjectTable.COLUMN_NAME_NAME + " = " + subjectName  + " AND "
 					+ DbCertificate.SubjectTable.COLUMN_NAME_YEAR + " = " + year + " AND "
 					+ DbCertificate.SubjectTable.COLUMN_NAME_TERM_ID + " = " + termId;
 
@@ -891,7 +891,7 @@ public class SubjectManager extends DaoController implements SubjectManagerInter
 	public void deleteUserSubjectByAllFields(int userId, int subjectId) {
 		try {
 			java.sql.Connection con = getConnection();
-			String deleteStatement = "DELETE FROM " + DbCertificate.UserSubjectTable.TABLE_NAME + "WHERE "
+			String deleteStatement = "DELETE FROM " + DbCertificate.UserSubjectTable.TABLE_NAME + " WHERE "
 					+ DbCertificate.UserSubjectTable.COLUMN_NAME_USER_ID + " = ?" + " AND "
 					+ DbCertificate.UserSubjectTable.COLUMN_NAME_SUBJECT_ID + " = ?";
 
