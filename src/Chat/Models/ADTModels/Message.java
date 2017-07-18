@@ -12,7 +12,7 @@ public class Message {
     private String username;
     private int senderGroupId;
     
-    private int receiverGroupId;
+    private int receiverId;
     private int lobbyId;
     
     private String type;
@@ -42,12 +42,12 @@ public class Message {
     	return userId;
     }
     
-    public void setReceiverGroupId(int groupTo){
-    	this.receiverGroupId = groupTo;
+    public void setReceiverId(int groupTo){
+    	this.receiverId = groupTo;
     }
     
-    public int getReceiverGroupId(){
-    	return receiverGroupId;
+    public int getReceiverId(){
+    	return receiverId;
     }
     
     public int getLobbyId(){

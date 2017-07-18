@@ -16,7 +16,7 @@ public class ActionMakerRequest implements ActionMakerInterface {
 	public void processMessage(Message message) {
 		message.setContent(getRequestContent(message));
 		Set<ChatEndpoint> userEndpoints = LobbyManager.instance().getEndpointsByGroupId(message.getLobbyId(),
-				message.getReceiverGroupId());
+				message.getReceiverId());
 		if (userEndpoints == null)
 			return;
 		for (ChatEndpoint endpoint : userEndpoints) {

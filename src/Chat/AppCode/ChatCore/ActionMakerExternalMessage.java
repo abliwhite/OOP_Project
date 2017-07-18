@@ -13,7 +13,7 @@ public class ActionMakerExternalMessage implements ActionMakerInterface {
 	@Override
 	public void processMessage(Message message) {
 		Set<ChatEndpoint> userEndpoints = LobbyManager.instance().getEndpointsByGroupId(message.getLobbyId(),
-				message.getReceiverGroupId());
+				message.getReceiverId());
 		if (userEndpoints == null)
 			return;
 		for (ChatEndpoint endpoint : userEndpoints) {
