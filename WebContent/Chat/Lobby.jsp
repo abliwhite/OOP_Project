@@ -242,7 +242,8 @@ $(document).ready(function() {
         var message = JSON.parse(event.data);
         
        if(message.type == "ResponseMessage" && message.content == "Success"){
-    	   refreshChatWindow($("#current_groupChat_id").val());
+    	   refreshChatWindow(senderGroupId);
+    	   $("#current_groupChat_id").val(message.senderGroupId);
     	   console.log(message.content);
        }
        
@@ -311,14 +312,16 @@ function refreshChatWindow(groupChatId){
 
 function askToJoin(groupChatId){
 	//$("#chat_id").show();
-	var json = JSON.stringify({
-        userId: _userId,
-        type: "RequestMessage",
-        recieverId: groupChatId,
-        lobbyId: _lobbyId
-    });
-	$("#current_groupChat_id").val(groupChatId);
-    ws.send(json);
+	
+		var json = JSON.stringify({
+	        userId: _userId,
+	        type: "RequestMessage",
+	        recieverId: groupChatId,
+	        lobbyId: _lobbyId
+	    });
+		$("#current_groupChat_id").val(groupChatId);
+		ws.send(json);
+	
 }
 
 function drawActiveGroups(activeGroups){
@@ -393,6 +396,7 @@ function newGroupChat(){
 	    data: JSON.stringify(data),
 	    success:  function( data ) {
 	    	refreshLobbyData();
+	    	refreshChatWindow();
 		}
 	});
 
