@@ -49,6 +49,7 @@ public class GroupChatController {
 	}
 	
 	public List<User> getActiveUsers(){
+		if(userEndpoints.isEmpty()) return Collections.emptyList();
 		return userEndpoints.keySet().stream().collect(Collectors.toList());
 	}
 

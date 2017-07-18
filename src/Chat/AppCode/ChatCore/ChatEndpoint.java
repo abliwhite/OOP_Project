@@ -14,7 +14,7 @@ import Common.AppCode.OnlineUsersManager;
 
 
 @ServerEndpoint(
-        value = "/chat/{sessionId}",
+        value = "/LobbyPageGeneratorServlet/chat/{sessionId}",
         decoders = MessageDecoder.class,
         encoders = MessageEncoder.class
 )
@@ -22,11 +22,12 @@ import Common.AppCode.OnlineUsersManager;
 public class ChatEndpoint {
 
     private Session session;
+    private User user;
 
     @OnOpen
     public void onOpen(Session session, @PathParam ("sessionId") String sessionId) throws IOException, EncodeException {
         
-        User user = OnlineUsersManager.instance().getUser(sessionId);
+        user = OnlineUsersManager.instance().getUser(sessionId);
         LobbyManager.instance().addUser(user, this);
 
         this.session = session;
@@ -40,7 +41,6 @@ public class ChatEndpoint {
 
     @OnClose
     public void onClose(Session session) throws IOException, EncodeException {
-    	User user = OnlineUsersManager.instance().getUser(session.getId());
         LobbyManager.instance().removeUser(user);
     }
 

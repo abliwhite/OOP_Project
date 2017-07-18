@@ -233,12 +233,13 @@
 var ws;
 window.onload = function() {
 	_sI = $("#si_id").val();
-	if(ws.readyState != WebSocket.OPEN)
-    	ws = new WebSocket("ws://" + document.location.host  + "/chat/" + _sI);
+    ws = new WebSocket("ws://" + document.location.host  + "/LobbyPageGeneratorServlet/chat/" + _sI);
+    console.log(ws);
 
     ws.onmessage = function (event) {
-        var log = document.getElementById("log");
+        var log = document.getElementById("chat_messages");
         console.log(event.data);
+        console.log("msg");
         var message = JSON.parse(event.data);
         
        if(message.type == "ResponseMessage" && message.content == "Success"){
@@ -256,6 +257,7 @@ window.onload = function() {
        }
        
     };
+    
 };
 
 
@@ -268,7 +270,7 @@ function send(){
 	var json = JSON.stringify({
         userId: _userId,
         type: "InternalMessage",
-        recieverId: groupChatId,
+        receiverId: groupChatId,
         lobbyId: _lobbyId,
         content: $("#msg").val()
     });
@@ -321,6 +323,7 @@ function askToJoin(groupChatId){
 	        lobbyId: _lobbyId
 	    });
 		$("#current_groupChat_id").val(groupChatId);
+		
 		ws.send(json);
 	
 }
@@ -380,6 +383,7 @@ function newGroupChat(){
 
 	rdBntVal = $('input[name=groupType]:checked').val();
 	groupName = $('input[name=groupname]').val();
+	
 	console.log(rdBntVal);
 	console.log(groupName);
 	
@@ -399,6 +403,7 @@ function newGroupChat(){
 	    	if(data.isSuccess){
 	    		refreshLobbyData();
 		    	refreshChatWindow(data.resultObject.id);
+		    	$("#current_groupChat_id").val(data.resultObject.id);
 	    	}
 	    	
 		}
