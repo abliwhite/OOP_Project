@@ -53,7 +53,7 @@ public class DeleteUserSubjectServlet extends SubjectServletParent {
 		int subjId = Integer.parseInt(subjectId);
 		int usId = Integer.parseInt(userId);
 		
-		manager.deleteUserSubjectComponentByUserId(userId);
+		//manager.deleteUserSubjectComponentByUserId(userId);
 		manager.deleteUserSubjectByAllFields(subjId, usId);
 		
 		request.setAttribute(ResponseModel.RESPONSE_MESSAGE_ATTRIBUTE,
